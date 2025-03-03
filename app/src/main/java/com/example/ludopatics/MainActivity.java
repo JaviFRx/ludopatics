@@ -1,6 +1,8 @@
 package com.example.ludopatics;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,5 +22,14 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        Button btnJugar = findViewById(R.id.btnJugar);
+
+        // Configura el OnClickListener para abrir la actividad "Ruleta"
+        btnJugar.setOnClickListener(v -> {
+            // Crea un Intent para abrir la actividad Ruleta
+            Intent intent = new Intent(MainActivity.this, Ruleta.class);
+            startActivity(intent);  // Lanza la actividad Ruleta
+        });
     }
+
 }

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ludopatics</string>
+    <string name="title_activity_ruleta">Ruleta</string>
 </resources>
