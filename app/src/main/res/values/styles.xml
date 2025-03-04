@@ -1,0 +1,20 @@
+<resources>
+    <!-- Estilo principal de la aplicación -->
+    <style name="Theme.Ludopatics" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Colores del tema -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <item name="android:windowLightStatusBar">true</item> <!-- Cambia el color de la barra de estado -->
+    </style>
+
+    <!-- Estilo sin ActionBar para SplashActivity -->
+    <style name="Theme.Ludopatics.NoActionBar" parent="Theme.Ludopatics">
+        <item name="android:windowNoTitle">true</item> <!-- Sin título en la ventana -->
+        <item name="android:windowActionBar">false</item> <!-- Sin ActionBar -->
+        <item name="android:windowFullscreen">true</item> <!-- Pantalla completa -->
+    </style>
+
+</resources>

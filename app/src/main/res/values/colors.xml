@@ -1,7 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Colores principales -->
+    <color name="colorPrimary">#FF6200EE</color> <!-- Violeta -->
+    <color name="colorPrimaryVariant">#D500F9</color> <!-- Violeta más oscuro -->
+    <color name="colorOnPrimary">#FFFFFF</color> <!-- Blanco sobre el color primario -->
+
+    <!-- Colores secundarios -->
+    <color name="colorSecondary">#03DAC5</color> <!-- Verde agua -->
+    <color name="colorSecondaryVariant">#018786</color> <!-- Verde agua más oscuro -->
+    <color name="colorOnSecondary">#000000</color> <!-- Negro sobre el color secundario -->
+
+    <!-- Colores de fondo y texto -->
+    <color name="backgroundColor">#F5F5F5</color> <!-- Color de fondo -->
+    <color name="textColor">#212121</color> <!-- Color de texto -->
+
     <color name="teal_200">#03DAC5</color>
 
 </resources>

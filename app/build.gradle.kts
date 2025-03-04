@@ -67,4 +67,8 @@ dependencies {
 
     // RxAndroid (para facilitar la ejecución en el hilo principal)
     implementation(libs.rxandroid)
+
+    //gif
+    implementation(libs.glide)
+
 }
