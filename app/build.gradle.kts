@@ -61,4 +61,10 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
+
+    // RxJava
+    implementation(libs.rxjava)
+
+    // RxAndroid (para facilitar la ejecución en el hilo principal)
+    implementation(libs.rxandroid)
 }

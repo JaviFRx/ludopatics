@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="com.obiscr.chatgpt.settings.EasyCodeState">
+    <option name="projectFiles" value="$PROJECT_DIR$/app/src/androidTest/java/com/example/ludopatics/ExampleInstrumentedTest.java;D:/AndroidStudioProjects/ludopatics/app/src/main/java/com/example/ludopatics/ui/theme/Color.kt;D:/AndroidStudioProjects/ludopatics/app/src/main/java/com/example/ludopatics/ui/theme/Theme.kt;D:/AndroidStudioProjects/ludopatics/app/src/main/java/com/example/ludopatics/ui/theme/Type.kt;D:/AndroidStudioProjects/ludopatics/app/src/main/java/com/example/ludopatics/DatabaseHelper.java;D:/AndroidStudioProjects/ludopatics/app/src/main/java/com/example/ludopatics/MainActivity.java;D:/AndroidStudioProjects/ludopatics/app/src/main/java/com/example/ludopatics/Ruleta.java;D:/AndroidStudioProjects/ludopatics/app/src/test/java/com/example/ludopatics/ExampleUnitTest.java;D:/AndroidStudioProjects/ludopatics/app/build.gradle.kts;D:/AndroidStudioProjects/ludopatics/build.gradle.kts;D:/AndroidStudioProjects/ludopatics/settings.gradle.kts" />
+  </component>
+</project>
