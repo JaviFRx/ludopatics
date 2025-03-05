@@ -1,8 +1,11 @@
 package com.example.ludopatics;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.VideoView;
+import android.media.MediaPlayer;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,19 +20,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        Button btnJugar = findViewById(R.id.btnJugar);
 
-        // Configura el OnClickListener para abrir la actividad "Ruleta"
+        // Configurar VideoView
+        VideoView videoView = findViewById(R.id.videoView);
+        Uri videoUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.ruleta);
+        videoView.setVideoURI(videoUri);
+
+        // Reproducir video en bucle automáticamente
+        videoView.setOnPreparedListener(mp -> {
+            mp.setLooping(true);  // Activar loop
+            videoView.start();    // Iniciar el video
+        });
+
+        // Botón "JUGAR"
+        Button btnJugar = findViewById(R.id.btnJugar);
         btnJugar.setOnClickListener(v -> {
-            // Crea un Intent para abrir la actividad Ruleta
             Intent intent = new Intent(MainActivity.this, Ruleta.class);
-            startActivity(intent);  // Lanza la actividad Ruleta
+            startActivity(intent);
         });
     }
-
 }
