@@ -79,51 +79,68 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- NO TOCADO ************************ -->
-
-
-
-    <TextView
-        android:id="@+id/recent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:text="Recent: RED, BLACK"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="356dp" />
-
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/segundo"
+        android:layout_width="match_parent"
+        android:layout_height="100sp"
+        android:layout_margin="16dp"
+        android:elevation="8dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="16dp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="615dp">
+        android:translationZ="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/recent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Recent"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            />
+        <com.example.ludopatics.CirculosView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            />
+        <com.example.ludopatics.CirculosView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_marginEnd="16dp"
             android:text="Next Game: 5s"
             android:textColor="@android:color/white"
-            android:textSize="16sp" />
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="16dp"
             android:text="Round #1"
             android:textColor="@android:color/white"
-            android:textSize="16sp" />
-    </LinearLayout>
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
 
-    <!-- Sección de cantidad de apuesta -->
+    </LinearLayout>
 
     <LinearLayout
 
         android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:background="@drawable/transparent"
@@ -133,9 +150,17 @@
         android:translationZ="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        tools:layout_editor_absoluteX="-48dp"
-        tools:layout_editor_absoluteY="519dp">
+        app:layout_constraintTop_toBottomOf="@+id/segundo">
+
+        <TextView
+            android:id="@+id/Color"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Color"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/red_button"
@@ -196,8 +221,8 @@
         android:text="Bet Amount: minimum 1"
         android:textColor="@android:color/white"
         android:textSize="16sp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="240dp" />
+        tools:layout_editor_absoluteX="-9dp"
+        tools:layout_editor_absoluteY="536dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -236,6 +261,6 @@
         android:textColor="@android:color/white"
         android:textSize="18sp"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="289dp" />
+        tools:layout_editor_absoluteY="341dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

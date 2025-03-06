@@ -22,14 +22,7 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        Button btnJugar = findViewById(R.id.btnJugar);
 
-        // Configura el OnClickListener para abrir la actividad "Ruleta"
-        btnJugar.setOnClickListener(v -> {
-            // Crea un Intent para abrir la actividad Ruleta
-            Intent intent = new Intent(MainActivity.this, Ruleta.class);
-            startActivity(intent);  // Lanza la actividad Ruleta
-        });
     }
 
 }
