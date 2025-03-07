@@ -280,58 +280,92 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/bet_amount"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/quinto"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:paddingStart="16dp"
-        android:text="Bet Amount: minimum 1"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        tools:layout_editor_absoluteX="0dp" />
+        android:layout_margin="16dp"
+        android:background="@drawable/transparent"
+        android:elevation="8dp"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:translationZ="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+        <TextView
+            android:id="@+id/bet_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:paddingStart="16dp"
+            android:text="Bet Amount: minimum 1"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            tools:layout_editor_absoluteX="0dp" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:layout_marginTop="6dp"
         android:orientation="horizontal"
-        android:padding="16dp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cuarto"
-        tools:layout_editor_absoluteX="0dp">
+        android:gravity="end"
+        >
 
         <Button
             android:id="@+id/bet_button_plus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+1" />
+            android:layout_width="40dp"
+            android:layout_height="35dp"
+            android:backgroundTint="@android:color/white"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="4dp"
+            android:text="+1"
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/bet_button_plus10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="+10" />
+            android:layout_width="40dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@android:color/white"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="4dp"
+            android:text="+10"
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/bet_button_plus100"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="+100" />
+            android:layout_width="40dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@android:color/white"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="4dp"
+            android:text="+100"
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <Button
         android:id="@+id/place_bet_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
         android:text="PLACE BET"
         android:textColor="@android:color/white"
         android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@+id/bet_amount"
+        app:layout_constraintTop_toBottomOf="@+id/quinto"
         tools:layout_editor_absoluteX="0dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
