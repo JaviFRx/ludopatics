@@ -1,36 +1,48 @@
 package com.example.ludopatics;
 
-import android.os.Bundle;
+import android.content.Intent;
 import android.net.Uri;
-import android.widget.MediaController;
+import android.os.Bundle;
+import android.widget.Button;
 import android.widget.VideoView;
+import android.media.MediaPlayer;
+
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 public class Ruleta extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ruleta); // Cargar el layout ruleta.xml
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.ruleta);
 
-        // Encuentra el VideoView en el layout
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
+        // Configurar VideoView
         VideoView videoView = findViewById(R.id.videoView);
-
-        // Configura la ubicación del archivo de video (ubicación en res/raw)
-        Uri videoUri = Uri.parse("android.resource://" + getPackageName() + "/raw/ruleta");
-
-        // Configura el VideoView con el archivo de video
+        Uri videoUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.ruleta);
         videoView.setVideoURI(videoUri);
 
-        // Agregar controles de medios (play, pause, etc.)
-        MediaController mediaController = new MediaController(this);
-        mediaController.setAnchorView(videoView);
-        videoView.setMediaController(mediaController);
+        // Reproducir video en bucle automáticamente
+        videoView.setOnPreparedListener(mp -> {
+            mp.setLooping(true);  // Activar loop
+            videoView.start();    // Iniciar el video
+        });
 
-        // Hacer que el video se repita en bucle
-        videoView.setOnCompletionListener(mp -> videoView.start());
-
-        // Iniciar la reproducción del video
-        videoView.start();
+        // Botón "JUGAR"
+        Button btnJugar = findViewById(R.id.btnJugar);
+        btnJugar.setOnClickListener(v -> {
+        Intent intent = new Intent(Ruleta.this, MainActivity.class);
+        startActivity(intent);
+        });
     }
 }
