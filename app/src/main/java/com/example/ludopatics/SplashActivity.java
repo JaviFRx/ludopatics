@@ -27,7 +27,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // Intent para iniciar la MainActivity después de la pantalla de inicio
-                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                Intent intent = new Intent(SplashActivity.this, Ruleta.class);
                 startActivity(intent);
                 finish(); // Cierra SplashActivity para que no pueda volver a ella
             }
