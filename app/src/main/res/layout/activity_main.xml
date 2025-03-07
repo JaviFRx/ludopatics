@@ -17,7 +17,7 @@
         android:background="@drawable/transparent"
         android:elevation="8dp"
         android:orientation="horizontal"
-        android:padding="16dp"
+        android:padding="5dp"
         android:translationZ="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -87,7 +87,7 @@
         android:elevation="8dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="16dp"
+        android:padding="5dp"
         android:translationZ="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -184,7 +184,7 @@
         android:background="@drawable/transparent"
         android:elevation="8dp"
         android:orientation="vertical"
-        android:padding="16dp"
+        android:padding="5dp"
         android:translationZ="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -248,7 +248,7 @@
         android:background="@drawable/transparent"
         android:elevation="8dp"
         android:orientation="horizontal"
-        android:padding="16dp"
+        android:padding="5dp"
         android:translationZ="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -281,30 +281,49 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/quinto"
+        android:id="@+id/quinta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:background="@drawable/transparent"
         android:elevation="8dp"
         android:orientation="horizontal"
-        android:padding="16dp"
         android:translationZ="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
         <TextView
             android:id="@+id/bet_amount"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:paddingStart="16dp"
-            android:text="Bet Amount: minimum 1"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Bet Amount:"
             android:textColor="@android:color/white"
             android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-            tools:layout_editor_absoluteX="0dp" />
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/minimun"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Minimum"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/x2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="X2"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <LinearLayout
@@ -361,11 +380,15 @@
     <Button
         android:id="@+id/place_bet_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:text="PLACE BET"
         android:textColor="@android:color/white"
         android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@+id/quinto"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/quinto" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
