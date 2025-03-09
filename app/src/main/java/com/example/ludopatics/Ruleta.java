@@ -48,7 +48,7 @@ public class Ruleta extends AppCompatActivity {
         // Botón "JUGAR"
         Button btnJugar = findViewById(R.id.btnJugar);
         btnJugar.setOnClickListener(v -> {
-            Intent intent = new Intent(Ruleta.this, Gira.class);
+            Intent intent = new Intent(Ruleta.this, MainActivity.class);
             startActivity(intent);
             finish();
         });
