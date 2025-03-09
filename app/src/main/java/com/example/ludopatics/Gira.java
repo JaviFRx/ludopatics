@@ -1,5 +1,6 @@
 package com.example.ludopatics;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.RotateAnimation;
@@ -11,10 +12,10 @@ import java.util.Random;
 import android.util.Log;
 
 public class Gira extends AppCompatActivity {
-
     private ImageView ruletaImage;
     private Button btnGirar;
     private TextView textViewNumero;  // Declaramos el TextView
+    private MediaPlayer mediaPlayer; // Añadido para el sonido
 
     // Definimos los números de la ruleta en orden
     private final String[] casillasRuleta = {
@@ -37,6 +38,9 @@ public class Gira extends AppCompatActivity {
     }
 
     private void girarRuleta() {
+        // Reproducir el sonido cuando se gira la ruleta
+        reproducirSonido();
+
         Random random = new Random();
         int vueltas = 5; // Cantidad de vueltas completas
         int angle = random.nextInt(360) + (360 * vueltas); // Ángulo final
@@ -46,7 +50,7 @@ public class Gira extends AppCompatActivity {
                 RotateAnimation.RELATIVE_TO_SELF, 0.5f,
                 RotateAnimation.RELATIVE_TO_SELF, 0.5f);
 
-        rotateAnimation.setDuration(4000); // Duración más larga (4 segundos)
+        rotateAnimation.setDuration(10000); // Cambiado a 10 segundos para que coincida con el sonido
         rotateAnimation.setFillAfter(true); // Mantener la posición final
         rotateAnimation.setInterpolator(new AccelerateDecelerateInterpolator()); // Aceleración al inicio y desaceleración progresiva
 
@@ -71,6 +75,22 @@ public class Gira extends AppCompatActivity {
 
         // Iniciar la animación de la ruleta
         ruletaImage.startAnimation(rotateAnimation);
+    }
+
+    // Método para reproducir el sonido
+    private void reproducirSonido() {
+        // Detener y liberar reproductor anterior si existe
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+
+        // Crear y reproducir el nuevo sonido
+        mediaPlayer = MediaPlayer.create(this, R.raw.efecto);
+        mediaPlayer.start();
     }
 
     private void calcularCasilla(int angle) {
@@ -103,5 +123,18 @@ public class Gira extends AppCompatActivity {
 
         // Para depuración
         Log.d("Ruleta", "Ángulo: " + normalizedAngle + ", Índice: " + indice + ", Número: " + casillaFinal);
+    }
+
+    @Override
+    protected void onDestroy() {
+        // Liberar recursos al destruir la actividad
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+        super.onDestroy();
     }
 }
