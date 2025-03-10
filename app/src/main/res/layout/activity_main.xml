@@ -361,7 +361,7 @@
         android:id="@+id/btnGirar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Girar"
+        android:text="Spin"
         android:textSize="18sp"
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
