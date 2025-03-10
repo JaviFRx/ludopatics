@@ -10,6 +10,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,9 +26,21 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity {
     private ImageView ruletaImage;
     private Button btnGirar;
-    private TextView textViewNumero;  // Declaramos el TextView
-    private CirculosView circleView;  // Declaramos el CirculosView
-    private MediaPlayer mediaPlayer; // Añadido para el sonido
+    private TextView textViewNumero;
+    private CirculosView circleView;
+    private MediaPlayer mediaPlayer;
+
+    // Variables para manejar las apuestas
+    private TextView balanceValue;
+    private TextView betAmount;
+    private Button betButtonPlus1;
+    private Button betButtonPlus10;
+    private Button betButtonPlus100;
+    private Button placeBetButton;
+
+    // Variables para el seguimiento de la apuesta y el saldo
+    private int currentBalance = 1000; // Saldo inicial
+    private int currentBetAmount = 0; // Cantidad de apuesta actual
 
     // Definimos los números de la ruleta en orden
     private final String[] casillasRuleta = {
@@ -51,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main); // Asegúrate de que este sea el layout correcto
+        setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -61,14 +74,83 @@ public class MainActivity extends AppCompatActivity {
         // Inicializar las vistas
         ruletaImage = findViewById(R.id.ruletaImage);
         btnGirar = findViewById(R.id.btnGirar);
-        textViewNumero = findViewById(R.id.textViewNumero);  // Referencia al TextView
-        circleView = findViewById(R.id.circleView);  // Referencia al CirculosView
+        textViewNumero = findViewById(R.id.textViewNumero);
+        circleView = findViewById(R.id.circleView);
 
-        // Configurar el listener del botón
+        // Inicializar las vistas relacionadas con las apuestas
+        balanceValue = findViewById(R.id.balanceValue);
+        betAmount = findViewById(R.id.bet_amount);
+        betButtonPlus1 = findViewById(R.id.bet_button_plus);
+        betButtonPlus10 = findViewById(R.id.bet_button_plus10);
+        betButtonPlus100 = findViewById(R.id.bet_button_plus100);
+        placeBetButton = findViewById(R.id.place_bet_button);
+
+        // Configurar el saldo inicial
+        balanceValue.setText(String.valueOf(currentBalance));
+
+        // Configurar el texto inicial de la apuesta
+        updateBetAmountText();
+
+        // Configurar los listeners para los botones de apuesta
+        betButtonPlus1.setOnClickListener(view -> increaseBet(1));
+        betButtonPlus10.setOnClickListener(view -> increaseBet(10));
+        betButtonPlus100.setOnClickListener(view -> increaseBet(100));
+
+        // Configurar el listener para el botón de colocar apuesta
+        placeBetButton.setOnClickListener(view -> placeBet());
+
+        // Configurar el listener del botón de girar
         btnGirar.setOnClickListener(view -> girarRuleta());
     }
 
+    // Método para aumentar la apuesta
+    private void increaseBet(int amount) {
+        // Verificar si el usuario tiene suficiente saldo
+        if (currentBalance >= amount) {
+            // Restar del saldo
+            currentBalance -= amount;
+            // Aumentar la apuesta
+            currentBetAmount += amount;
+
+            // Actualizar las vistas
+            balanceValue.setText(String.valueOf(currentBalance));
+            updateBetAmountText();
+        } else {
+            // Mostrar mensaje si no hay suficiente saldo
+            Toast.makeText(this, "No tienes suficiente saldo", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Método para actualizar el texto de la cantidad de apuesta
+    private void updateBetAmountText() {
+        if (currentBetAmount > 0) {
+            betAmount.setText("Bet Amount: " + currentBetAmount);
+        } else {
+            betAmount.setText("Bet Amount: minimum 1");
+        }
+    }
+
+    // Método para colocar la apuesta
+    private void placeBet() {
+        if (currentBetAmount > 0) {
+            // Aquí iría la lógica para procesar la apuesta
+            // Por ahora, simplemente mostramos un mensaje
+            Toast.makeText(this, "Apuesta de " + currentBetAmount + " colocada", Toast.LENGTH_SHORT).show();
+
+            // También podríamos habilitar el botón de girar la ruleta
+            // y deshabilitar los botones de apuesta hasta que termine la ronda
+        } else {
+            Toast.makeText(this, "Debes hacer una apuesta primero", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void girarRuleta() {
+        // Verificar si hay una apuesta hecha
+        if (currentBetAmount <= 0) {
+            Toast.makeText(this, "Debes hacer una apuesta primero", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         // Reproducir el sonido cuando se gira la ruleta
         reproducirSonido();
 
@@ -89,13 +171,29 @@ public class MainActivity extends AppCompatActivity {
         rotateAnimation.setAnimationListener(new android.view.animation.Animation.AnimationListener() {
             @Override
             public void onAnimationStart(android.view.animation.Animation animation) {
-                // No necesitamos hacer nada cuando empieza la animación
+                // Deshabilitar botones durante la animación
+                betButtonPlus1.setEnabled(false);
+                betButtonPlus10.setEnabled(false);
+                betButtonPlus100.setEnabled(false);
+                placeBetButton.setEnabled(false);
+                btnGirar.setEnabled(false);
             }
 
             @Override
             public void onAnimationEnd(android.view.animation.Animation animation) {
                 // Calcular la casilla final después de que termine la animación
                 calcularCasilla(angle);
+
+                // Habilitar botones después de la animación
+                betButtonPlus1.setEnabled(true);
+                betButtonPlus10.setEnabled(true);
+                betButtonPlus100.setEnabled(true);
+                placeBetButton.setEnabled(true);
+                btnGirar.setEnabled(true);
+
+                // Reiniciar la apuesta actual
+                currentBetAmount = 0;
+                updateBetAmountText();
             }
 
             @Override
