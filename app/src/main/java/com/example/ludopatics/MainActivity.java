@@ -1,6 +1,7 @@
 package com.example.ludopatics;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,12 +17,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
     private ImageView ruletaImage;
     private Button btnGirar;
     private TextView textViewNumero;  // Declaramos el TextView
+    private CirculosView circleView;  // Declaramos el CirculosView
     private MediaPlayer mediaPlayer; // Añadido para el sonido
 
     // Definimos los números de la ruleta en orden
@@ -30,6 +35,17 @@ public class MainActivity extends AppCompatActivity {
             "29", "7", "28", "12", "35", "3", "26", "0", "32", "15", "19", "4",
             "21", "2", "25", "17", "34", "6", "27", "13", "36", "11", "30", "8", "23"
     };
+
+    // Conjuntos para definir los colores de los números
+    private final Set<String> numerosNegros = new HashSet<>(Arrays.asList(
+            "1", "3", "5", "7", "9", "12", "14", "16", "18", "19", "21", "23", "25", "27", "30", "32", "34", "36"
+    ));
+
+    private final Set<String> numerosRojos = new HashSet<>(Arrays.asList(
+            "2", "4", "6", "8", "10", "11", "13", "15", "17", "20", "22", "24", "26", "28", "29", "31", "33", "35"
+    ));
+
+    // El 0 es verde
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         ruletaImage = findViewById(R.id.ruletaImage);
         btnGirar = findViewById(R.id.btnGirar);
         textViewNumero = findViewById(R.id.textViewNumero);  // Referencia al TextView
+        circleView = findViewById(R.id.circleView);  // Referencia al CirculosView
 
         // Configurar el listener del botón
         btnGirar.setOnClickListener(view -> girarRuleta());
@@ -132,11 +149,26 @@ public class MainActivity extends AppCompatActivity {
         // Obtener el número de la casilla
         String casillaFinal = casillasRuleta[indice];
 
-        // Actualizar el TextView con el número final
+        // Determinar el color del número
+        int colorNumero;
+        if (casillaFinal.equals("0")) {
+            colorNumero = Color.GREEN;
+        } else if (numerosRojos.contains(casillaFinal)) {
+            colorNumero = Color.RED;
+        } else if (numerosNegros.contains(casillaFinal)) {
+            colorNumero = Color.BLACK;
+        } else {
+            colorNumero = Color.GRAY; // Por si hay algún error
+        }
+
+        // Actualizar el TextView con el número final y su color
         textViewNumero.setText("Número: " + casillaFinal);
+        // Actualizar el CirculosView con el color correspondiente
+        circleView.setCircleColor(colorNumero);
 
         // Para depuración
-        Log.d("Ruleta", "Ángulo: " + normalizedAngle + ", Índice: " + indice + ", Número: " + casillaFinal);
+        Log.d("Ruleta", "Ángulo: " + normalizedAngle + ", Índice: " + indice +
+                ", Número: " + casillaFinal);
     }
 
     @Override
