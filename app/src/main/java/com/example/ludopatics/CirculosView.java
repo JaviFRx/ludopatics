@@ -9,38 +9,47 @@ import android.view.View;
 
 public class CirculosView extends View {
 
-    private Paint redPaint;
-    private Paint blackPaint;
+    private Paint paint;
+    private int circleColor = Color.RED; // Color predeterminado
+
+    public CirculosView(Context context) {
+        super(context);
+        init();
+    }
 
     public CirculosView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
-        invalidate();
     }
 
+    public CirculosView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init();
+    }
 
     private void init() {
-        redPaint = new Paint();
-        redPaint.setColor(Color.RED);
-        redPaint.setAntiAlias(true);
-
-        blackPaint = new Paint();
-        blackPaint.setColor(Color.BLACK);
-        blackPaint.setAntiAlias(true);
+        paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setColor(circleColor);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        // Centrar el círculo en la vista
         float centerX = getWidth() / 2f;
         float centerY = getHeight() / 2f;
-        float radius = Math.min(centerX, centerY) * 0.4f;
+        float radius = Math.min(centerX, centerY) * 0.8f;
 
-        // Dibujar el círculo rojo (izquierda)
-        canvas.drawCircle(centerX - radius * 1.2f, centerY, radius, redPaint);
+        // Dibujar el círculo con el color actual
+        canvas.drawCircle(centerX, centerY, radius, paint);
+    }
 
-        // Dibujar el círculo negro (derecha)
-        canvas.drawCircle(centerX + radius * 1.2f, centerY, radius, blackPaint);
+    // Método para cambiar el color del círculo
+    public void setCircleColor(int color) {
+        this.circleColor = color;
+        paint.setColor(color);
+        invalidate(); // Vuelve a dibujar la vista
     }
 }

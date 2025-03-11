@@ -42,6 +42,7 @@
             android:label="@string/title_activity_ruleta"
             android:theme="@style/Theme.Ludopatics" />
 
+
     </application>
 
 </manifest>
