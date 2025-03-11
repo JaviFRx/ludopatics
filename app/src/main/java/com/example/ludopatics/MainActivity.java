@@ -201,15 +201,56 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void calcularCasilla(int angle) {
+        // Normalizar el ángulo a un valor entre 0-360
         int normalizedAngle = angle % 360;
+
+        // La ruleta tiene 37 casillas
         int numCasillas = casillasRuleta.length;
+
+        // Cada casilla tiene un ángulo de 360° / 37
         double anguloPorCasilla = 360.0 / numCasillas;
-        int indice = (numCasillas - 1 - (int) (normalizedAngle / anguloPorCasilla)) % numCasillas;
+
+        // Ajustar el ángulo para tener en cuenta la posición de inicio
+        int offsetAngulo = 0; // Ajusta este valor según sea necesario
+
+        // Calcular el índice con ajuste de dirección
+        int indice = numCasillas - 1 - (int)(((normalizedAngle + offsetAngulo) % 360) / anguloPorCasilla);
+
+        // Ajustar por el desplazamiento de una posición
+        indice = (indice + 1) % numCasillas;
+
+        // Asegurar que el índice esté dentro del rango
+        indice = (indice + numCasillas) % numCasillas;
+
+        // Obtener el número de la casilla
         String casillaFinal = casillasRuleta[indice];
 
+        // Determinar el color del número
+        int colorNumero;
+        if (casillaFinal.equals("0")) {
+            resColor = "verde";
+            colorNumero = Color.GREEN;
+        } else if (numerosRojos.contains(casillaFinal)) {
+            resColor = "rojo";
+            colorNumero = Color.RED;
+        } else if (numerosNegros.contains(casillaFinal)) {
+            resColor = "negro";
+            colorNumero = Color.BLACK;
+        } else {
+            resColor = "gris";
+            colorNumero = Color.GRAY; // Por si hay algún error
+        }
+
+        // Actualizar el TextView con el número final y su color
         textViewNumero.setText("Número: " + casillaFinal);
-        circleView.setCircleColor(Color.RED);
+        // Actualizar el CirculosView con el color correspondiente
+        circleView.setCircleColor(colorNumero);
+
+        // Para depuración
+        Log.d("Ruleta", "Ángulo: " + normalizedAngle + ", Índice: " + indice +
+                ", Número: " + casillaFinal);
     }
+
 
     @Override
     protected void onDestroy() {
