@@ -11,12 +11,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.appcompat.app.AlertDialog;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -37,10 +37,14 @@ public class MainActivity extends AppCompatActivity {
     private Button betButtonPlus10;
     private Button betButtonPlus100;
     private Button placeBetButton;
+    private Button numButton;
 
     // Variables para el seguimiento de la apuesta y el saldo
     private int currentBalance = 1000; // Saldo inicial
     private int currentBetAmount = 0; // Cantidad de apuesta actual
+
+    // Apuesta NUM x4
+    private String numeroSeleccionado = null;
 
     // Definimos los números de la ruleta en orden
     private final String[] casillasRuleta = {
@@ -85,6 +89,9 @@ public class MainActivity extends AppCompatActivity {
         betButtonPlus100 = findViewById(R.id.bet_button_plus100);
         placeBetButton = findViewById(R.id.place_bet_button);
 
+        // Inicializar el botón NUM X4
+        numButton = findViewById(R.id.num_button);
+
         // Configurar el saldo inicial
         balanceValue.setText(String.valueOf(currentBalance));
 
@@ -101,6 +108,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Configurar el listener del botón de girar
         btnGirar.setOnClickListener(view -> girarRuleta());
+
+        // Listener para el botón NUM X4
+        numButton.setOnClickListener(view -> showNumberPickerDialog());
     }
 
     // Método para aumentar la apuesta
@@ -133,15 +143,34 @@ public class MainActivity extends AppCompatActivity {
     // Método para colocar la apuesta
     private void placeBet() {
         if (currentBetAmount > 0) {
-            // Aquí iría la lógica para procesar la apuesta
-            // Por ahora, simplemente mostramos un mensaje
-            Toast.makeText(this, "Apuesta de " + currentBetAmount + " colocada", Toast.LENGTH_SHORT).show();
+            if (numeroSeleccionado != null) {
+                // Aquí iría la lógica para procesar la apuesta
+                // Por ahora, simplemente mostramos un mensaje
+                Toast.makeText(this, "Apuesta de " + currentBetAmount + " colocada al número" + numeroSeleccionado, Toast.LENGTH_SHORT).show();
 
-            // También podríamos habilitar el botón de girar la ruleta
-            // y deshabilitar los botones de apuesta hasta que termine la ronda
+                // También podríamos habilitar el botón de girar la ruleta
+                // y deshabilitar los botones de apuesta hasta que termine la ronda
+            } else {
+                Toast.makeText(this, "Apuesta colocada (ODD/EVEN/COLOR)", Toast.LENGTH_SHORT).show();
+            }
         } else {
             Toast.makeText(this, "Debes hacer una apuesta primero", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void showNumberPickerDialog() {
+        final String[] numeros = new String[37];
+        for (int i = 0; i <= 36; i++) {
+            numeros[i] = String.valueOf(i);
+        }
+        new AlertDialog.Builder(this)
+                .setTitle("Selecciona un número para apostar")
+                .setItems(numeros, (dialog, which) -> {
+                    numeroSeleccionado = numeros[which];
+                    Toast.makeText(this, "Has seleccionado el número: " + numeroSeleccionado, Toast.LENGTH_SHORT).show();
+                })
+                .setNegativeButton("Cancelar", null)
+                .show();
     }
 
     private void girarRuleta() {
@@ -194,6 +223,9 @@ public class MainActivity extends AppCompatActivity {
                 // Reiniciar la apuesta actual
                 currentBetAmount = 0;
                 updateBetAmountText();
+
+                // Reiniciar la selección de número después de girar
+                numeroSeleccionado = null;
             }
 
             @Override
@@ -236,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
         int offsetAngulo = 0; // Ajusta este valor según sea necesario
 
         // Calcular el índice con ajuste de dirección
-        int indice = numCasillas - 1 - (int)(((normalizedAngle + offsetAngulo) % 360) / anguloPorCasilla);
+        int indice = numCasillas - 1 - (int) (((normalizedAngle + offsetAngulo) % 360) / anguloPorCasilla);
 
         // Ajustar por el desplazamiento de una posición
         indice = (indice + 1) % numCasillas;
@@ -267,6 +299,15 @@ public class MainActivity extends AppCompatActivity {
         // Para depuración
         Log.d("Ruleta", "Ángulo: " + normalizedAngle + ", Índice: " + indice +
                 ", Número: " + casillaFinal);
+
+        //Revisión si ha acertado con NUM x4
+        if (numeroSeleccionado != null && numeroSeleccionado.equals(casillaFinal)) {
+            int ganancia = currentBetAmount * 4;
+            currentBalance += ganancia;
+            balanceValue.setText(String.valueOf(currentBalance));
+
+            Toast.makeText(this, "Felicidades! Ganaste " + ganancia + " DD apostando al número " + casillaFinal, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
