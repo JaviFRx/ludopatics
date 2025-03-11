@@ -392,4 +392,18 @@
         android:layout_marginStart="8dp"
         app:layout_constraintTop_toBottomOf="@id/textViewNumero"
         app:layout_constraintStart_toStartOf="@id/textViewNumero" />
+    <TextView
+        android:id="@+id/apuesta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Apuesta: Ninguna"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:gravity="center"
+        android:layout_marginTop="40dp"
+        app:layout_constraintTop_toBottomOf="@id/circleView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/circleView"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

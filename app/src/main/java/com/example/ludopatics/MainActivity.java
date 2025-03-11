@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.View;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,7 +26,10 @@ import java.util.Random;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
+    private String selectedColor = ""; // Variable para almacenar el color apostado
+    private String resColor="";
     private ImageView ruletaImage;
+    private TextView apuestaTextView;
     private Button btnGirar;
     private TextView textViewNumero;
     private CirculosView circleView;
@@ -76,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         btnGirar = findViewById(R.id.btnGirar);
         textViewNumero = findViewById(R.id.textViewNumero);
         circleView = findViewById(R.id.circleView);
-
+        apuestaTextView = findViewById(R.id.apuesta);
         // Inicializar las vistas relacionadas con las apuestas
         balanceValue = findViewById(R.id.balanceValue);
         betAmount = findViewById(R.id.bet_amount);
@@ -96,12 +101,41 @@ public class MainActivity extends AppCompatActivity {
         betButtonPlus10.setOnClickListener(view -> increaseBet(10));
         betButtonPlus100.setOnClickListener(view -> increaseBet(100));
 
+        // Referencias a los botones
+        Button redButton = findViewById(R.id.red_button);
+        Button greenButton = findViewById(R.id.green_button);
+        Button blackButton = findViewById(R.id.black_button);
         // Configurar el listener para el botón de colocar apuesta
         placeBetButton.setOnClickListener(view -> placeBet());
 
         // Configurar el listener del botón de girar
         btnGirar.setOnClickListener(view -> girarRuleta());
+        // Configuración de los listeners
+        redButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedColor = "rojo";  // Guardar el color apostado
+                apuestaTextView.setText("Se ha apostado al color rojo");
+            }
+        });
+
+        greenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedColor ="verde";
+                apuestaTextView.setText("Se ha apostado al color verde");
+            }
+        });
+
+        blackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectedColor="negro";
+                apuestaTextView.setText("Se ha apostado al color negro");
+            }
+        });
     }
+
 
     // Método para aumentar la apuesta
     private void increaseBet(int amount) {
@@ -183,6 +217,22 @@ public class MainActivity extends AppCompatActivity {
             public void onAnimationEnd(android.view.animation.Animation animation) {
                 // Calcular la casilla final después de que termine la animación
                 calcularCasilla(angle);
+                // Verificar si el color apostado coincide con el color resultado
+                if (selectedColor.equals(resColor)) {
+                    if (resColor.equals("verde")) {
+                        // Si el color es verde, multiplica la apuesta por 14
+                        currentBalance += currentBetAmount * 14;
+                        balanceValue.setText(String.valueOf(currentBalance));
+                        apuestaTextView.setText("¡Ganaste! Saldo actualizado. Multiplicaste por 14.");
+                    } else {
+                        // Si el color es rojo o negro, suma la apuesta al saldo
+                        currentBalance += currentBetAmount * 2;
+                        balanceValue.setText(String.valueOf(currentBalance));
+                        apuestaTextView.setText("¡Ganaste! Saldo actualizado.");
+                    }
+                } else {
+                    apuestaTextView.setText("Perdiste. Inténtalo de nuevo.");
+                }
 
                 // Habilitar botones después de la animación
                 betButtonPlus1.setEnabled(true);
@@ -250,12 +300,16 @@ public class MainActivity extends AppCompatActivity {
         // Determinar el color del número
         int colorNumero;
         if (casillaFinal.equals("0")) {
+            resColor = "verde";
             colorNumero = Color.GREEN;
         } else if (numerosRojos.contains(casillaFinal)) {
+            resColor = "rojo";
             colorNumero = Color.RED;
         } else if (numerosNegros.contains(casillaFinal)) {
+            resColor = "negro";
             colorNumero = Color.BLACK;
         } else {
+            resColor = "gris";
             colorNumero = Color.GRAY; // Por si hay algún error
         }
 
