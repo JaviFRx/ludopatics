@@ -11,14 +11,23 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+<<<<<<< HEAD
 import android.view.View;
 import android.view.View;
 
+=======
+>>>>>>> Aleix
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.appcompat.app.AlertDialog;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -26,10 +35,14 @@ import java.util.Random;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
+<<<<<<< HEAD
     private String selectedColor = ""; // Variable para almacenar el color apostado
     private String resColor="";
     private ImageView ruletaImage;
     private TextView apuestaTextView;
+=======
+    private ImageView ruletaImage;
+>>>>>>> Aleix
     private Button btnGirar;
     private TextView textViewNumero;
     private CirculosView circleView;
@@ -42,11 +55,21 @@ public class MainActivity extends AppCompatActivity {
     private Button betButtonPlus10;
     private Button betButtonPlus100;
     private Button placeBetButton;
+<<<<<<< HEAD
+=======
+    private Button numButton;
+>>>>>>> Aleix
 
     // Variables para el seguimiento de la apuesta y el saldo
     private int currentBalance = 1000; // Saldo inicial
     private int currentBetAmount = 0; // Cantidad de apuesta actual
 
+<<<<<<< HEAD
+=======
+    // Apuesta NUM x4
+    private String numeroSeleccionado = null;
+
+>>>>>>> Aleix
     // Definimos los números de la ruleta en orden
     private final String[] casillasRuleta = {
             "10", "5", "24", "16", "33", "1", "20", "14", "31", "9", "22", "18",
@@ -81,7 +104,11 @@ public class MainActivity extends AppCompatActivity {
         btnGirar = findViewById(R.id.btnGirar);
         textViewNumero = findViewById(R.id.textViewNumero);
         circleView = findViewById(R.id.circleView);
+<<<<<<< HEAD
         apuestaTextView = findViewById(R.id.apuesta);
+=======
+
+>>>>>>> Aleix
         // Inicializar las vistas relacionadas con las apuestas
         balanceValue = findViewById(R.id.balanceValue);
         betAmount = findViewById(R.id.bet_amount);
@@ -90,6 +117,12 @@ public class MainActivity extends AppCompatActivity {
         betButtonPlus100 = findViewById(R.id.bet_button_plus100);
         placeBetButton = findViewById(R.id.place_bet_button);
 
+<<<<<<< HEAD
+=======
+        // Inicializar el botón NUM X4
+        numButton = findViewById(R.id.num_button);
+
+>>>>>>> Aleix
         // Configurar el saldo inicial
         balanceValue.setText(String.valueOf(currentBalance));
 
@@ -101,15 +134,19 @@ public class MainActivity extends AppCompatActivity {
         betButtonPlus10.setOnClickListener(view -> increaseBet(10));
         betButtonPlus100.setOnClickListener(view -> increaseBet(100));
 
+<<<<<<< HEAD
         // Referencias a los botones
         Button redButton = findViewById(R.id.red_button);
         Button greenButton = findViewById(R.id.green_button);
         Button blackButton = findViewById(R.id.black_button);
+=======
+>>>>>>> Aleix
         // Configurar el listener para el botón de colocar apuesta
         placeBetButton.setOnClickListener(view -> placeBet());
 
         // Configurar el listener del botón de girar
         btnGirar.setOnClickListener(view -> girarRuleta());
+<<<<<<< HEAD
         // Configuración de los listeners
         redButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,6 +174,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+=======
+
+        // Listener para el botón NUM X4
+        numButton.setOnClickListener(view -> showNumberPickerDialog());
+    }
+
+>>>>>>> Aleix
     // Método para aumentar la apuesta
     private void increaseBet(int amount) {
         // Verificar si el usuario tiene suficiente saldo
@@ -167,17 +211,48 @@ public class MainActivity extends AppCompatActivity {
     // Método para colocar la apuesta
     private void placeBet() {
         if (currentBetAmount > 0) {
+<<<<<<< HEAD
             // Aquí iría la lógica para procesar la apuesta
             // Por ahora, simplemente mostramos un mensaje
             Toast.makeText(this, "Apuesta de " + currentBetAmount + " colocada", Toast.LENGTH_SHORT).show();
 
             // También podríamos habilitar el botón de girar la ruleta
             // y deshabilitar los botones de apuesta hasta que termine la ronda
+=======
+            if (numeroSeleccionado != null) {
+                // Aquí iría la lógica para procesar la apuesta
+                // Por ahora, simplemente mostramos un mensaje
+                Toast.makeText(this, "Apuesta de " + currentBetAmount + " colocada al número" + numeroSeleccionado, Toast.LENGTH_SHORT).show();
+
+                // También podríamos habilitar el botón de girar la ruleta
+                // y deshabilitar los botones de apuesta hasta que termine la ronda
+            } else {
+                Toast.makeText(this, "Apuesta colocada (ODD/EVEN/COLOR)", Toast.LENGTH_SHORT).show();
+            }
+>>>>>>> Aleix
         } else {
             Toast.makeText(this, "Debes hacer una apuesta primero", Toast.LENGTH_SHORT).show();
         }
     }
 
+<<<<<<< HEAD
+=======
+    private void showNumberPickerDialog() {
+        final String[] numeros = new String[37];
+        for (int i = 0; i <= 36; i++) {
+            numeros[i] = String.valueOf(i);
+        }
+        new AlertDialog.Builder(this)
+                .setTitle("Selecciona un número para apostar")
+                .setItems(numeros, (dialog, which) -> {
+                    numeroSeleccionado = numeros[which];
+                    Toast.makeText(this, "Has seleccionado el número: " + numeroSeleccionado, Toast.LENGTH_SHORT).show();
+                })
+                .setNegativeButton("Cancelar", null)
+                .show();
+    }
+
+>>>>>>> Aleix
     private void girarRuleta() {
         // Verificar si hay una apuesta hecha
         if (currentBetAmount <= 0) {
@@ -217,6 +292,7 @@ public class MainActivity extends AppCompatActivity {
             public void onAnimationEnd(android.view.animation.Animation animation) {
                 // Calcular la casilla final después de que termine la animación
                 calcularCasilla(angle);
+<<<<<<< HEAD
                 // Verificar si el color apostado coincide con el color resultado
                 if (selectedColor.equals(resColor)) {
                     if (resColor.equals("verde")) {
@@ -233,6 +309,8 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     apuestaTextView.setText("Perdiste. Inténtalo de nuevo.");
                 }
+=======
+>>>>>>> Aleix
 
                 // Habilitar botones después de la animación
                 betButtonPlus1.setEnabled(true);
@@ -244,6 +322,12 @@ public class MainActivity extends AppCompatActivity {
                 // Reiniciar la apuesta actual
                 currentBetAmount = 0;
                 updateBetAmountText();
+<<<<<<< HEAD
+=======
+
+                // Reiniciar la selección de número después de girar
+                numeroSeleccionado = null;
+>>>>>>> Aleix
             }
 
             @Override
@@ -286,7 +370,11 @@ public class MainActivity extends AppCompatActivity {
         int offsetAngulo = 0; // Ajusta este valor según sea necesario
 
         // Calcular el índice con ajuste de dirección
+<<<<<<< HEAD
         int indice = numCasillas - 1 - (int)(((normalizedAngle + offsetAngulo) % 360) / anguloPorCasilla);
+=======
+        int indice = numCasillas - 1 - (int) (((normalizedAngle + offsetAngulo) % 360) / anguloPorCasilla);
+>>>>>>> Aleix
 
         // Ajustar por el desplazamiento de una posición
         indice = (indice + 1) % numCasillas;
@@ -300,6 +388,7 @@ public class MainActivity extends AppCompatActivity {
         // Determinar el color del número
         int colorNumero;
         if (casillaFinal.equals("0")) {
+<<<<<<< HEAD
             resColor = "verde";
             colorNumero = Color.GREEN;
         } else if (numerosRojos.contains(casillaFinal)) {
@@ -310,6 +399,14 @@ public class MainActivity extends AppCompatActivity {
             colorNumero = Color.BLACK;
         } else {
             resColor = "gris";
+=======
+            colorNumero = Color.GREEN;
+        } else if (numerosRojos.contains(casillaFinal)) {
+            colorNumero = Color.RED;
+        } else if (numerosNegros.contains(casillaFinal)) {
+            colorNumero = Color.BLACK;
+        } else {
+>>>>>>> Aleix
             colorNumero = Color.GRAY; // Por si hay algún error
         }
 
@@ -321,6 +418,18 @@ public class MainActivity extends AppCompatActivity {
         // Para depuración
         Log.d("Ruleta", "Ángulo: " + normalizedAngle + ", Índice: " + indice +
                 ", Número: " + casillaFinal);
+<<<<<<< HEAD
+=======
+
+        //Revisión si ha acertado con NUM x4
+        if (numeroSeleccionado != null && numeroSeleccionado.equals(casillaFinal)) {
+            int ganancia = currentBetAmount * 4;
+            currentBalance += ganancia;
+            balanceValue.setText(String.valueOf(currentBalance));
+
+            Toast.makeText(this, "Felicidades! Ganaste " + ganancia + " DD apostando al número " + casillaFinal, Toast.LENGTH_SHORT).show();
+        }
+>>>>>>> Aleix
     }
 
     @Override

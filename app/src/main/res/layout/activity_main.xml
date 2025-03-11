@@ -249,7 +249,7 @@
             android:id="@+id/odd_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="10dp"
+            android:layout_marginHorizontal="6dp"
             android:layout_weight="1"
             android:backgroundTint="@android:color/white"
             android:text="ODD\nX2"
@@ -258,10 +258,23 @@
             android:textStyle="bold" />
 
         <Button
+            android:id="@+id/num_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="6dp"
+            android:layout_weight="1"
+            android:backgroundTint="@android:color/holo_blue_light"
+            android:text="NUM\nX4"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
             android:id="@+id/even_button"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="10dp"
+            android:layout_marginHorizontal="6dp"
+>>>>>>> Aleix
             android:layout_weight="1"
             android:backgroundTint="@android:color/white"
             android:text="EVEN\nX2"
@@ -276,6 +289,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
+        android:gravity="center"
         android:orientation="horizontal"
         android:padding="16dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -286,6 +300,9 @@
             android:id="@+id/bet_button_plus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/white"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
             android:text="+1" />
 
         <Button
@@ -293,6 +310,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:backgroundTint="@android:color/white"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
             android:text="+10" />
 
         <Button
@@ -300,6 +320,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:backgroundTint="@android:color/white"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
             android:text="+100" />
     </LinearLayout>
 
@@ -392,6 +415,7 @@
         android:layout_marginStart="8dp"
         app:layout_constraintTop_toBottomOf="@id/textViewNumero"
         app:layout_constraintStart_toStartOf="@id/textViewNumero" />
+<<<<<<< HEAD
     <TextView
         android:id="@+id/apuesta"
         android:layout_width="wrap_content"
@@ -406,4 +430,6 @@
         app:layout_constraintEnd_toStartOf="@id/circleView"/>
 
 
+=======
+>>>>>>> Aleix
 </androidx.constraintlayout.widget.ConstraintLayout>
