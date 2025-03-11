@@ -11,12 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-<<<<<<< HEAD
 import android.view.View;
-import android.view.View;
-
-=======
->>>>>>> Aleix
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -29,20 +24,12 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
-
 public class MainActivity extends AppCompatActivity {
-<<<<<<< HEAD
     private String selectedColor = ""; // Variable para almacenar el color apostado
-    private String resColor="";
+    private String resColor = "";
     private ImageView ruletaImage;
     private TextView apuestaTextView;
-=======
-    private ImageView ruletaImage;
->>>>>>> Aleix
+
     private Button btnGirar;
     private TextView textViewNumero;
     private CirculosView circleView;
@@ -55,21 +42,15 @@ public class MainActivity extends AppCompatActivity {
     private Button betButtonPlus10;
     private Button betButtonPlus100;
     private Button placeBetButton;
-<<<<<<< HEAD
-=======
     private Button numButton;
->>>>>>> Aleix
 
     // Variables para el seguimiento de la apuesta y el saldo
     private int currentBalance = 1000; // Saldo inicial
     private int currentBetAmount = 0; // Cantidad de apuesta actual
 
-<<<<<<< HEAD
-=======
     // Apuesta NUM x4
     private String numeroSeleccionado = null;
 
->>>>>>> Aleix
     // Definimos los números de la ruleta en orden
     private final String[] casillasRuleta = {
             "10", "5", "24", "16", "33", "1", "20", "14", "31", "9", "22", "18",
@@ -85,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
     private final Set<String> numerosRojos = new HashSet<>(Arrays.asList(
             "2", "4", "6", "8", "10", "11", "13", "15", "17", "20", "22", "24", "26", "28", "29", "31", "33", "35"
     ));
-
     // El 0 es verde
 
     @Override
@@ -104,11 +84,8 @@ public class MainActivity extends AppCompatActivity {
         btnGirar = findViewById(R.id.btnGirar);
         textViewNumero = findViewById(R.id.textViewNumero);
         circleView = findViewById(R.id.circleView);
-<<<<<<< HEAD
         apuestaTextView = findViewById(R.id.apuesta);
-=======
 
->>>>>>> Aleix
         // Inicializar las vistas relacionadas con las apuestas
         balanceValue = findViewById(R.id.balanceValue);
         betAmount = findViewById(R.id.bet_amount);
@@ -117,12 +94,9 @@ public class MainActivity extends AppCompatActivity {
         betButtonPlus100 = findViewById(R.id.bet_button_plus100);
         placeBetButton = findViewById(R.id.place_bet_button);
 
-<<<<<<< HEAD
-=======
         // Inicializar el botón NUM X4
         numButton = findViewById(R.id.num_button);
 
->>>>>>> Aleix
         // Configurar el saldo inicial
         balanceValue.setText(String.valueOf(currentBalance));
 
@@ -134,20 +108,18 @@ public class MainActivity extends AppCompatActivity {
         betButtonPlus10.setOnClickListener(view -> increaseBet(10));
         betButtonPlus100.setOnClickListener(view -> increaseBet(100));
 
-<<<<<<< HEAD
-        // Referencias a los botones
+        // Referencias a los botones de color
         Button redButton = findViewById(R.id.red_button);
         Button greenButton = findViewById(R.id.green_button);
         Button blackButton = findViewById(R.id.black_button);
-=======
->>>>>>> Aleix
+
         // Configurar el listener para el botón de colocar apuesta
         placeBetButton.setOnClickListener(view -> placeBet());
 
         // Configurar el listener del botón de girar
         btnGirar.setOnClickListener(view -> girarRuleta());
-<<<<<<< HEAD
-        // Configuración de los listeners
+
+        // Configuración de los listeners para los botones de color
         redButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         greenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedColor ="verde";
+                selectedColor = "verde";
                 apuestaTextView.setText("Se ha apostado al color verde");
             }
         });
@@ -167,20 +139,15 @@ public class MainActivity extends AppCompatActivity {
         blackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedColor="negro";
+                selectedColor = "negro";
                 apuestaTextView.setText("Se ha apostado al color negro");
             }
         });
-    }
-
-
-=======
 
         // Listener para el botón NUM X4
         numButton.setOnClickListener(view -> showNumberPickerDialog());
     }
 
->>>>>>> Aleix
     // Método para aumentar la apuesta
     private void increaseBet(int amount) {
         // Verificar si el usuario tiene suficiente saldo
@@ -211,32 +178,19 @@ public class MainActivity extends AppCompatActivity {
     // Método para colocar la apuesta
     private void placeBet() {
         if (currentBetAmount > 0) {
-<<<<<<< HEAD
             // Aquí iría la lógica para procesar la apuesta
-            // Por ahora, simplemente mostramos un mensaje
             Toast.makeText(this, "Apuesta de " + currentBetAmount + " colocada", Toast.LENGTH_SHORT).show();
 
-            // También podríamos habilitar el botón de girar la ruleta
-            // y deshabilitar los botones de apuesta hasta que termine la ronda
-=======
             if (numeroSeleccionado != null) {
-                // Aquí iría la lógica para procesar la apuesta
-                // Por ahora, simplemente mostramos un mensaje
-                Toast.makeText(this, "Apuesta de " + currentBetAmount + " colocada al número" + numeroSeleccionado, Toast.LENGTH_SHORT).show();
-
-                // También podríamos habilitar el botón de girar la ruleta
-                // y deshabilitar los botones de apuesta hasta que termine la ronda
+                Toast.makeText(this, "Apuesta de " + currentBetAmount + " colocada al número " + numeroSeleccionado, Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Apuesta colocada (ODD/EVEN/COLOR)", Toast.LENGTH_SHORT).show();
             }
->>>>>>> Aleix
         } else {
             Toast.makeText(this, "Debes hacer una apuesta primero", Toast.LENGTH_SHORT).show();
         }
     }
 
-<<<<<<< HEAD
-=======
     private void showNumberPickerDialog() {
         final String[] numeros = new String[37];
         for (int i = 0; i <= 36; i++) {
@@ -252,7 +206,6 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
->>>>>>> Aleix
     private void girarRuleta() {
         // Verificar si hay una apuesta hecha
         if (currentBetAmount <= 0) {
@@ -271,12 +224,10 @@ public class MainActivity extends AppCompatActivity {
         RotateAnimation rotateAnimation = new RotateAnimation(0, angle,
                 RotateAnimation.RELATIVE_TO_SELF, 0.5f,
                 RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+        rotateAnimation.setDuration(10000); // 10 segundos para que coincida con el sonido
+        rotateAnimation.setFillAfter(true);
+        rotateAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
 
-        rotateAnimation.setDuration(10000); // Cambiado a 10 segundos para que coincida con el sonido
-        rotateAnimation.setFillAfter(true); // Mantener la posición final
-        rotateAnimation.setInterpolator(new AccelerateDecelerateInterpolator()); // Aceleración al inicio y desaceleración progresiva
-
-        // Establecer un listener para cuando la animación termine
         rotateAnimation.setAnimationListener(new android.view.animation.Animation.AnimationListener() {
             @Override
             public void onAnimationStart(android.view.animation.Animation animation) {
@@ -290,158 +241,57 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(android.view.animation.Animation animation) {
-                // Calcular la casilla final después de que termine la animación
-                calcularCasilla(angle);
-<<<<<<< HEAD
-                // Verificar si el color apostado coincide con el color resultado
-                if (selectedColor.equals(resColor)) {
-                    if (resColor.equals("verde")) {
-                        // Si el color es verde, multiplica la apuesta por 14
-                        currentBalance += currentBetAmount * 14;
-                        balanceValue.setText(String.valueOf(currentBalance));
-                        apuestaTextView.setText("¡Ganaste! Saldo actualizado. Multiplicaste por 14.");
+                // Calcular la casilla final
+                private void calcularCasilla(int angle) {
+                    // Normalizar el ángulo a un valor entre 0-360
+                    int normalizedAngle = angle % 360;
+
+                    // La ruleta tiene 37 casillas
+                    int numCasillas = casillasRuleta.length;
+
+                    // Cada casilla tiene un ángulo de 360° / 37
+                    double anguloPorCasilla = 360.0 / numCasillas;
+
+                    // Ajustar el ángulo para tener en cuenta la posición de inicio
+                    int offsetAngulo = 0; // Ajusta este valor según sea necesario
+
+                    // Calcular el índice con ajuste de dirección
+                    int indice = numCasillas - 1 - (int) (((normalizedAngle + offsetAngulo) % 360) / anguloPorCasilla);
+
+                    // Ajustar por el desplazamiento de una posición
+                    indice = (indice + 1) % numCasillas;
+
+                    // Asegurar que el índice esté dentro del rango
+                    indice = (indice + numCasillas) % numCasillas;
+
+                    // Obtener el número de la casilla
+                    String casillaFinal = casillasRuleta[indice];
+
+                    // Determinar el color del número
+                    int colorNumero;
+                    if (casillaFinal.equals("0")) {
+                        colorNumero = Color.GREEN;
+                    } else if (numerosRojos.contains(casillaFinal)) {
+                        colorNumero = Color.RED;
+                    } else if (numerosNegros.contains(casillaFinal)) {
+                        colorNumero = Color.BLACK;
                     } else {
-                        // Si el color es rojo o negro, suma la apuesta al saldo
-                        currentBalance += currentBetAmount * 2;
-                        balanceValue.setText(String.valueOf(currentBalance));
-                        apuestaTextView.setText("¡Ganaste! Saldo actualizado.");
+                        colorNumero = Color.GRAY; // Por si hay algún error
                     }
-                } else {
-                    apuestaTextView.setText("Perdiste. Inténtalo de nuevo.");
+
+                    // Actualizar el TextView con el número final y su color
+                    textViewNumero.setText("Número: " + casillaFinal);
+                    circleView.setCircleColor(colorNumero);
+
+                    // Para depuración
+                    Log.d("Ruleta", "Ángulo: " + normalizedAngle + ", Índice: " + indice + ", Número: " + casillaFinal);
+
+                    // Revisión si ha acertado con NUM x4
+                    if (numeroSeleccionado != null && numeroSeleccionado.equals(casillaFinal)) {
+                        int ganancia = currentBetAmount * 4;
+                        currentBalance += ganancia;
+                        balanceValue.setText(String.valueOf(currentBalance));
+
+                        Toast.makeText(this, "Felicidades! Ganaste " + ganancia + " DD apostando al número " + casillaFinal, Toast.LENGTH_SHORT).show();
+                    }
                 }
-=======
->>>>>>> Aleix
-
-                // Habilitar botones después de la animación
-                betButtonPlus1.setEnabled(true);
-                betButtonPlus10.setEnabled(true);
-                betButtonPlus100.setEnabled(true);
-                placeBetButton.setEnabled(true);
-                btnGirar.setEnabled(true);
-
-                // Reiniciar la apuesta actual
-                currentBetAmount = 0;
-                updateBetAmountText();
-<<<<<<< HEAD
-=======
-
-                // Reiniciar la selección de número después de girar
-                numeroSeleccionado = null;
->>>>>>> Aleix
-            }
-
-            @Override
-            public void onAnimationRepeat(android.view.animation.Animation animation) {
-                // No necesitamos hacer nada cuando la animación se repite
-            }
-        });
-
-        // Iniciar la animación de la ruleta
-        ruletaImage.startAnimation(rotateAnimation);
-    }
-
-    // Método para reproducir el sonido
-    private void reproducirSonido() {
-        // Detener y liberar reproductor anterior si existe
-        if (mediaPlayer != null) {
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.stop();
-            }
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
-
-        // Crear y reproducir el nuevo sonido
-        mediaPlayer = MediaPlayer.create(this, R.raw.efecto);
-        mediaPlayer.start();
-    }
-
-    private void calcularCasilla(int angle) {
-        // Normalizar el ángulo a un valor entre 0-360
-        int normalizedAngle = angle % 360;
-
-        // La ruleta tiene 37 casillas
-        int numCasillas = casillasRuleta.length;
-
-        // Cada casilla tiene un ángulo de 360° / 37
-        double anguloPorCasilla = 360.0 / numCasillas;
-
-        // Ajustar el ángulo para tener en cuenta la posición de inicio
-        int offsetAngulo = 0; // Ajusta este valor según sea necesario
-
-        // Calcular el índice con ajuste de dirección
-<<<<<<< HEAD
-        int indice = numCasillas - 1 - (int)(((normalizedAngle + offsetAngulo) % 360) / anguloPorCasilla);
-=======
-        int indice = numCasillas - 1 - (int) (((normalizedAngle + offsetAngulo) % 360) / anguloPorCasilla);
->>>>>>> Aleix
-
-        // Ajustar por el desplazamiento de una posición
-        indice = (indice + 1) % numCasillas;
-
-        // Asegurar que el índice esté dentro del rango
-        indice = (indice + numCasillas) % numCasillas;
-
-        // Obtener el número de la casilla
-        String casillaFinal = casillasRuleta[indice];
-
-        // Determinar el color del número
-        int colorNumero;
-        if (casillaFinal.equals("0")) {
-<<<<<<< HEAD
-            resColor = "verde";
-            colorNumero = Color.GREEN;
-        } else if (numerosRojos.contains(casillaFinal)) {
-            resColor = "rojo";
-            colorNumero = Color.RED;
-        } else if (numerosNegros.contains(casillaFinal)) {
-            resColor = "negro";
-            colorNumero = Color.BLACK;
-        } else {
-            resColor = "gris";
-=======
-            colorNumero = Color.GREEN;
-        } else if (numerosRojos.contains(casillaFinal)) {
-            colorNumero = Color.RED;
-        } else if (numerosNegros.contains(casillaFinal)) {
-            colorNumero = Color.BLACK;
-        } else {
->>>>>>> Aleix
-            colorNumero = Color.GRAY; // Por si hay algún error
-        }
-
-        // Actualizar el TextView con el número final y su color
-        textViewNumero.setText("Número: " + casillaFinal);
-        // Actualizar el CirculosView con el color correspondiente
-        circleView.setCircleColor(colorNumero);
-
-        // Para depuración
-        Log.d("Ruleta", "Ángulo: " + normalizedAngle + ", Índice: " + indice +
-                ", Número: " + casillaFinal);
-<<<<<<< HEAD
-=======
-
-        //Revisión si ha acertado con NUM x4
-        if (numeroSeleccionado != null && numeroSeleccionado.equals(casillaFinal)) {
-            int ganancia = currentBetAmount * 4;
-            currentBalance += ganancia;
-            balanceValue.setText(String.valueOf(currentBalance));
-
-            Toast.makeText(this, "Felicidades! Ganaste " + ganancia + " DD apostando al número " + casillaFinal, Toast.LENGTH_SHORT).show();
-        }
->>>>>>> Aleix
-    }
-
-    @Override
-    protected void onDestroy() {
-        // Liberar recursos al destruir la actividad
-        if (mediaPlayer != null) {
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.stop();
-            }
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
-        super.onDestroy();
-    }
-}
