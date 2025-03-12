@@ -5,8 +5,9 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 import android.widget.VideoView;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -16,6 +17,8 @@ import androidx.core.view.WindowInsetsCompat;
 public class Ruleta extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
+    private EditText etNombreUsuario;
+    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +48,33 @@ public class Ruleta extends AppCompatActivity {
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
 
+        // Instanciar la base de datos
+        dbHelper = new DatabaseHelper(this);
+
+        // Configurar EditText para ingresar nombre
+        etNombreUsuario = findViewById(R.id.etNombreUsuario);
+
+        // Cargar nombre si ya está en la base de datos
+        String nombreGuardado = dbHelper.obtenerNombre();
+        etNombreUsuario.setText(nombreGuardado);
+
         // Botón "JUGAR"
         Button btnJugar = findViewById(R.id.btnJugar);
         btnJugar.setOnClickListener(v -> {
-            Intent intent = new Intent(Ruleta.this, MainActivity.class);
-            startActivity(intent);
-            finish();
+            String nombre = etNombreUsuario.getText().toString().trim();
+            if (!nombre.isEmpty()) {
+                boolean guardado = dbHelper.guardarNombre(nombre);
+                if (guardado) {
+                    Toast.makeText(this, "Nombre guardado: " + nombre, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Error al guardar", Toast.LENGTH_SHORT).show();
+                }
+                Intent intent = new Intent(Ruleta.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                Toast.makeText(this, "Introduce tu nombre", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
@@ -62,6 +86,5 @@ public class Ruleta extends AppCompatActivity {
             mediaPlayer.release();
             mediaPlayer = null;
         }
-
     }
 }
