@@ -269,7 +269,7 @@
             android:layout_marginHorizontal="6dp"
             android:layout_weight="1"
             android:backgroundTint="@android:color/holo_blue_light"
-            android:text="NUM\nX4"
+            android:text="NUM\nX35"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -360,7 +360,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bet_amount" />
 
-    <!-- Ruleta (ampliada para usar más espacio horizontal) -->
+    <!-- Ruleta (se mantiene en su posición original) -->
     <ImageView
         android:id="@+id/ruletaImage"
         android:layout_width="0dp"
@@ -373,7 +373,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/place_bet_button" />
 
-    <!-- Flecha (centrada horizontalmente y encima de la ruleta) -->
+    <!-- Flecha (se mantiene en su posición original) -->
     <ImageView
         android:id="@+id/flechaImage"
         android:layout_width="40dp"
@@ -397,15 +397,12 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp" />
 
-    <!-- TextView para mostrar el número de la ruleta -->
-
-    <!-- CirculosView para mostrar el círculo de color -->
-
+    <!-- Número de la ruleta -->
     <TextView
         android:id="@+id/textViewNumero"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:padding="8dp"
         android:text="00"
@@ -414,26 +411,58 @@
         app:layout_constraintStart_toEndOf="@+id/ruletaImage"
         app:layout_constraintTop_toBottomOf="@+id/btnGirar" />
 
+    <!-- Circulo de color -->
     <com.example.ludopatics.CirculosView
         android:id="@+id/circleView"
         android:layout_width="43dp"
         android:layout_height="46dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewNumero"
         app:layout_constraintTop_toTopOf="@+id/textViewNumero" />
 
-    <TextView
-        android:id="@+id/apuesta"
-        android:layout_width="wrap_content"
+    <!-- NUEVO: Bloque de apuestas, centrado debajo de la ruleta -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:orientation="vertical"
         android:gravity="center"
-        android:text="Apuesta: \nNinguna"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ruletaImage"
-        app:layout_constraintTop_toBottomOf="@+id/circleView" />
+        app:layout_constraintTop_toBottomOf="@+id/ruletaImage"
+        android:layout_marginTop="40dp">
+
+        <TextView
+            android:id="@+id/apuesta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Apuesta: Ninguna"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:padding="8dp"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/apuestaNumero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Apuesta al número: Ninguna"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:padding="8dp"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/apuestaParImpar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Apuesta Par/Impar: Ninguna"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:padding="8dp"
+            android:textStyle="bold"
+            android:gravity="center"/>
+    </LinearLayout>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

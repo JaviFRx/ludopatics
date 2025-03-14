@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.RotateAnimation;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -26,6 +28,7 @@ import java.util.Random;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
+    String casillaFinal ="";
     private String selectedColor = ""; // Variable para almacenar el color apostado
     private String resColor = "";
     private ImageView ruletaImage;
@@ -38,15 +41,18 @@ public class MainActivity extends AppCompatActivity {
     // Variables para manejar las apuestas
     private TextView balanceValue;
     private TextView betAmount;
+    private TextView apuestaNumeroTextView;
     private Button betButtonPlus1;
     private Button betButtonPlus10;
     private Button betButtonPlus100;
     private Button placeBetButton;
+    private Button num_Button;
 
     // Variables para el seguimiento de la apuesta y el saldo
     private int currentBalance = 1000; // Saldo inicial
     private int currentBetAmount = 0; // Cantidad de apuesta actual
-
+    private String numeroSeleccionado = "";
+    private String selectedParImpar = "null";
     // Definimos los números de la ruleta en orden
     private final String[] casillasRuleta = {
             "10", "5", "24", "16", "33", "1", "20", "14", "31", "9", "22", "18",
@@ -83,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         circleView = findViewById(R.id.circleView);
 
         apuestaTextView = findViewById(R.id.apuesta);
+        apuestaNumeroTextView = findViewById(R.id.apuestaNumero);
         // Inicializar las vistas relacionadas con las apuestas
         balanceValue = findViewById(R.id.balanceValue);
         betAmount = findViewById(R.id.bet_amount);
@@ -106,9 +113,11 @@ public class MainActivity extends AppCompatActivity {
         Button redButton = findViewById(R.id.red_button);
         Button greenButton = findViewById(R.id.green_button);
         Button blackButton = findViewById(R.id.black_button);
+        Button numButton = findViewById(R.id.num_button);
         // Configurar el listener para el botón de colocar apuesta
         placeBetButton.setOnClickListener(view -> placeBet());
-
+        //Configurar listener del botón para seleccionar numero
+        numButton.setOnClickListener(v -> mostrarSelectorNumero());
         // Configurar el listener del botón de girar
         btnGirar.setOnClickListener(view -> girarRuleta());
         // Configuración de los listeners
@@ -180,9 +189,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void girarRuleta() {
-        // Verificar si hay una apuesta hecha
         if (currentBetAmount <= 0) {
             Toast.makeText(this, "Debes hacer una apuesta primero", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Verificar si al menos una de las opciones ha sido seleccionada
+        if (selectedColor.equals("null") && selectedParImpar.equals("null") && numeroSeleccionado.equals("")) {
+            Toast.makeText(this, "Debes hacer una apuesta a color, número o Par/Impar", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -218,7 +232,8 @@ public class MainActivity extends AppCompatActivity {
             public void onAnimationEnd(android.view.animation.Animation animation) {
                 // Calcular la casilla final después de que termine la animación
                 calcularCasilla(angle);
-                // Verificar si el color apostado coincide con el color resultado
+
+                // Mostrar si has ganado o perdido
                 if (selectedColor.equals(resColor)) {
                     if (resColor.equals("verde")) {
                         // Si el color es verde, multiplica la apuesta por 14
@@ -234,17 +249,40 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     apuestaTextView.setText("Perdiste. Inténtalo de nuevo.");
                 }
+                // Verificar la apuesta al número
+                if (!numeroSeleccionado.equals("") && numeroSeleccionado == casillaFinal ) {
+                    // Si el número apostado coincide con el número resultado
+                    currentBalance += currentBetAmount * 35; // La ruleta paga 35 veces la apuesta por el número
+                    balanceValue.setText(String.valueOf(currentBalance));
+                    apuestaTextView.append("\n¡Ganaste! Apuesta al número correcta. Multiplicaste por 35.");
+                } else if (!numeroSeleccionado.equals("")) {
+                    // Si el número apostado no coincide
+                    apuestaTextView.append("\nPerdiste en el número. Inténtalo de nuevo.");
+                }
 
-                // Habilitar botones después de la animación
-                betButtonPlus1.setEnabled(true);
-                betButtonPlus10.setEnabled(true);
-                betButtonPlus100.setEnabled(true);
-                placeBetButton.setEnabled(true);
-                btnGirar.setEnabled(true);
 
-                // Reiniciar la apuesta actual
-                currentBetAmount = 0;
-                updateBetAmountText();
+                // Usamos un Handler para hacer una pausa antes de habilitar los botones y resetear los TextViews
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Habilitar botones después de la animación
+                        betButtonPlus1.setEnabled(true);
+                        betButtonPlus10.setEnabled(true);
+                        betButtonPlus100.setEnabled(true);
+                        placeBetButton.setEnabled(true);
+                        btnGirar.setEnabled(true);
+
+                        // Reiniciar la apuesta actual
+                        currentBetAmount = 0;
+                        updateBetAmountText();
+
+                        // Restablecer los TextViews a su contenido inicial
+                        apuestaTextView.setText("Apuesta: Ninguna");
+                        apuestaNumeroTextView.setText("Apuesta al número: Ninguna");
+                        //apuestaParImpar.setText("Apuesta Par/Impar: Ninguna");
+                    }
+                }, 2000);
+                selectedColor="null";// Pausa de 2 segundos (2000 milisegundos) antes de habilitar los botones y resetear los TextViews
             }
 
             @Override
@@ -296,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
         indice = (indice + numCasillas) % numCasillas;
 
         // Obtener el número de la casilla
-        String casillaFinal = casillasRuleta[indice];
+        casillaFinal = casillasRuleta[indice];
 
         // Determinar el color del número
         int colorNumero;
@@ -315,7 +353,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Actualizar el TextView con el número final y su color
-        textViewNumero.setText("Número: " + casillaFinal);
+        textViewNumero.setText(casillaFinal);
         // Actualizar el CirculosView con el color correspondiente
         circleView.setCircleColor(colorNumero);
 
@@ -336,4 +374,26 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onDestroy();
     }
+    private void mostrarSelectorNumero() {
+        // Crear un array con los números del 0 al 36
+        String[] numeros = new String[37];
+        for (int i = 0; i <= 36; i++) {
+            numeros[i] = String.valueOf(i);
+        }
+
+        // Crear y mostrar el diálogo de selección
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Selecciona un número")
+                .setItems(numeros, (dialog, which) -> {
+                    // Guardar el número seleccionado en la variable de la clase
+                    numeroSeleccionado = numeros[which];
+                    // Actualizar el TextView con la apuesta del número
+                    apuestaNumeroTextView.setText("Apuesta al número: " + numeroSeleccionado);
+                    Toast.makeText(this, "Número seleccionado: " + numeroSeleccionado, Toast.LENGTH_SHORT).show();
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 }
