@@ -81,7 +81,14 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        TextView tvUsername = findViewById(R.id.username); // Obtener el TextView
+        // Obtener el nombre de usuario desde el Intent
+        String nombreUsuario = getIntent().getStringExtra("nombreUsuario");
 
+        // Verificar si el nombre no es nulo ni vacío antes de mostrarlo
+        if (nombreUsuario != null && !nombreUsuario.isEmpty()) {
+            tvUsername.setText(nombreUsuario);
+        }
         // Inicializar las vistas
         ruletaImage = findViewById(R.id.ruletaImage);
         btnGirar = findViewById(R.id.btnGirar);

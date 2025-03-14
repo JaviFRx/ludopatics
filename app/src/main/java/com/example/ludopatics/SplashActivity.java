@@ -29,25 +29,17 @@ public class SplashActivity extends AppCompatActivity {
         mediaPlayer = MediaPlayer.create(this, R.raw.century);
         mediaPlayer.start();
 
-        // Establecer un retraso para la transición al MainActivity
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Detener la reproducción de audio antes de cambiar de actividad
-                if (mediaPlayer != null) {
-                    if (mediaPlayer.isPlaying()) {
-                        mediaPlayer.stop();
-                    }
-                    mediaPlayer.release();
-                    mediaPlayer = null;
-                }
+        // Esperar a que termine el audio antes de abrir Ruleta
+        mediaPlayer.setOnCompletionListener(mp -> {
+            // Liberar el MediaPlayer
+            mp.release();
+            mediaPlayer = null;
 
-                // Intent para iniciar la MainActivity después de la pantalla de inicio
-                Intent intent = new Intent(SplashActivity.this, Ruleta.class);
-                startActivity(intent);
-                finish(); // Cierra SplashActivity para que no pueda volver a ella
-            }
-        }, 10000); // Tiempo en milisegundos que el GIF permanecerá (10 segundos en este caso)
+            // Cambiar a la actividad Ruleta
+            Intent intent = new Intent(SplashActivity.this, Ruleta.class);
+            startActivity(intent);
+            finish(); // Cierra SplashActivity para que no pueda volver a ella
+        });
     }
 
     @Override

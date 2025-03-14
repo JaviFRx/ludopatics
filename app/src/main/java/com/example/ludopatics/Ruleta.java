@@ -70,6 +70,7 @@ public class Ruleta extends AppCompatActivity {
                     Toast.makeText(this, "Error al guardar", Toast.LENGTH_SHORT).show();
                 }
                 Intent intent = new Intent(Ruleta.this, MainActivity.class);
+                intent.putExtra("nombreUsuario", nombre);  // Enviar el nombre al intent
                 startActivity(intent);
                 finish();
             } else {
