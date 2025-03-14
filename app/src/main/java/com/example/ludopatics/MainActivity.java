@@ -22,12 +22,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
+    private List<Apuesta> listaApuestas = new ArrayList<>();
     String casillaFinal ="";
     private String selectedColor = ""; // Variable para almacenar el color apostado
     private String resColor = "";
@@ -128,29 +132,9 @@ public class MainActivity extends AppCompatActivity {
         // Configurar el listener del botón de girar
         btnGirar.setOnClickListener(view -> girarRuleta());
         // Configuración de los listeners
-        redButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectedColor = "rojo";  // Guardar el color apostado
-                apuestaTextView.setText("Se ha apostado al color rojo");
-            }
-        });
-
-        greenButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectedColor = "verde";
-                apuestaTextView.setText("Se ha apostado al color verde");
-            }
-        });
-
-        blackButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selectedColor = "negro";
-                apuestaTextView.setText("Se ha apostado al color negro");
-            }
-        });
+        redButton.setOnClickListener(v -> agregarApuesta("color", "rojo"));
+        greenButton.setOnClickListener(v -> agregarApuesta("color", "verde"));
+        blackButton.setOnClickListener(v -> agregarApuesta("color", "negro"));
     }
 
 
@@ -288,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
                         apuestaNumeroTextView.setText("Apuesta al número: Ninguna");
                         //apuestaParImpar.setText("Apuesta Par/Impar: Ninguna");
                     }
-                }, 2000);
+                }, 3000);
                 selectedColor="null";// Pausa de 2 segundos (2000 milisegundos) antes de habilitar los botones y resetear los TextViews
             }
 
@@ -401,6 +385,35 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+    private void agregarApuesta(String tipo, String valor) {
+        if (currentBetAmount <= 0) {
+            Toast.makeText(this, "Primero selecciona un monto de apuesta", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Eliminar apuesta anterior del mismo tipo (si existe)
+        Iterator<Apuesta> iterator = listaApuestas.iterator();
+        while (iterator.hasNext()) {
+            Apuesta apuesta = iterator.next();
+            if (apuesta.tipo.equals(tipo)) {
+                iterator.remove();
+            }
+        }
+
+        // Agregar la nueva apuesta
+        listaApuestas.add(new Apuesta(tipo, valor, currentBetAmount));
+
+        // Mostrar en pantalla
+        apuestaTextView.setText("Apostaste " + currentBetAmount + " a " + valor);
+
+        // Restar saldo
+        currentBalance -= currentBetAmount;
+        balanceValue.setText(String.valueOf(currentBalance));
+
+        // Reiniciar monto de apuesta
+        currentBetAmount = 0;
+        updateBetAmountText();
     }
 
 }
