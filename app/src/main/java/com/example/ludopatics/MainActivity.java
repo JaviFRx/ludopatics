@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -42,11 +43,12 @@ public class MainActivity extends AppCompatActivity {
     private Button betButtonPlus10;
     private Button betButtonPlus100;
     private Button placeBetButton;
+    private Button num_Button;
 
     // Variables para el seguimiento de la apuesta y el saldo
     private int currentBalance = 1000; // Saldo inicial
     private int currentBetAmount = 0; // Cantidad de apuesta actual
-
+    private int numeroSeleccionado = -1;
     // Definimos los números de la ruleta en orden
     private final String[] casillasRuleta = {
             "10", "5", "24", "16", "33", "1", "20", "14", "31", "9", "22", "18",
@@ -106,9 +108,11 @@ public class MainActivity extends AppCompatActivity {
         Button redButton = findViewById(R.id.red_button);
         Button greenButton = findViewById(R.id.green_button);
         Button blackButton = findViewById(R.id.black_button);
+        Button numButton = findViewById(R.id.num_button);
         // Configurar el listener para el botón de colocar apuesta
         placeBetButton.setOnClickListener(view -> placeBet());
-
+        //Configurar listener del botón para seleccionar numero
+        numButton.setOnClickListener(v -> mostrarSelectorNumero());
         // Configurar el listener del botón de girar
         btnGirar.setOnClickListener(view -> girarRuleta());
         // Configuración de los listeners
@@ -336,4 +340,24 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onDestroy();
     }
+    private void mostrarSelectorNumero() {
+        // Crear un array con los números del 0 al 36
+        String[] numeros = new String[37];
+        for (int i = 0; i <= 36; i++) {
+            numeros[i] = String.valueOf(i);
+        }
+
+        // Crear y mostrar el diálogo de selección
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Selecciona un número")
+                .setItems(numeros, (dialog, which) -> {
+                    // Guardar el número seleccionado en la variable de la clase
+                    numeroSeleccionado = Integer.parseInt(numeros[which]);
+                    Toast.makeText(this, "Número seleccionado: " + numeroSeleccionado, Toast.LENGTH_SHORT).show();
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 }
