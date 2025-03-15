@@ -46,10 +46,13 @@ public class MainActivity extends AppCompatActivity {
     private TextView balanceValue;
     private TextView betAmount;
     private TextView apuestaNumeroTextView;
+    private TextView apuestaParImparTextView;
     private Button betButtonPlus1;
     private Button betButtonPlus10;
     private Button betButtonPlus100;
     private Button placeBetButton;
+    private Button btnodd;
+    private Button btneven;
     private Button num_Button;
 
     // Variables para el seguimiento de la apuesta y el saldo
@@ -101,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
         apuestaTextView = findViewById(R.id.apuesta);
         apuestaNumeroTextView = findViewById(R.id.apuestaNumero);
+        apuestaParImparTextView = findViewById(R.id.apuestaParImpar);
         // Inicializar las vistas relacionadas con las apuestas
         balanceValue = findViewById(R.id.balanceValue);
         betAmount = findViewById(R.id.bet_amount);
@@ -121,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
         betButtonPlus100.setOnClickListener(view -> increaseBet(100));
 
         // Referencias a los botones
+        btnodd = findViewById(R.id.odd_button);
+        btneven=  findViewById(R.id.even_button);
         Button redButton = findViewById(R.id.red_button);
         Button greenButton = findViewById(R.id.green_button);
         Button blackButton = findViewById(R.id.black_button);
@@ -132,10 +138,33 @@ public class MainActivity extends AppCompatActivity {
         // Configurar el listener del botón de girar
         btnGirar.setOnClickListener(view -> girarRuleta());
         // Configuración de los listeners
-        redButton.setOnClickListener(v -> agregarApuesta("color", "rojo"));
-        greenButton.setOnClickListener(v -> agregarApuesta("color", "verde"));
-        blackButton.setOnClickListener(v -> agregarApuesta("color", "negro"));
+        redButton.setOnClickListener(v -> {
+            agregarApuesta("color", "rojo");
+            selectedColor = "rojo"; // Actualizar el color seleccionado
+        });
+
+        blackButton.setOnClickListener(v -> {
+            agregarApuesta("color", "negro");
+            selectedColor = "negro"; // Actualizar el color seleccionado
+        });
+
+        greenButton.setOnClickListener(v -> {
+            agregarApuesta("color", "verde");
+            selectedColor = "verde"; // Actualizar el color seleccionado
+        });
+
+        btnodd.setOnClickListener(v -> {
+            agregarApuesta("parImpar", "par");  // Make sure the parameter count is consistent
+            selectedParImpar = "par"; // Actualizar la selección de par/impar
+        });
+        btneven.setOnClickListener(v -> {
+            agregarApuesta("parImpar", "impar");  // Make sure the parameter count is consistent
+            selectedParImpar = "impar"; // Actualizar la selección de par/impar
+        });
+
+
     }
+
 
 
     // Método para aumentar la apuesta
@@ -168,15 +197,13 @@ public class MainActivity extends AppCompatActivity {
     // Método para colocar la apuesta
     private void placeBet() {
         if (currentBetAmount > 0) {
-            // Aquí iría la lógica para procesar la apuesta
-            // Por ahora, simplemente mostramos un mensaje
-            Toast.makeText(this, "Apuesta de " + currentBetAmount + " colocada", Toast.LENGTH_SHORT).show();
-
-            // También podríamos habilitar el botón de girar la ruleta
-            // y deshabilitar los botones de apuesta hasta que termine la ronda
+                Toast.makeText(this, "Apuesta de " + currentBetAmount + " colocada", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Debes hacer una apuesta primero", Toast.LENGTH_SHORT).show();
         }
+        // Reiniciar monto de apuesta
+        currentBetAmount = 0;
+        updateBetAmountText();
     }
 
     private void girarRuleta() {
@@ -186,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Verificar si al menos una de las opciones ha sido seleccionada
-        if (selectedColor.equals("null") && selectedParImpar.equals("null") && numeroSeleccionado.equals("")) {
+        if (selectedColor.equals("") && selectedParImpar.equals("") && numeroSeleccionado.equals("")) {
             Toast.makeText(this, "Debes hacer una apuesta a color, número o Par/Impar", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -241,7 +268,8 @@ public class MainActivity extends AppCompatActivity {
                     apuestaTextView.setText("Perdiste. Inténtalo de nuevo.");
                 }
                 // Verificar la apuesta al número
-                if (!numeroSeleccionado.equals("") && numeroSeleccionado == casillaFinal ) {
+                if (!numeroSeleccionado.equals("") && numeroSeleccionado.equals(casillaFinal)) {
+
                     // Si el número apostado coincide con el número resultado
                     currentBalance += currentBetAmount * 35; // La ruleta paga 35 veces la apuesta por el número
                     balanceValue.setText(String.valueOf(currentBalance));
@@ -379,7 +407,7 @@ public class MainActivity extends AppCompatActivity {
                     // Guardar el número seleccionado en la variable de la clase
                     numeroSeleccionado = numeros[which];
                     // Actualizar el TextView con la apuesta del número
-                    apuestaNumeroTextView.setText("Apuesta al número: " + numeroSeleccionado);
+                    apuestaNumeroTextView.setText("Apostaste " + currentBetAmount + " al " + numeroSeleccionado);
                     Toast.makeText(this, "Número seleccionado: " + numeroSeleccionado, Toast.LENGTH_SHORT).show();
                 });
 
@@ -405,15 +433,26 @@ public class MainActivity extends AppCompatActivity {
         listaApuestas.add(new Apuesta(tipo, valor, currentBetAmount));
 
         // Mostrar en pantalla
-        apuestaTextView.setText("Apostaste " + currentBetAmount + " a " + valor);
-
+        // Mostrar en el TextView correspondiente según el tipo de apuesta
+        switch (tipo) {
+            case "color":
+                apuestaTextView.setText("Apostaste " + currentBetAmount + " al color " + valor);
+                break;
+            case "numero":
+                apuestaNumeroTextView.setText("Apostaste " + currentBetAmount + " al número " + valor);
+                break;
+            case "parImpar":
+                apuestaParImparTextView.setText("Apostaste " + currentBetAmount + " a " + valor);
+                break;
+            default:
+                // En caso de error o tipo desconocido
+                Log.e("Apuesta", "Tipo de apuesta desconocido: " + tipo);
+        }
         // Restar saldo
         currentBalance -= currentBetAmount;
         balanceValue.setText(String.valueOf(currentBalance));
 
-        // Reiniciar monto de apuesta
-        currentBetAmount = 0;
-        updateBetAmountText();
+
     }
 
 }
