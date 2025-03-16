@@ -2,7 +2,7 @@
     <string name="app_name">ludopatics</string>
     <string name="title_activity_ruleta">Ruleta</string>
     <string name="title_main">LUDOPATICS</string>
-    <string name="authors_text">Autores:\nJavier FernÃ¡ndez\nAleix Ortiz\nGabriela Buil\nJordi Montserrat</string>
+    <string name="authors_text">Autores:\n\nJavier Fernández\nAleix Ortiz\nGabriela Buil\nJordi Montserrat</string>
     <string name="play_button_text">JUGAR</string>
     <string name="hint_nombre_usuario">Introduce tu nombre</string>
 
