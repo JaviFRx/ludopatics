@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -11,7 +12,8 @@ public class CirculosView extends View {
 
     private Paint paint;
     private int circleColor = Color.RED; // Color predeterminado
-
+    private TextPaint textPaint;
+    private String text = "";
     public CirculosView(Context context) {
         super(context);
         init();
@@ -31,6 +33,14 @@ public class CirculosView extends View {
         paint = new Paint();
         paint.setAntiAlias(true);
         paint.setColor(circleColor);
+
+        // Inicialización de la pintura para el texto
+        textPaint = new TextPaint();
+        textPaint.setAntiAlias(true);
+        textPaint.setColor(Color.WHITE); // Color del texto
+        textPaint.setTextSize(10); // Tamaño del texto
+        textPaint.setTextAlign(Paint.Align.CENTER); // Alineación centrada
+
     }
 
     @Override
@@ -54,5 +64,14 @@ public class CirculosView extends View {
     }
     public int getCircleColor() {
         return circleColor;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+        invalidate(); // Vuelve a dibujar la vista
+    }
+
+    public String getText() {
+        return text;
     }
 }

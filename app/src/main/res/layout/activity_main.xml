@@ -81,7 +81,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Segundo LinearLayout -->
     <LinearLayout
         android:id="@+id/copia"
         android:layout_width="match_parent"
@@ -97,10 +96,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-        <!-- Contenedor para "Recent" y los círculos -->
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:orientation="vertical">
@@ -116,21 +114,22 @@
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal">
+
                 <com.example.ludopatics.CirculosView
                     android:id="@+id/circulo1"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <com.example.ludopatics.CirculosView
                     android:id="@+id/circulo2"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <com.example.ludopatics.CirculosView
                     android:id="@+id/circulo3"
@@ -142,25 +141,7 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/Next"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Next Game: 5s"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:orientation="vertical">
@@ -370,19 +351,22 @@
         app:layout_constraintTop_toBottomOf="@+id/bet_amount" />
 
     <!-- Ruleta (se mantiene en su posición original) -->
+
+    <!-- Flecha (se mantiene en su posición original) -->
     <ImageView
         android:id="@+id/ruletaImage"
         android:layout_width="0dp"
         android:layout_height="220dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
         android:scaleType="fitCenter"
         android:src="@drawable/ruleta"
         app:layout_constraintEnd_toStartOf="@id/btnGirar"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/place_bet_button" />
 
-    <!-- Flecha (se mantiene en su posición original) -->
     <ImageView
         android:id="@+id/flechaImage"
         android:layout_width="40dp"

@@ -264,14 +264,12 @@ public class MainActivity extends AppCompatActivity {
                 if (selectedColor.equals(resColor)) {
                     if (resColor.equals("verde")) {
                         // Si el color es verde, multiplica la apuesta por 14
-                        circulo3.setCircleColor(Color.GREEN);
+
                         currentBalance += currentBetAmount * 14;
                         balanceValue.setText(String.valueOf(currentBalance));
                         apuestaTextView.setText("¡Ganaste! Saldo actualizado. Multiplicaste por 14.");
                     } else {
                         // Si el color es rojo o negro, suma la apuesta al saldo
-                        if (resColor.equals("rojo")){circulo3.setCircleColor(Color.RED);}
-                        if (resColor.equals("negro")){circulo3.setCircleColor(Color.BLACK);}
                         currentBalance += currentBetAmount * 2;
                         balanceValue.setText(String.valueOf(currentBalance));
                         apuestaTextView.setText("¡Ganaste! Saldo actualizado.");
@@ -282,7 +280,12 @@ public class MainActivity extends AppCompatActivity {
                 // Mover los colores hacia la izquierda
                 circulo2.setCircleColor(circulo3.getCircleColor());
                 circulo1.setCircleColor(circulo2.getCircleColor());
-                // Verificar la apuesta al número
+
+                if (resColor.equals("rojo")){circulo3.setCircleColor(Color.RED);}
+                if (resColor.equals("negro")){circulo3.setCircleColor(Color.BLACK);}
+                if (resColor.equals("verde")){circulo3.setCircleColor(Color.GREEN);}
+
+                   // Verificar la apuesta al número
                 if (!numeroSeleccionado.equals("") && numeroSeleccionado.equals(casillaFinal)) {
 
                     // Si el número apostado coincide con el número resultado
@@ -310,13 +313,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 // Mostrar los círculos gradualmente según el número de tiradas
-                if (roundCount >= 1) {
+                if (roundCount == 1) {
                     circulo1.setVisibility(View.VISIBLE); // Muestra el primer círculo
-                    }
+                    circulo1.setText(casillaFinal);
+                }
 
-                if (roundCount >= 2) {
+                if (roundCount == 2) {
                     circulo2.setVisibility(View.VISIBLE); // Muestra el segundo círculo
-                     }
+
+                }
 
                 if (roundCount >= 3) {
                     circulo3.setVisibility(View.VISIBLE); // Muestra el tercer círculo
