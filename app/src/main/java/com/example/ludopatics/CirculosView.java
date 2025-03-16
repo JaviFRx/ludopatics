@@ -38,7 +38,7 @@ public class CirculosView extends View {
         textPaint = new TextPaint();
         textPaint.setAntiAlias(true);
         textPaint.setColor(Color.WHITE); // Color del texto
-        textPaint.setTextSize(10); // Tamaño del texto
+        textPaint.setTextSize(40); // Tamaño del texto
         textPaint.setTextAlign(Paint.Align.CENTER); // Alineación centrada
 
     }
@@ -54,6 +54,11 @@ public class CirculosView extends View {
 
         // Dibujar el círculo con el color actual
         canvas.drawCircle(centerX, centerY, radius, paint);
+        // Dibujar el texto en el centro del círculo
+        if (!text.isEmpty()) {
+            float textY = centerY - ((textPaint.descent() + textPaint.ascent()) / 2); // Centrar verticalmente
+            canvas.drawText(text, centerX, textY, textPaint);
+        }
     }
 
     // Método para cambiar el color del círculo

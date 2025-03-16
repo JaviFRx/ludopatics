@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView ruletaImage;
     private TextView apuestaTextView;
     private Button btnGirar;
-    private TextView textViewNumero;
+
     private CirculosView circleView;
     private CirculosView circulo1;
     private CirculosView circulo2;
@@ -105,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
         // Inicializar las vistas
         ruletaImage = findViewById(R.id.ruletaImage);
         btnGirar = findViewById(R.id.btnGirar);
-        textViewNumero = findViewById(R.id.textViewNumero);
         circleView = findViewById(R.id.circleView);
         circulo1 = findViewById(R.id.circulo1);
         circulo2 = findViewById(R.id.circulo2);
@@ -266,9 +265,23 @@ public class MainActivity extends AppCompatActivity {
                 // Mover los colores hacia la izquierda
                 circulo1.setCircleColor(circulo2.getCircleColor());
                 circulo2.setCircleColor(circulo3.getCircleColor());
-                if (color.equals("rojo")){circulo3.setCircleColor(Color.RED);}
-                if (color.equals("negro")){circulo3.setCircleColor(Color.BLACK);}
-                if (color.equals("verde")){circulo3.setCircleColor(Color.GREEN);}
+                // Mover el texto hacia la izquierda
+                circulo1.setText(circulo2.getText());
+                circulo2.setText(circulo3.getText());
+                if (color.equals("rojo")){
+                    circulo3.setCircleColor(Color.RED);
+                    circulo3.setText(casillaFinal);
+                }
+                if (color.equals("negro"))
+                {
+                    circulo3.setCircleColor(Color.BLACK);
+                    circulo3.setText(casillaFinal);
+                }
+                if (color.equals("verde"))
+                {
+                    circulo3.setCircleColor(Color.GREEN);
+                    circulo3.setText(casillaFinal);
+                }
 
 
                 // Mostrar los círculos gradualmente según el número de tiradas
@@ -380,10 +393,9 @@ public class MainActivity extends AppCompatActivity {
             colorNumero = Color.GRAY; // Por si hay algún error
         }
 
-        // Actualizar el TextView con el número final y su color
-        textViewNumero.setText(casillaFinal);
         // Actualizar el CirculosView con el color correspondiente
         circleView.setCircleColor(colorNumero);
+        circleView.setText(casillaFinal);
 
         // Para depuración
         Log.d("Ruleta", "Ángulo: " + normalizedAngle + ", Índice: " + indice +

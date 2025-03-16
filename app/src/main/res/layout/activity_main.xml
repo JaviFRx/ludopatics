@@ -350,9 +350,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bet_amount" />
 
-    <!-- Ruleta (se mantiene en su posición original) -->
 
-    <!-- Flecha (se mantiene en su posición original) -->
     <ImageView
         android:id="@+id/ruletaImage"
         android:layout_width="0dp"
@@ -390,27 +388,17 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp" />
 
-    <!-- Número de la ruleta -->
-    <TextView
-        android:id="@+id/textViewNumero"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:padding="8dp"
-        android:text="00"
-        android:textColor="@android:color/white"
-        android:textSize="24sp"
-        app:layout_constraintStart_toEndOf="@+id/ruletaImage"
-        app:layout_constraintTop_toBottomOf="@+id/btnGirar" />
 
-    <!-- Circulo de color -->
     <com.example.ludopatics.CirculosView
         android:id="@+id/circleView"
-        android:layout_width="43dp"
-        android:layout_height="46dp"
-        app:layout_constraintStart_toEndOf="@+id/textViewNumero"
-        app:layout_constraintTop_toTopOf="@+id/textViewNumero" />
+        android:layout_width="60dp"
+    android:layout_height="60dp"
+    app:layout_constraintTop_toBottomOf="@id/btnGirar"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.95"
+    android:layout_marginTop="16dp" />
+
 
     <!-- NUEVO: Bloque de apuestas, centrado debajo de la ruleta -->
     <LinearLayout
