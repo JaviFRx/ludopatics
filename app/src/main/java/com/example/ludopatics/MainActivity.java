@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btneven;
     private Button num_Button;
     private TextView roundTextView;
-    private int roundCount = 1;
+    private int roundCount = 0;
 
     // Variables para el seguimiento de la apuesta y el saldo
     private int currentBalance = 1000; // Saldo inicial
@@ -257,23 +257,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(android.view.animation.Animation animation) {
                 // Calcular la casilla final después de que termine la animación
+
                 calcularCasilla(angle);
+                String color = resColor;
                 roundCount++;
                 roundTextView.setText("Round #" + roundCount);
                 comprobarApuestas(resColor, casillaFinal);
                 // Mover los colores hacia la izquierda
-                circulo2.setCircleColor(circulo3.getCircleColor());
                 circulo1.setCircleColor(circulo2.getCircleColor());
-
-                if (resColor.equals("rojo")){circulo3.setCircleColor(Color.RED);}
-                if (resColor.equals("negro")){circulo3.setCircleColor(Color.BLACK);}
-                if (resColor.equals("verde")){circulo3.setCircleColor(Color.GREEN);}
+                circulo2.setCircleColor(circulo3.getCircleColor());
+                if (color.equals("rojo")){circulo3.setCircleColor(Color.RED);}
+                if (color.equals("negro")){circulo3.setCircleColor(Color.BLACK);}
+                if (color.equals("verde")){circulo3.setCircleColor(Color.GREEN);}
 
 
                 // Mostrar los círculos gradualmente según el número de tiradas
                 if (roundCount == 1) {
-                    circulo1.setVisibility(View.VISIBLE); // Muestra el primer círculo
-                    circulo1.setText(casillaFinal);
+                    circulo3.setVisibility(View.VISIBLE); // Muestra el primer círculo
+                    circulo3.setText(casillaFinal);
                 }
 
                 if (roundCount == 2) {
@@ -282,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (roundCount >= 3) {
-                    circulo3.setVisibility(View.VISIBLE); // Muestra el tercer círculo
+                    circulo1.setVisibility(View.VISIBLE); // Muestra el tercer círculo
                     }
 
 
