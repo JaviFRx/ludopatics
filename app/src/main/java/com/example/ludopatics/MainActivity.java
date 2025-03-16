@@ -260,23 +260,7 @@ public class MainActivity extends AppCompatActivity {
                 calcularCasilla(angle);
                 roundCount++;
                 roundTextView.setText("Round #" + roundCount);
-                // Mostrar si has ganado o perdido
-                if (selectedColor.equals(resColor)) {
-                    if (resColor.equals("verde")) {
-                        // Si el color es verde, multiplica la apuesta por 14
-
-                        currentBalance += currentBetAmount * 14;
-                        balanceValue.setText(String.valueOf(currentBalance));
-                        apuestaTextView.setText("¡Ganaste! Saldo actualizado. Multiplicaste por 14.");
-                    } else {
-                        // Si el color es rojo o negro, suma la apuesta al saldo
-                        currentBalance += currentBetAmount * 2;
-                        balanceValue.setText(String.valueOf(currentBalance));
-                        apuestaTextView.setText("¡Ganaste! Saldo actualizado.");
-                    }
-                } else {
-                    apuestaTextView.setText("Perdiste. Inténtalo de nuevo.");
-                }
+                comprobarApuestas(resColor, casillaFinal);
                 // Mover los colores hacia la izquierda
                 circulo2.setCircleColor(circulo3.getCircleColor());
                 circulo1.setCircleColor(circulo2.getCircleColor());
@@ -285,33 +269,7 @@ public class MainActivity extends AppCompatActivity {
                 if (resColor.equals("negro")){circulo3.setCircleColor(Color.BLACK);}
                 if (resColor.equals("verde")){circulo3.setCircleColor(Color.GREEN);}
 
-                   // Verificar la apuesta al número
-                if (!numeroSeleccionado.equals("") && numeroSeleccionado.equals(casillaFinal)) {
 
-                    // Si el número apostado coincide con el número resultado
-                    currentBalance += currentBetAmount * 35; // La ruleta paga 35 veces la apuesta por el número
-                    balanceValue.setText(String.valueOf(currentBalance));
-                    apuestaTextView.append("\n¡Ganaste! Apuesta al número correcta. Multiplicaste por 35.");
-                } else if (!numeroSeleccionado.equals("")) {
-                    // Si el número apostado no coincide
-                    apuestaTextView.append("\nPerdiste en el número. Inténtalo de nuevo.");
-                }
-                // Verificar si apostó a par o impar
-                if (!selectedParImpar.equals("")) { // Verifica si ha apostado a par o impar
-                    int resultadoNumero = Integer.parseInt(casillaFinal); // Convierte el resultado en número
-                    boolean esPar = resultadoNumero % 2 == 0;
-
-                    if ((selectedParImpar.equals("par") && esPar) || (selectedParImpar.equals("impar") && !esPar)) {
-                        // Si la apuesta coincide con el resultado, gana el doble
-                        currentBalance += currentBetAmount * 2;
-                        balanceValue.setText(String.valueOf(currentBalance));
-                        apuestaTextView.append("\n¡Ganaste! Apuesta a " + selectedParImpar + " correcta. Multiplicaste por 2.");
-                    } else {
-                        // Si la apuesta no coincide, pierde la apuesta
-                        balanceValue.setText(String.valueOf(currentBalance));
-                        apuestaTextView.append("\nPerdiste en " + selectedParImpar + ". Inténtalo de nuevo.");
-                    }
-                }
                 // Mostrar los círculos gradualmente según el número de tiradas
                 if (roundCount == 1) {
                     circulo1.setVisibility(View.VISIBLE); // Muestra el primer círculo
@@ -500,6 +458,77 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+    }
+    /**
+     * Comprueba todas las apuestas y actualiza el saldo según los resultados
+     * @param resColor El color resultante de la ruleta (rojo, negro o verde)
+     * @param casillaFinal El número resultante de la ruleta
+     */
+    private void comprobarApuestas(String resColor, String casillaFinal) {
+        StringBuilder mensajeResultado = new StringBuilder();
+        boolean ganoAlgo = false;
+
+        // Comprobar apuesta al color
+        if (selectedColor.equals(resColor)) {
+            ganoAlgo = true;
+            if (resColor.equals("verde")) {
+                // Si el color es verde, multiplica la apuesta por 14
+                currentBalance += currentBetAmount * 14;
+                mensajeResultado.append("¡Ganaste! Color verde. Multiplicaste por 14.");
+            } else {
+                // Si el color es rojo o negro, multiplica la apuesta por 2
+                currentBalance += currentBetAmount * 2;
+                mensajeResultado.append("¡Ganaste! Color ").append(resColor).append(". Multiplicaste por 2.");
+            }
+        } else if (!selectedColor.equals("null")) {
+            mensajeResultado.append("Perdiste en color. ");
+        }
+
+        // Comprobar apuesta al número
+        if (!numeroSeleccionado.equals("") && numeroSeleccionado.equals(casillaFinal)) {
+            ganoAlgo = true;
+            // Si el número apostado coincide con el número resultado
+            currentBalance += currentBetAmount * 35; // La ruleta paga 35 veces la apuesta por el número
+            if (mensajeResultado.length() > 0) {
+                mensajeResultado.append("\n");
+            }
+            mensajeResultado.append("¡Ganaste! Número ").append(casillaFinal).append(". Multiplicaste por 35.");
+        } else if (!numeroSeleccionado.equals("")) {
+            if (mensajeResultado.length() > 0) {
+                mensajeResultado.append("\n");
+            }
+            mensajeResultado.append("Perdiste en número. ");
+        }
+
+        // Comprobar apuesta a par/impar
+        if (!selectedParImpar.equals("")) {
+            int resultadoNumero = Integer.parseInt(casillaFinal);
+            boolean esPar = resultadoNumero % 2 == 0;
+
+            if ((selectedParImpar.equals("par") && esPar) || (selectedParImpar.equals("impar") && !esPar)) {
+                ganoAlgo = true;
+                // Si la apuesta coincide con el resultado, gana el doble
+                currentBalance += currentBetAmount * 2;
+                if (mensajeResultado.length() > 0) {
+                    mensajeResultado.append("\n");
+                }
+                mensajeResultado.append("¡Ganaste! Apuesta a ").append(selectedParImpar).append(". Multiplicaste por 2.");
+            } else {
+                if (mensajeResultado.length() > 0) {
+                    mensajeResultado.append("\n");
+                }
+                mensajeResultado.append("Perdiste en ").append(selectedParImpar).append(".");
+            }
+        }
+
+        // Si no ganó nada y no hay mensajes, mostrar mensaje genérico
+        if (!ganoAlgo && mensajeResultado.length() == 0) {
+            mensajeResultado.append("Perdiste. Inténtalo de nuevo.");
+        }
+
+        // Actualizar la UI
+        balanceValue.setText(String.valueOf(currentBalance));
+        apuestaTextView.setText(mensajeResultado.toString());
     }
 
 }
