@@ -52,4 +52,7 @@ public class CirculosView extends View {
         paint.setColor(color);
         invalidate(); // Vuelve a dibujar la vista
     }
+    public int getCircleColor() {
+        return circleColor;
+    }
 }

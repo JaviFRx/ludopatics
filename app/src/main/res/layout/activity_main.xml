@@ -120,14 +120,23 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="horizontal">
+                <com.example.ludopatics.CirculosView
+                    android:id="@+id/circulo1"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:visibility="gone"/>
 
                 <com.example.ludopatics.CirculosView
+                    android:id="@+id/circulo2"
                     android:layout_width="30dp"
-                    android:layout_height="30dp" />
+                    android:layout_height="30dp"
+                    android:visibility="gone"/>
 
                 <com.example.ludopatics.CirculosView
+                    android:id="@+id/circulo3"
                     android:layout_width="30dp"
-                    android:layout_height="30dp" />
+                    android:layout_height="30dp"
+                    android:visibility="gone"/>
             </LinearLayout>
         </LinearLayout>
 

@@ -40,11 +40,15 @@ public class MainActivity extends AppCompatActivity {
     private Button btnGirar;
     private TextView textViewNumero;
     private CirculosView circleView;
+    private CirculosView circulo1;
+    private CirculosView circulo2;
+    private CirculosView circulo3;
     private MediaPlayer mediaPlayer;
 
     // Variables para manejar las apuestas
     private TextView balanceValue;
     private TextView betAmount;
+
     private TextView apuestaNumeroTextView;
     private TextView apuestaParImparTextView;
     private Button betButtonPlus1;
@@ -54,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     private Button btnodd;
     private Button btneven;
     private Button num_Button;
+    private TextView roundTextView;
+    private int roundCount = 1;
 
     // Variables para el seguimiento de la apuesta y el saldo
     private int currentBalance = 1000; // Saldo inicial
@@ -101,7 +107,9 @@ public class MainActivity extends AppCompatActivity {
         btnGirar = findViewById(R.id.btnGirar);
         textViewNumero = findViewById(R.id.textViewNumero);
         circleView = findViewById(R.id.circleView);
-
+        circulo1 = findViewById(R.id.circulo1);
+        circulo2 = findViewById(R.id.circulo2);
+        circulo3 = findViewById(R.id.circulo3);
         apuestaTextView = findViewById(R.id.apuesta);
         apuestaNumeroTextView = findViewById(R.id.apuestaNumero);
         apuestaParImparTextView = findViewById(R.id.apuestaParImpar);
@@ -112,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         betButtonPlus10 = findViewById(R.id.bet_button_plus10);
         betButtonPlus100 = findViewById(R.id.bet_button_plus100);
         placeBetButton = findViewById(R.id.place_bet_button);
-
+        roundTextView = findViewById(R.id.Round);
         // Configurar el saldo inicial
         balanceValue.setText(String.valueOf(currentBalance));
 
@@ -250,16 +258,20 @@ public class MainActivity extends AppCompatActivity {
             public void onAnimationEnd(android.view.animation.Animation animation) {
                 // Calcular la casilla final después de que termine la animación
                 calcularCasilla(angle);
-
+                roundCount++;
+                roundTextView.setText("Round #" + roundCount);
                 // Mostrar si has ganado o perdido
                 if (selectedColor.equals(resColor)) {
                     if (resColor.equals("verde")) {
                         // Si el color es verde, multiplica la apuesta por 14
+                        circulo3.setCircleColor(Color.GREEN);
                         currentBalance += currentBetAmount * 14;
                         balanceValue.setText(String.valueOf(currentBalance));
                         apuestaTextView.setText("¡Ganaste! Saldo actualizado. Multiplicaste por 14.");
                     } else {
                         // Si el color es rojo o negro, suma la apuesta al saldo
+                        if (resColor.equals("rojo")){circulo3.setCircleColor(Color.RED);}
+                        if (resColor.equals("negro")){circulo3.setCircleColor(Color.BLACK);}
                         currentBalance += currentBetAmount * 2;
                         balanceValue.setText(String.valueOf(currentBalance));
                         apuestaTextView.setText("¡Ganaste! Saldo actualizado.");
@@ -267,6 +279,9 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     apuestaTextView.setText("Perdiste. Inténtalo de nuevo.");
                 }
+                // Mover los colores hacia la izquierda
+                circulo2.setCircleColor(circulo3.getCircleColor());
+                circulo1.setCircleColor(circulo2.getCircleColor());
                 // Verificar la apuesta al número
                 if (!numeroSeleccionado.equals("") && numeroSeleccionado.equals(casillaFinal)) {
 
@@ -290,11 +305,24 @@ public class MainActivity extends AppCompatActivity {
                         apuestaTextView.append("\n¡Ganaste! Apuesta a " + selectedParImpar + " correcta. Multiplicaste por 2.");
                     } else {
                         // Si la apuesta no coincide, pierde la apuesta
-                        currentBalance -= currentBetAmount;
                         balanceValue.setText(String.valueOf(currentBalance));
                         apuestaTextView.append("\nPerdiste en " + selectedParImpar + ". Inténtalo de nuevo.");
                     }
                 }
+                // Mostrar los círculos gradualmente según el número de tiradas
+                if (roundCount >= 1) {
+                    circulo1.setVisibility(View.VISIBLE); // Muestra el primer círculo
+                    }
+
+                if (roundCount >= 2) {
+                    circulo2.setVisibility(View.VISIBLE); // Muestra el segundo círculo
+                     }
+
+                if (roundCount >= 3) {
+                    circulo3.setVisibility(View.VISIBLE); // Muestra el tercer círculo
+                    }
+
+
 
 
                 // Usamos un Handler para hacer una pausa antes de habilitar los botones y resetear los TextViews
