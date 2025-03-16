@@ -278,6 +278,23 @@ public class MainActivity extends AppCompatActivity {
                     // Si el número apostado no coincide
                     apuestaTextView.append("\nPerdiste en el número. Inténtalo de nuevo.");
                 }
+                // Verificar si apostó a par o impar
+                if (!selectedParImpar.equals("")) { // Verifica si ha apostado a par o impar
+                    int resultadoNumero = Integer.parseInt(casillaFinal); // Convierte el resultado en número
+                    boolean esPar = resultadoNumero % 2 == 0;
+
+                    if ((selectedParImpar.equals("par") && esPar) || (selectedParImpar.equals("impar") && !esPar)) {
+                        // Si la apuesta coincide con el resultado, gana el doble
+                        currentBalance += currentBetAmount * 2;
+                        balanceValue.setText(String.valueOf(currentBalance));
+                        apuestaTextView.append("\n¡Ganaste! Apuesta a " + selectedParImpar + " correcta. Multiplicaste por 2.");
+                    } else {
+                        // Si la apuesta no coincide, pierde la apuesta
+                        currentBalance -= currentBetAmount;
+                        balanceValue.setText(String.valueOf(currentBalance));
+                        apuestaTextView.append("\nPerdiste en " + selectedParImpar + ". Inténtalo de nuevo.");
+                    }
+                }
 
 
                 // Usamos un Handler para hacer una pausa antes de habilitar los botones y resetear los TextViews
@@ -298,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
                         // Restablecer los TextViews a su contenido inicial
                         apuestaTextView.setText("Apuesta: Ninguna");
                         apuestaNumeroTextView.setText("Apuesta al número: Ninguna");
-                        //apuestaParImpar.setText("Apuesta Par/Impar: Ninguna");
+                        apuestaParImparTextView.setText("Apuesta Par/Impar: Ninguna");
                     }
                 }, 3000);
                 selectedColor="null";// Pausa de 2 segundos (2000 milisegundos) antes de habilitar los botones y resetear los TextViews
@@ -448,9 +465,6 @@ public class MainActivity extends AppCompatActivity {
                 // En caso de error o tipo desconocido
                 Log.e("Apuesta", "Tipo de apuesta desconocido: " + tipo);
         }
-        // Restar saldo
-        currentBalance -= currentBetAmount;
-        balanceValue.setText(String.valueOf(currentBalance));
 
 
     }
