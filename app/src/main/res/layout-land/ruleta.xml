@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lower_purple"
+    android:background="@drawable/principal"
     tools:context=".MainActivity">
 
     <TextView
@@ -15,15 +15,9 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="72dp"
         android:layout_marginEnd="16dp"
-        android:fontFamily="@font/jaini_regular"
         android:gravity="center"
-        android:letterSpacing="0.15"
-        android:shadowColor="#7C000000"
-        android:shadowDx="4"
-        android:shadowDy="4"
-        android:shadowRadius="8"
         android:text="@string/title_main"
-        android:textColor="@color/blanco"
+        android:textColor="@android:color/white"
         android:textSize="50sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,39 +25,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <TextView
         android:id="@+id/txtAutores"
         android:layout_width="0dp"
-        android:layout_height="153dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:fontFamily="@font/madimione_regular"
         android:gravity="center"
         android:text="@string/authors_text"
-        android:textColor="@color/lila"
+        android:textColor="@android:color/white"
         android:textSize="18sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtTitulo" />
 
+
     <EditText
         android:id="@+id/etNombreUsuario"
-        android:layout_width="320dp"
-        android:layout_height="48dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/rounded_background"
-        android:fontFamily="@font/madimione_regular"
+        android:background="@android:color/white"
         android:hint="@string/hint_nombre_usuario"
-        android:paddingLeft="30px"
-        android:textColor="#2E2E2E"
+        android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtAutores" />
 
@@ -72,9 +63,7 @@
         android:layout_width="225dp"
         android:layout_height="60dp"
         android:layout_marginTop="56dp"
-        android:backgroundTint="@color/green_roulette"
-        android:fontFamily="@font/madimione_regular"
-        android:shadowColor="#D1000000"
+        android:backgroundTint="@color/colorPrimary"
         android:text="@string/play_button_text"
         android:textSize="24sp"
         android:textStyle="bold"

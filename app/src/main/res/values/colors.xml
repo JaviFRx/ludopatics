@@ -13,7 +13,10 @@
     <color name="backgroundColor">#F5F5F5</color>
     <color name="textColor">#212121</color> <!-- Color de texto -->
 
+    <color name="green_roulette">#0AB43D</color>
+
     <color name="teal_200">#03DAC5</color>
+    <color name="lower_purple">#6050A4</color>
 
     <color name="lila">#D3A6F1</color>
     <color name="blanco">#FFFFFF</color>
