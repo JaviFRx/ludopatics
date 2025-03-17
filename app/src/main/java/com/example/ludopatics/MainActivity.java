@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private CirculosView circulo2;
     private CirculosView circulo3;
     private MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer2;
 
     // Variables para manejar las apuestas
     private TextView balanceValue;
@@ -102,6 +103,17 @@ public class MainActivity extends AppCompatActivity {
         if (nombreUsuario != null && !nombreUsuario.isEmpty()) {
             tvUsername.setText(nombreUsuario);
         }
+        // Inicializa el MediaPlayer con el archivo de audio
+        mediaPlayer2 = MediaPlayer.create(this, R.raw.jazz);
+
+        // Inicia la reproducción del audio
+        mediaPlayer2.start();
+
+        // Asegúrate de liberar los recursos al finalizar
+        mediaPlayer2.setOnCompletionListener(mp -> {
+                    mediaPlayer2.release();
+                    mediaPlayer2 = null;
+        });
         // Inicializar las vistas
         ruletaImage = findViewById(R.id.ruletaImage);
         btnGirar = findViewById(R.id.btnGirar);
@@ -338,19 +350,35 @@ public class MainActivity extends AppCompatActivity {
 
     // Método para reproducir el sonido
     private void reproducirSonido() {
-        // Detener y liberar reproductor anterior si existe
-        if (mediaPlayer != null) {
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.stop();
-            }
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
-
-        // Crear y reproducir el nuevo sonido
-        mediaPlayer = MediaPlayer.create(this, R.raw.efecto);
-        mediaPlayer.start();
+    // Pausa el audio de jazz si está reproduciéndose
+    if (mediaPlayer2 != null && mediaPlayer2.isPlaying()) {
+        mediaPlayer2.pause();
     }
+
+    // Detener y liberar el reproductor de sonidos de la ruleta si existe
+    if (mediaPlayer != null) {
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.stop();
+        }
+        mediaPlayer.release();
+        mediaPlayer = null;
+    }
+
+    // Crear y reproducir el nuevo sonido (ruleta)
+    mediaPlayer = MediaPlayer.create(this, R.raw.efecto);
+    mediaPlayer.start();
+
+    // Listener para retomar el audio de jazz después de que el sonido de la ruleta termine
+    mediaPlayer.setOnCompletionListener(mp -> {
+        mediaPlayer.release();
+        mediaPlayer = null;
+
+        // Retomar el audio de jazz si no fue liberado
+        if (mediaPlayer2 != null) {
+            mediaPlayer2.start();
+        }
+    });
+}
 
     private void calcularCasilla(int angle) {
         // Normalizar el ángulo a un valor entre 0-360
