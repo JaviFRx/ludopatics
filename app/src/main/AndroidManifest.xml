@@ -42,6 +42,9 @@
             android:label="@string/title_activity_ruleta"
             android:theme="@style/Theme.Ludopatics" />
 
+        <activity android:name=".GameOverActivity">
+
+        </activity>
 
     </application>
 

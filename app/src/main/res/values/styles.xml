@@ -17,4 +17,10 @@
         <item name="android:windowFullscreen">true</item> <!-- Pantalla completa -->
     </style>
 
+    <style name="NumberPickerStyle">
+        <item name="android:background">#00000000</item> <!-- Fondo transparente -->
+        <item name="android:textColorPrimary">@android:color/white</item> <!-- Texto en blanco -->
+        <item name="android:textColor">@android:color/white</item> <!-- Color alternativo de texto -->
+    </style>
+
 </resources>

@@ -1,7 +1,9 @@
 package com.example.ludopatics;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,19 +11,18 @@ import android.util.Log;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View;
-import android.view.View;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -31,18 +32,17 @@ import java.util.Random;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
-    private List<Apuesta> listaApuestas = new ArrayList<>();
+    private final List<Apuesta> listaApuestas = new ArrayList<>();
     String casillaFinal ="";
+    int totalApuesta=0;
     private String selectedColor = ""; // Variable para almacenar el color apostado
     private String resColor = "";
     private ImageView ruletaImage;
     private TextView apuestaTextView;
     private Button btnGirar;
 
-    private CirculosView circleView;
-    private CirculosView circulo1;
-    private CirculosView circulo2;
-    private CirculosView circulo3;
+    private CirculosView circleView,circulo1,circulo2,circulo3,circulo4,circulo5;
+
     private MediaPlayer mediaPlayer;
     private MediaPlayer mediaPlayer2;
 
@@ -65,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
     // Variables para el seguimiento de la apuesta y el saldo
     private int currentBalance = 1000; // Saldo inicial
     private int currentBetAmount = 0; // Cantidad de apuesta actual
-    private String numeroSeleccionado = "";
+    private String nombreUsuario="";
+    private final String numeroSeleccionado = "";
     private String selectedParImpar = "null";
     // Definimos los números de la ruleta en orden
     private final String[] casillasRuleta = {
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         });
         TextView tvUsername = findViewById(R.id.username); // Obtener el TextView
         // Obtener el nombre de usuario desde el Intent
-        String nombreUsuario = getIntent().getStringExtra("nombreUsuario");
+        nombreUsuario = getIntent().getStringExtra("nombreUsuario");
 
         // Verificar si el nombre no es nulo ni vacío antes de mostrarlo
         if (nombreUsuario != null && !nombreUsuario.isEmpty()) {
@@ -121,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
         circulo1 = findViewById(R.id.circulo1);
         circulo2 = findViewById(R.id.circulo2);
         circulo3 = findViewById(R.id.circulo3);
+        circulo4 = findViewById(R.id.circulo4);
+        circulo5 = findViewById(R.id.circulo5);
         apuestaTextView = findViewById(R.id.apuesta);
         apuestaNumeroTextView = findViewById(R.id.apuestaNumero);
         apuestaParImparTextView = findViewById(R.id.apuestaParImpar);
@@ -232,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Verificar si al menos una de las opciones ha sido seleccionada
-        if (selectedColor.equals("") && selectedParImpar.equals("") && numeroSeleccionado.equals("")) {
+        if (selectedColor.isEmpty() && selectedParImpar.isEmpty() && numeroSeleccionado.isEmpty()) {
             Toast.makeText(this, "Debes hacer una apuesta a color, número o Par/Impar", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -257,12 +260,16 @@ public class MainActivity extends AppCompatActivity {
         rotateAnimation.setAnimationListener(new android.view.animation.Animation.AnimationListener() {
             @Override
             public void onAnimationStart(android.view.animation.Animation animation) {
+
+                int totalApostado = calcularTotalApuesta();
+
                 // Deshabilitar botones durante la animación
                 betButtonPlus1.setEnabled(false);
                 betButtonPlus10.setEnabled(false);
                 betButtonPlus100.setEnabled(false);
                 placeBetButton.setEnabled(false);
                 btnGirar.setEnabled(false);
+
             }
 
             @Override
@@ -273,44 +280,46 @@ public class MainActivity extends AppCompatActivity {
                 String color = resColor;
                 roundCount++;
                 roundTextView.setText("Round #" + roundCount);
+
                 comprobarApuestas(resColor, casillaFinal);
                 // Mover los colores hacia la izquierda
                 circulo1.setCircleColor(circulo2.getCircleColor());
                 circulo2.setCircleColor(circulo3.getCircleColor());
+                circulo3.setCircleColor(circulo4.getCircleColor());
+                circulo4.setCircleColor(circulo5.getCircleColor());
+
                 // Mover el texto hacia la izquierda
                 circulo1.setText(circulo2.getText());
                 circulo2.setText(circulo3.getText());
-                if (color.equals("rojo")){
-                    circulo3.setCircleColor(Color.RED);
-                    circulo3.setText(casillaFinal);
-                }
-                if (color.equals("negro"))
-                {
-                    circulo3.setCircleColor(Color.BLACK);
-                    circulo3.setText(casillaFinal);
-                }
-                if (color.equals("verde"))
-                {
-                    circulo3.setCircleColor(Color.GREEN);
-                    circulo3.setText(casillaFinal);
-                }
+                circulo3.setText(circulo4.getText());
+                circulo4.setText(circulo5.getText());
 
+                // Asignar color y texto al nuevo círculo (circulo5)
+                switch (color) {
+                    case "rojo":
+                        circulo5.setCircleColor(Color.RED);
+                        break;
+                    case "negro":
+                        circulo5.setCircleColor(Color.BLACK);
+                        break;
+                    case "verde":
+                        circulo5.setCircleColor(Color.GREEN);
+                        break;
+                }
+                circulo5.setText(casillaFinal);
 
                 // Mostrar los círculos gradualmente según el número de tiradas
                 if (roundCount == 1) {
-                    circulo3.setVisibility(View.VISIBLE); // Muestra el primer círculo
-                    circulo3.setText(casillaFinal);
+                    circulo5.setVisibility(View.VISIBLE); // Muestra el primer círculo
+                } else if (roundCount == 2) {
+                    circulo4.setVisibility(View.VISIBLE); // Muestra el segundo círculo
+                } else if (roundCount == 3) {
+                    circulo3.setVisibility(View.VISIBLE); // Muestra el tercero
+                } else if (roundCount == 4) {
+                    circulo2.setVisibility(View.VISIBLE); // Muestra el cuarto
+                } else if (roundCount >= 5) {
+                    circulo1.setVisibility(View.VISIBLE); // Muestra el quinto círculo
                 }
-
-                if (roundCount == 2) {
-                    circulo2.setVisibility(View.VISIBLE); // Muestra el segundo círculo
-
-                }
-
-                if (roundCount >= 3) {
-                    circulo1.setVisibility(View.VISIBLE); // Muestra el tercer círculo
-                    }
-
 
 
 
@@ -318,6 +327,11 @@ public class MainActivity extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        // Comprobar si ya hemos alcanzado 10 rondas o si el jugador se ha quedado sin dinero
+                        if (roundCount >= 10 || currentBalance <= 0) {
+                            finalizarJuego();  // Llamamos al método para finalizar el juego
+                            return;  // Salimos de la función si el juego ya ha terminado
+                        }
                         // Habilitar botones después de la animación
                         betButtonPlus1.setEnabled(true);
                         betButtonPlus10.setEnabled(true);
@@ -443,26 +457,69 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
     private void mostrarSelectorNumero() {
-        // Crear un array con los números del 0 al 36
-        String[] numeros = new String[37];
-        for (int i = 0; i <= 36; i++) {
-            numeros[i] = String.valueOf(i);
-        }
+        // Crear un NumberPicker
+        NumberPicker numberPicker = new NumberPicker(this);
+        numberPicker.setMinValue(0);
+        numberPicker.setMaxValue(36);
+        numberPicker.setWrapSelectorWheel(true);
 
-        // Crear y mostrar el diálogo de selección
+        // Cambiar el color del texto del NumberPicker a blanco
+        setNumberPickerTextColor(numberPicker, Color.WHITE);
+
+        // Crear el AlertDialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Selecciona un número")
-                .setItems(numeros, (dialog, which) -> {
-                    // Guardar el número seleccionado en la variable de la clase
-                    numeroSeleccionado = numeros[which];
-                    // Actualizar el TextView con la apuesta del número
+                .setView(numberPicker)
+                .setPositiveButton("Seleccionar", (dialog, which) -> {
+                    int numeroSeleccionado = numberPicker.getValue();
                     apuestaNumeroTextView.setText("Apostaste " + currentBetAmount + " al " + numeroSeleccionado);
                     Toast.makeText(this, "Número seleccionado: " + numeroSeleccionado, Toast.LENGTH_SHORT).show();
-                });
+                })
+                .setNegativeButton("Cancelar", null);
 
+        // Crear y mostrar el diálogo
         AlertDialog dialog = builder.create();
+
+        // Aplicar fondo personalizado y cambiar color de los botones después de que se muestre
+        dialog.setOnShowListener(d -> {
+            // Cambiar el fondo del AlertDialog
+            dialog.getWindow().setBackgroundDrawableResource(R.drawable.background_gradientvertical);
+
+            // Cambiar color del título y botones a blanco
+            TextView titleText = dialog.findViewById(android.R.id.title);
+            if (titleText != null) {
+                titleText.setTextColor(Color.WHITE);  // Título en blanco
+            }
+
+            Button positiveButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            if (positiveButton != null) {
+                positiveButton.setTextColor(Color.WHITE);  // Botón positivo en blanco
+            }
+
+            Button negativeButton = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+            if (negativeButton != null) {
+                negativeButton.setTextColor(Color.WHITE);  // Botón negativo en blanco
+            }
+        });
+
         dialog.show();
     }
+
+    /**
+     * Método para cambiar el color del texto en el NumberPicker sin usar reflexión.
+     */
+    private void setNumberPickerTextColor(NumberPicker numberPicker, int color) {
+        for (int i = 0; i < numberPicker.getChildCount(); i++) {
+            View child = numberPicker.getChildAt(i);
+            if (child instanceof EditText) {
+                ((EditText) child).setTextColor(color); // Cambia el color del texto a blanco
+                ((EditText) child).setTypeface(Typeface.DEFAULT_BOLD); // Hace el texto más llamativo
+            }
+        }
+    }
+
+
+
     private void agregarApuesta(String tipo, String valor) {
         if (currentBetAmount <= 0) {
             Toast.makeText(this, "Primero selecciona un monto de apuesta", Toast.LENGTH_SHORT).show();
@@ -526,7 +583,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Comprobar apuesta al número
-        if (!numeroSeleccionado.equals("") && numeroSeleccionado.equals(casillaFinal)) {
+        if (!numeroSeleccionado.isEmpty() && numeroSeleccionado.equals(casillaFinal)) {
             ganoAlgo = true;
             // Si el número apostado coincide con el número resultado
             currentBalance += currentBetAmount * 35; // La ruleta paga 35 veces la apuesta por el número
@@ -534,7 +591,7 @@ public class MainActivity extends AppCompatActivity {
                 mensajeResultado.append("\n");
             }
             mensajeResultado.append("¡Ganaste! Número ").append(casillaFinal).append(". Multiplicaste por 35.");
-        } else if (!numeroSeleccionado.equals("")) {
+        } else if (!numeroSeleccionado.isEmpty()) {
             if (mensajeResultado.length() > 0) {
                 mensajeResultado.append("\n");
             }
@@ -542,7 +599,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Comprobar apuesta a par/impar
-        if (!selectedParImpar.equals("")) {
+        if (!selectedParImpar.isEmpty()) {
             int resultadoNumero = Integer.parseInt(casillaFinal);
             boolean esPar = resultadoNumero % 2 == 0;
 
@@ -570,6 +627,38 @@ public class MainActivity extends AppCompatActivity {
         // Actualizar la UI
         balanceValue.setText(String.valueOf(currentBalance));
         apuestaTextView.setText(mensajeResultado.toString());
+    }
+    public int calcularTotalApuesta() {
+        int totalApuesta = 0;
+        for (Apuesta apuesta : listaApuestas) {
+            totalApuesta += apuesta.monto;
+        }
+        return totalApuesta;
+    }
+    private void finalizarJuego() {
+        // Aquí puedes mostrar un mensaje al jugador o realizar otras acciones
+        if (roundCount >= 10) {
+            // Si se han alcanzado las 10 rondas
+            Toast.makeText(this, "¡Juego terminado! Has alcanzado el límite de rondas.", Toast.LENGTH_SHORT).show();
+        } else if (currentBalance <= 0) {
+            // Si se ha quedado sin dinero
+            Toast.makeText(this, "¡Juego terminado! Te has quedado sin dinero.", Toast.LENGTH_SHORT).show();
+        }
+        Intent intent = new Intent(this, GameOverActivity.class);
+        intent.putExtra("roundCount", roundCount);
+        intent.putExtra("currentBalance", currentBalance);
+        intent.putExtra("nombreUsuario", nombreUsuario);
+        startActivity(intent);
+
+        // Finalizar la actividad actual para que el usuario no regrese a ella
+        finish();
+
+        // Deshabilitar los botones para que el jugador no pueda seguir apostando ni girando
+        betButtonPlus1.setEnabled(false);
+        betButtonPlus10.setEnabled(false);
+        betButtonPlus100.setEnabled(false);
+        placeBetButton.setEnabled(false);
+        btnGirar.setEnabled(false);
     }
 
 }

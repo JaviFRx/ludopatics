@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background_gradientvertical"
+    android:gravity="center"
+    android:padding="16dp">
+
+
+<TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="¡Fin del Juego!"
+android:textSize="24sp"
+android:textColor="#FFFFFF"
+android:textStyle="bold"
+android:gravity="center"
+android:layout_marginBottom="30dp"/>
+
+
+<TextView
+android:id="@+id/game_over_message"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="¡Gracias por jugar!"
+android:textSize="18sp"
+android:textColor="#FFFFFF"
+android:gravity="center"
+android:layout_marginBottom="40dp"/>
+
+
+<Button
+android:id="@+id/restartButton"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Reiniciar Juego"
+android:textColor="#FFFFFF"
+android:background="@drawable/button_style"
+android:layout_marginBottom="20dp"
+android:padding="12dp"/>
+
+
+<Button
+android:id="@+id/exitButton"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Salir"
+android:textColor="#FFFFFF"
+android:background="@drawable/button_style"
+android:padding="12dp"/>
+
+    </LinearLayout>
