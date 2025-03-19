@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private CirculosView circleView,circulo1,circulo2,circulo3,circulo4,circulo5;
 
     private MediaPlayer mediaPlayer;
-    private MediaPlayer mediaPlayer2;
+    public static MediaPlayer mediaPlayer2;
 
     // Variables para manejar las apuestas
     private TextView balanceValue;
@@ -218,15 +218,18 @@ public class MainActivity extends AppCompatActivity {
 
     // Método para colocar la apuesta
     private void placeBet() {
-        if (currentBetAmount > 0) {
-                Toast.makeText(this, "Apuesta de " + currentBetAmount + " colocada", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Debes hacer una apuesta primero", Toast.LENGTH_SHORT).show();
+        if (currentBetAmount <= 0) {
+            Toast.makeText(this, "Debes ingresar una cantidad para apostar", Toast.LENGTH_SHORT).show();
+            return;
         }
-        // Reiniciar monto de apuesta
-        currentBetAmount = 0;
-        updateBetAmountText();
+
+        // Validar que el usuario haya seleccionado al menos una opción
+        if (selectedColor.isEmpty() && selectedParImpar.isEmpty() && numeroSeleccionado.isEmpty()) {
+            Toast.makeText(this, "Debes seleccionar una opción: Color, Número o Par/Impar", Toast.LENGTH_SHORT).show();
+            return;
+        }
     }
+
 
     private void girarRuleta() {
         if (currentBetAmount <= 0) {
