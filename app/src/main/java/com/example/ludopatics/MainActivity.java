@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         betButtonPlus1 = findViewById(R.id.bet_button_plus);
         betButtonPlus10 = findViewById(R.id.bet_button_plus10);
         betButtonPlus100 = findViewById(R.id.bet_button_plus100);
-        placeBetButton = findViewById(R.id.place_bet_button);
+        //placeBetButton = findViewById(R.id.place_bet_button);
         roundTextView = findViewById(R.id.Round);
         // Configurar el saldo inicial
         balanceValue.setText(String.valueOf(currentBalance));
