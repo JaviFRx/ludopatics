@@ -5,5 +5,7 @@
     <string name="authors_text">Autores:\n\nJavier Fernández\nAleix Ortiz\nGabriela Buil\nJordi Montserrat</string>
     <string name="play_button_text">JUGAR</string>
     <string name="hint_nombre_usuario">Introduce tu nombre</string>
+    <string name="bet_and_spin">Bet and Spin</string>
+    <string name="bet_amount_minimum_1">Bet Amount: minimum 1</string>
 
 </resources>
