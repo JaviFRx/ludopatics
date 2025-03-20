@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
         Button blackButton = findViewById(R.id.black_button);
         Button numButton = findViewById(R.id.num_button);
         // Configurar el listener para el botón de colocar apuesta
-        placeBetButton.setOnClickListener(view -> placeBet());
+        //placeBetButton.setOnClickListener(view -> placeBet());
         //Configurar listener del botón para seleccionar numero
         numButton.setOnClickListener(v -> mostrarSelectorNumero());
         // Configurar el listener del botón de girar
@@ -267,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
                 betButtonPlus1.setEnabled(false);
                 betButtonPlus10.setEnabled(false);
                 betButtonPlus100.setEnabled(false);
-                placeBetButton.setEnabled(false);
+                //placeBetButton.setEnabled(false);
                 btnGirar.setEnabled(false);
 
             }
@@ -336,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
                         betButtonPlus1.setEnabled(true);
                         betButtonPlus10.setEnabled(true);
                         betButtonPlus100.setEnabled(true);
-                        placeBetButton.setEnabled(true);
+                        //placeBetButton.setEnabled(true);
                         btnGirar.setEnabled(true);
 
                         // Reiniciar la apuesta actual
