@@ -193,13 +193,10 @@ public class MainActivity extends AppCompatActivity {
     private void increaseBet(int amount) {
         // Verificar si el usuario tiene suficiente saldo
         if (currentBalance >= amount) {
-            // Restar del saldo
-            currentBalance -= amount;
-            // Aumentar la apuesta
+            // Solo aumentar la apuesta (NO restar del saldo aún)
             currentBetAmount += amount;
 
-            // Actualizar las vistas
-            balanceValue.setText(String.valueOf(currentBalance));
+            // Actualizar la vista del monto de apuesta
             updateBetAmountText();
         } else {
             // Mostrar mensaje si no hay suficiente saldo
@@ -216,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+<<<<<<< Updated upstream
     // Método para colocar la apuesta
     private void placeBet() {
         if (currentBetAmount <= 0) {
@@ -229,10 +227,13 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
     }
+=======
+
+>>>>>>> Stashed changes
 
 
     private void girarRuleta() {
-        if (currentBetAmount <= 0) {
+        if (listaApuestas.isEmpty()) {
             Toast.makeText(this, "Debes hacer una apuesta primero", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -529,20 +530,31 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // Eliminar apuesta anterior del mismo tipo (si existe)
+        boolean replacingExistingBet = false;
+        // Buscar si ya existe una apuesta del mismo tipo y eliminarla de forma segura
         Iterator<Apuesta> iterator = listaApuestas.iterator();
         while (iterator.hasNext()) {
             Apuesta apuesta = iterator.next();
             if (apuesta.tipo.equals(tipo)) {
-                iterator.remove();
+                currentBalance += apuesta.monto; // Reembolsar la apuesta anterior
+                iterator.remove();  // Eliminar la apuesta anterior de forma segura
+                replacingExistingBet = true;
+                break;  // Salimos ya que solo puede haber una apuesta del mismo tipo
             }
         }
+
+        // Actualizar UI para mostrar que se reembolsó una apuesta (opcional)
+        if (replacingExistingBet) {
+            actualizarSaldoUI(); // Actualizar saldo después del reembolso
+        }
+
+        // Restar la nueva apuesta del saldo
+        currentBalance -= currentBetAmount;
 
         // Agregar la nueva apuesta
         listaApuestas.add(new Apuesta(tipo, valor, currentBetAmount));
 
-        // Mostrar en pantalla
-        // Mostrar en el TextView correspondiente según el tipo de apuesta
+        // Actualizar UI
         switch (tipo) {
             case "color":
                 apuestaTextView.setText("Apostaste " + currentBetAmount + " al color " + valor);
@@ -554,12 +566,18 @@ public class MainActivity extends AppCompatActivity {
                 apuestaParImparTextView.setText("Apostaste " + currentBetAmount + " a " + valor);
                 break;
             default:
-                // En caso de error o tipo desconocido
                 Log.e("Apuesta", "Tipo de apuesta desconocido: " + tipo);
         }
 
+        actualizarSaldoUI(); // Asegurar que la interfaz muestra el saldo correcto
+        currentBetAmount = 0; // Reiniciar el monto apostado *después* de actualizar la UI
+    }
+
+    private void actualizarSaldoUI() {
+        balanceValue.setText(String.valueOf(currentBalance));
 
     }
+
     /**
      * Comprueba todas las apuestas y actualiza el saldo según los resultados
      * @param resColor El color resultante de la ruleta (rojo, negro o verde)
