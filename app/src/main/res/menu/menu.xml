@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Main">
+
+
+
+    <!-- Botón del altavoz a la derecha -->
+    <item
+        android:id="@+id/music_toggle"
+        android:icon="@drawable/speakeroff"
+        android:title=""
+        android:orderInCategory="2"
+        app:showAsAction="ifRoom" />
+</menu>
+
