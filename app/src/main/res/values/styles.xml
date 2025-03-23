@@ -7,6 +7,7 @@
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <item name="android:logo">@mipmap/ic_launcher</item>
         <item name="android:windowLightStatusBar">true</item> <!-- Cambia el color de la barra de estado -->
     </style>
 
@@ -16,6 +17,12 @@
         <item name="android:windowActionBar">false</item> <!-- Sin ActionBar -->
         <item name="android:windowFullscreen">true</item> <!-- Pantalla completa -->
     </style>
+
+    <style name="Theme.Ludopatics.ActionBar" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="android:windowActionBar">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
 
     <style name="NumberPickerStyle">
         <item name="android:background">#00000000</item> <!-- Fondo transparente -->

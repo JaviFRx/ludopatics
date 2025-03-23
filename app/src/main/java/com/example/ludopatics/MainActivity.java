@@ -8,10 +8,14 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
@@ -21,6 +25,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
+import androidx.core.view.GestureDetectorCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import java.util.ArrayList;
@@ -30,8 +35,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-
+import androidx.appcompat.app.ActionBar;
 public class MainActivity extends AppCompatActivity {
+
     private final List<Apuesta> listaApuestas = new ArrayList<>();
     String casillaFinal ="";
     int totalApuesta=0;
@@ -49,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
     // Variables para manejar las apuestas
     private TextView balanceValue;
     private TextView betAmount;
+    private GestureDetector gestureDetector;
+    private boolean isActionBarVisible = false;
+    private Handler hideHandler = new Handler();
 
     private TextView apuestaNumeroTextView;
     private TextView apuestaParImparTextView;
@@ -95,6 +104,40 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        // Obtiene la ActionBar
+        ActionBar actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.setDisplayUseLogoEnabled(true);
+            actionBar.setLogo(R.mipmap.ic_launcher);
+
+            // Configurar el título
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setTitle("Ludopatics");
+            actionBar.hide();
+
+        }
+        final boolean[] isActionBarVisible = {false};
+
+        // Configurar el botón de imagen
+        ImageButton menuButton = findViewById(R.id.btn_toggle_actionbar);
+        menuButton.setOnClickListener(view -> {
+            if (actionBar != null) {
+                if (isActionBarVisible[0]) {
+                    actionBar.hide();
+                } else {
+                    actionBar.show();
+                }
+                isActionBarVisible[0] = !isActionBarVisible[0];
+                Log.d("ActionBarTest", "ActionBar visibility toggled to: " + !isActionBarVisible[0]);
+            } else {
+                Log.e("ActionBarTest", "ActionBar is null!");
+            }
+        });
+
+
+
         TextView tvUsername = findViewById(R.id.username); // Obtener el TextView
         // Obtener el nombre de usuario desde el Intent
         nombreUsuario = getIntent().getStringExtra("nombreUsuario");
@@ -183,6 +226,34 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflar el archivo menu.xml para que aparezcan los íconos en la ActionBar
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.music_toggle) {  // Verifica si es el botón de música
+            if (mediaPlayer2.isPlaying()) {
+                // Detener la música si está reproduciéndose
+                mediaPlayer2.pause();
+                item.setIcon(R.drawable.speaker);  // Cambiar el ícono a uno de apagado
+                Toast.makeText(this, "Música detenida", Toast.LENGTH_SHORT).show();
+            } else {
+                // Reanudar la música si está detenida
+                mediaPlayer2.start();
+                item.setIcon(R.drawable.speakeroff);  // Cambiar el ícono a uno de encendido
+                Toast.makeText(this, "Música iniciada", Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
 
 

@@ -63,18 +63,29 @@ public class Ruleta extends AppCompatActivity {
         btnJugar.setOnClickListener(v -> {
             String nombre = etNombreUsuario.getText().toString().trim();
             if (!nombre.isEmpty()) {
-                boolean guardado = dbHelper.guardarNombre(nombre);
-                if (guardado) {
-                    Toast.makeText(this, "Nombre guardado: " + nombre, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "Error al guardar", Toast.LENGTH_SHORT).show();
+                // Intentar obtener el ID del jugador por su nombre
+                int jugadorId = dbHelper.obtenerIdJugador(nombre);
+
+                // Si el jugador no existe, lo creamos
+                if (jugadorId == -1) {
+                    // Crear el usuario
+                    boolean guardado = dbHelper.guardarNombre(nombre);
+                    if (!guardado) {
+                        return; // Si no se guarda el usuario, terminamos aquí.
+                    }
+                    // Obtener el ID del nuevo jugador
+                    jugadorId = dbHelper.obtenerIdJugador(nombre);
                 }
-                Intent intent = new Intent(Ruleta.this, MainActivity.class);
-                intent.putExtra("nombreUsuario", nombre);  // Enviar el nombre al intent
-                startActivity(intent);
-                finish();
-            } else {
-                Toast.makeText(this, "Introduce tu nombre", Toast.LENGTH_SHORT).show();
+
+                // Crear la partida para el jugador (nuevo o existente)
+                boolean partidaCreada = dbHelper.crearPartida(jugadorId);
+                if (partidaCreada) {
+                    // Crear el intent y pasar al siguiente activity
+                    Intent intent = new Intent(Ruleta.this, MainActivity.class);
+                    intent.putExtra("nombreUsuario", nombre);  // Enviar el nombre al intent
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
     }
