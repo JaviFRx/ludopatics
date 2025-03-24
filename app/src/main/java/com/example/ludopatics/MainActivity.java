@@ -584,56 +584,49 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
     private void agregarApuesta(String tipo, String valor) {
         if (currentBetAmount <= 0) {
             Toast.makeText(this, "Primero selecciona un monto de apuesta", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        boolean replacingExistingBet = false;
-        // Buscar si ya existe una apuesta del mismo tipo y eliminarla de forma segura
-        Iterator<Apuesta> iterator = listaApuestas.iterator();
-        while (iterator.hasNext()) {
-            Apuesta apuesta = iterator.next();
-            if (apuesta.tipo.equals(tipo)) {
-                currentBalance += apuesta.monto; // Reembolsar la apuesta anterior
-                iterator.remove();  // Eliminar la apuesta anterior de forma segura
-                replacingExistingBet = true;
-                break;  // Salimos ya que solo puede haber una apuesta del mismo tipo
+        // Si ya existe una apuesta de este tipo, reembolsarla y eliminarla
+        Apuesta apuestaExistente = null;
+        for (Apuesta a : listaApuestas) {
+            if (a.tipo.equals(tipo)) {
+                apuestaExistente = a;
+                break;
             }
         }
-
-        // Actualizar UI para mostrar que se reembolsó una apuesta (opcional)
-        if (replacingExistingBet) {
-            actualizarSaldoUI(); // Actualizar saldo después del reembolso
+        if (apuestaExistente != null) {
+            currentBalance += apuestaExistente.monto;  // Reembolsar la apuesta anterior
+            listaApuestas.remove(apuestaExistente);
         }
 
-        // Restar la nueva apuesta del saldo
+        // Restar el monto de la nueva apuesta del saldo
         currentBalance -= currentBetAmount;
-
-        // Agregar la nueva apuesta
         listaApuestas.add(new Apuesta(tipo, valor, currentBetAmount));
 
-        // Actualizar UI
+        // Actualizar la UI según el tipo de apuesta
         switch (tipo) {
             case "color":
                 apuestaTextView.setText("Apostaste " + currentBetAmount + " al color " + valor);
+                selectedColor = valor;
                 break;
             case "numero":
                 apuestaNumeroTextView.setText("Apostaste " + currentBetAmount + " al número " + valor);
                 break;
             case "parImpar":
                 apuestaParImparTextView.setText("Apostaste " + currentBetAmount + " a " + valor);
+                selectedParImpar = valor;
                 break;
             default:
                 Log.e("Apuesta", "Tipo de apuesta desconocido: " + tipo);
         }
-
-        actualizarSaldoUI(); // Asegurar que la interfaz muestra el saldo correcto
-        currentBetAmount = 0; // Reiniciar el monto apostado *después* de actualizar la UI
+        actualizarSaldoUI();
+        currentBetAmount = 0;
     }
+
 
     private void actualizarSaldoUI() {
         balanceValue.setText(String.valueOf(currentBalance));
@@ -649,60 +642,47 @@ public class MainActivity extends AppCompatActivity {
         StringBuilder mensajeResultado = new StringBuilder();
         boolean ganoAlgo = false;
 
-        // Comprobar apuesta al color
-        if (selectedColor.equals(resColor)) {
-            ganoAlgo = true;
-            if (resColor.equals("verde")) {
-                // Si el color es verde, multiplica la apuesta por 14
-                currentBalance += currentBetAmount * 14;
-                mensajeResultado.append("¡Ganaste! Color verde. Multiplicaste por 14.");
-            } else {
-                // Si el color es rojo o negro, multiplica la apuesta por 2
-                currentBalance += currentBetAmount * 2;
-                mensajeResultado.append("¡Ganaste! Color ").append(resColor).append(". Multiplicaste por 2.");
-            }
-        } else if (!selectedColor.equals("null")) {
-            mensajeResultado.append("Perdiste en color. ");
-        }
-
-        // Comprobar apuesta al número
-        if (!numeroSeleccionado.isEmpty() && numeroSeleccionado.equals(casillaFinal)) {
-            ganoAlgo = true;
-            // Si el número apostado coincide con el número resultado
-            currentBalance += currentBetAmount * 35; // La ruleta paga 35 veces la apuesta por el número
-            if (mensajeResultado.length() > 0) {
-                mensajeResultado.append("\n");
-            }
-            mensajeResultado.append("¡Ganaste! Número ").append(casillaFinal).append(". Multiplicaste por 35.");
-        } else if (!numeroSeleccionado.isEmpty()) {
-            if (mensajeResultado.length() > 0) {
-                mensajeResultado.append("\n");
-            }
-            mensajeResultado.append("Perdiste en número. ");
-        }
-
-        // Comprobar apuesta a par/impar
-        if (!selectedParImpar.isEmpty()) {
-            int resultadoNumero = Integer.parseInt(casillaFinal);
-            boolean esPar = resultadoNumero % 2 == 0;
-
-            if ((selectedParImpar.equals("par") && esPar) || (selectedParImpar.equals("impar") && !esPar)) {
-                ganoAlgo = true;
-                // Si la apuesta coincide con el resultado, gana el doble
-                currentBalance += currentBetAmount * 2;
-                if (mensajeResultado.length() > 0) {
-                    mensajeResultado.append("\n");
-                }
-                mensajeResultado.append("¡Ganaste! Apuesta a ").append(selectedParImpar).append(". Multiplicaste por 2.");
-            } else {
-                if (mensajeResultado.length() > 0) {
-                    mensajeResultado.append("\n");
-                }
-                mensajeResultado.append("Perdiste en ").append(selectedParImpar).append(".");
+        // Procesar cada apuesta realizada en la ronda
+        for (Apuesta apuesta : listaApuestas) {
+            switch (apuesta.tipo) {
+                case "color":
+                    if (apuesta.valor.equals(resColor)) {
+                        ganoAlgo = true;
+                        if (resColor.equals("verde")) {
+                            currentBalance += apuesta.monto * 14;
+                            mensajeResultado.append("¡Ganaste " + (apuesta.monto * 14) + " en color verde. ");
+                        } else {
+                            currentBalance += apuesta.monto * 2;
+                            mensajeResultado.append("¡Ganaste " + (apuesta.monto * 2) + " en color " + resColor + ". ");
+                        }
+                    } else {
+                        mensajeResultado.append("Perdiste apuesta en color. ");
+                    }
+                    break;
+                case "numero":
+                    if (apuesta.valor.equals(casillaFinal)) {
+                        ganoAlgo = true;
+                        currentBalance += apuesta.monto * 35;
+                        mensajeResultado.append("¡Ganaste " + (apuesta.monto * 35) + " en número " + casillaFinal + ". ");
+                    } else {
+                        mensajeResultado.append("Perdiste apuesta en número " + apuesta.valor + ". ");
+                    }
+                    break;
+                case "parImpar":
+                    int resultadoNumero = Integer.parseInt(casillaFinal);
+                    boolean esPar = resultadoNumero % 2 == 0;
+                    if ((apuesta.valor.equals("par") && esPar) || (apuesta.valor.equals("impar") && !esPar)) {
+                        ganoAlgo = true;
+                        currentBalance += apuesta.monto * 2;
+                        mensajeResultado.append("¡Ganaste " + (apuesta.monto * 2) + " en apuesta " + apuesta.valor + ". ");
+                    } else {
+                        mensajeResultado.append("Perdiste apuesta en " + apuesta.valor + ". ");
+                    }
+                    break;
             }
         }
 
-        // Si no ganó nada y no hay mensajes, mostrar mensaje genérico
+        // Si no se ganó nada, mostrar mensaje genérico
         if (!ganoAlgo && mensajeResultado.length() == 0) {
             mensajeResultado.append("Perdiste. Inténtalo de nuevo.");
         }
@@ -710,7 +690,12 @@ public class MainActivity extends AppCompatActivity {
         // Actualizar la UI
         balanceValue.setText(String.valueOf(currentBalance));
         apuestaTextView.setText(mensajeResultado.toString());
+
+        // Limpiar la lista de apuestas para la siguiente ronda
+        listaApuestas.clear();
     }
+
+
     public int calcularTotalApuesta() {
         int totalApuesta = 0;
         for (Apuesta apuesta : listaApuestas) {
