@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 import android.widget.VideoView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -81,7 +80,7 @@ public class Ruleta extends AppCompatActivity {
                 boolean partidaCreada = dbHelper.crearPartida(jugadorId);
                 if (partidaCreada) {
                     // Crear el intent y pasar al siguiente activity
-                    Intent intent = new Intent(Ruleta.this, MainActivity.class);
+                    Intent intent = new Intent(this, usuario.class);
                     intent.putExtra("nombreUsuario", nombre);  // Enviar el nombre al intent
                     startActivity(intent);
                     finish();
