@@ -11,13 +11,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.graphics.Insets;
 
-public class usuario extends AppCompatActivity {
+public class Menu extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Se establece el layout activity_usuario.xml, que tiene el id "main" en la raíz
-        setContentView(R.layout.activity_usuario);
+        setContentView(R.layout.activity_menu);
 
         // Configuración de EdgeToEdge (si lo deseas, puede ir después de setContentView)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -43,25 +43,25 @@ public class usuario extends AppCompatActivity {
         });
 
         btnJugarSolo.setOnClickListener(v -> {
-            Intent intent = new Intent(usuario.this, MainActivity.class);
+            Intent intent = new Intent(Menu.this, MainActivity.class);
             startActivity(intent);
         });
 
 
         btnMultijugador.setOnClickListener(v -> {
             // Lógica para "MULTIJUGADOR"
-            Intent intent = new Intent(usuario.this, MainActivity.class);
+            Intent intent = new Intent(Menu.this, MainActivity.class);
             startActivity(intent);
         });
 
         btnHistorial.setOnClickListener(v -> {
             // Lógica para "HISTORIAL"
-            Intent intent = new Intent(usuario.this, HistorialActivity.class);
+            Intent intent = new Intent(Menu.this, HistorialActivity.class);
             startActivity(intent);        });
 
         btnMiPerfil.setOnClickListener(v -> {
             // Lógica para "MI PERFIL"
-            Log.d("usuario", "Se pulsó MI PERFIL");
+            Log.d("Menu", "Se pulsó MI PERFIL");
         });
     }
 }

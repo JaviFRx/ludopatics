@@ -25,13 +25,11 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
-import androidx.core.view.GestureDetectorCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -139,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         TextView tvUsername = findViewById(R.id.username); // Obtener el TextView
-        // Obtener el nombre de usuario desde el Intent
+        // Obtener el nombre de Menu desde el Intent
         nombreUsuario = getIntent().getStringExtra("nombreUsuario");
 
         // Verificar si el nombre no es nulo ni vacío antes de mostrarlo
@@ -259,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Método para aumentar la apuesta
     private void increaseBet(int amount) {
-        // Verificar si el usuario tiene suficiente saldo
+        // Verificar si el Menu tiene suficiente saldo
         if (currentBalance >= amount) {
             // Solo aumentar la apuesta (NO restar del saldo aún)
             currentBetAmount += amount;
@@ -288,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // Validar que el usuario haya seleccionado al menos una opción
+        // Validar que el Menu haya seleccionado al menos una opción
         if (selectedColor.isEmpty() && selectedParImpar.isEmpty() && numeroSeleccionado.isEmpty()) {
             Toast.makeText(this, "Debes seleccionar una opción: Color, Número o Par/Impar", Toast.LENGTH_SHORT).show();
             return;
@@ -718,7 +716,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("nombreUsuario", nombreUsuario);
         startActivity(intent);
 
-        // Finalizar la actividad actual para que el usuario no regrese a ella
+        // Finalizar la actividad actual para que el Menu no regrese a ella
         finish();
 
         // Deshabilitar los botones para que el jugador no pueda seguir apostando ni girando

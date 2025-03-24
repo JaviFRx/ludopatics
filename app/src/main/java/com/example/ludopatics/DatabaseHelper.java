@@ -81,7 +81,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    // Método para guardar el nombre de un usuario
+    // Método para guardar el nombre de un Menu
     public boolean guardarNombre(String nombre) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -92,7 +92,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    // Método para obtener el nombre de un usuario
+    // Método para obtener el nombre de un Menu
     public String obtenerNombre() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT " + COLUMN_NOMBRE + " FROM " + TABLE_USUARIOS + " LIMIT 1", null);
@@ -153,7 +153,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return result != -1;
     }
 
-    // Método para obtener el histórico de tiradas de un usuario
+    // Método para obtener el histórico de tiradas de un Menu
     public Cursor obtenerHistorico(int usuarioId) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.rawQuery("SELECT " + COLUMN_HIST_PARTIDA_ID + ", " +  // Ahora también se obtiene el ID de la partida

@@ -19,7 +19,7 @@
             android:name=".ui.theme.historial"
             android:exported="false" />
         <activity
-            android:name=".usuario"
+            android:name=".Menu"
             android:exported="false" /> <!-- SplashActivity como actividad principal -->
         <activity
             android:name=".SplashActivity"
