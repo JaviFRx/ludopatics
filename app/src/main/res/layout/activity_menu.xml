@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#4A0080"
+    tools:context=".Menu">
+
+    <!-- Botón "Exit" en la esquina superior izquierda -->
+<Button
+android:id="@+id/btnExit"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="Exit"
+android:textColor="@android:color/white"
+android:textAllCaps="false"
+android:backgroundTint="@android:color/transparent"
+android:fontFamily="@font/madimione_regular"
+android:textSize="16sp"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+android:layout_margin="16dp"/>
+
+    <!-- TextView "USERNAME" en la esquina superior derecha -->
+<TextView
+android:id="@+id/tvUsername"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="USERNAME"
+android:textColor="@android:color/white"
+android:textSize="16sp"
+android:textStyle="bold"
+android:fontFamily="@font/madimione_regular"
+app:layout_constraintEnd_toEndOf="parent"
+app:layout_constraintTop_toTopOf="parent"
+android:layout_margin="16dp"/>
+
+    <!-- Título "LUDOPATICS" centrado horizontalmente -->
+<TextView
+android:id="@+id/tvTitle"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="LUDOPATICS"
+android:textColor="@android:color/white"
+android:textSize="26sp"
+android:textStyle="bold"
+android:fontFamily="@font/madimione_regular"
+app:layout_constraintTop_toBottomOf="@+id/btnExit"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+android:layout_marginTop="24dp"
+android:gravity="center" />
+
+    <!-- Contenedor de botones, centrado horizontalmente -->
+<LinearLayout
+    android:id="@+id/layoutButtons"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/transparent"
+    app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginTop="32dp">
+
+<Button
+    android:id="@+id/btnJugarSolo"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="JUGAR SOLO"
+    android:background="@drawable/transparent"
+    android:textColor="@android:color/white"
+    android:fontFamily="@font/madimione_regular"
+    android:layout_marginTop="8dp"
+    android:backgroundTint="@android:color/darker_gray"
+    android:textStyle="bold" />
+
+<Button
+    android:id="@+id/btnMultijugador"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="MULTIJUGADOR"
+    android:textColor="@android:color/white"
+    android:fontFamily="@font/madimione_regular"
+    android:layout_marginTop="8dp"
+    android:backgroundTint="@android:color/darker_gray"
+    android:background="@drawable/transparent"
+    android:textStyle="bold" />
+
+<Button
+    android:id="@+id/btnHistorial"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="HISTORIAL"
+    android:textColor="@android:color/white"
+    android:fontFamily="@font/madimione_regular"
+    android:layout_marginTop="8dp"
+    android:backgroundTint="@android:color/darker_gray"
+    android:background="@drawable/transparent"
+    android:textStyle="bold" />
+
+<Button
+    android:id="@+id/btnMiPerfil"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="MI PERFIL"
+    android:textColor="@android:color/white"
+    android:fontFamily="@font/madimione_regular"
+    android:layout_marginTop="8dp"
+    android:backgroundTint="@android:color/darker_gray"
+    android:background="@drawable/transparent"
+    android:textStyle="bold" />
+
+</LinearLayout>
+
+    <!-- Marcador para el GIF (puede ser un ImageView si ya tienes la imagen animada) -->
+<TextView
+android:id="@+id/tvGifPlaceholder"
+android:layout_width="250dp"
+android:layout_height="150dp"
+android:text="GIF"
+android:textColor="@android:color/white"
+android:gravity="center"
+android:background="@android:color/darker_gray"
+android:textStyle="bold"
+android:textSize="18sp"
+app:layout_constraintTop_toBottomOf="@+id/layoutButtons"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintEnd_toEndOf="parent"
+android:layout_marginTop="32dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

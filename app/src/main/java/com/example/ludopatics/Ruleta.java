@@ -78,11 +78,12 @@ public class Ruleta extends AppCompatActivity {
                 }
 
                 // Crear la partida para el jugador (nuevo o existente)
-                boolean partidaCreada = dbHelper.crearPartida(jugadorId);
-                if (partidaCreada) {
+                long partidaCreada = dbHelper.crearPartida(jugadorId);
+                if (partidaCreada != -1) {
                     // Crear el intent y pasar al siguiente activity
                     Intent intent = new Intent(Ruleta.this, MainActivity.class);
                     intent.putExtra("nombreUsuario", nombre);  // Enviar el nombre al intent
+                    intent.putExtra("idPartida", partidaCreada);
                     startActivity(intent);
                     finish();
                 }

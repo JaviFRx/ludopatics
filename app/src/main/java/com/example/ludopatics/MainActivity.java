@@ -38,6 +38,8 @@ import java.util.Set;
 import androidx.appcompat.app.ActionBar;
 public class MainActivity extends AppCompatActivity {
 
+    private DatabaseHelper dbHelper;
+
     private final List<Apuesta> listaApuestas = new ArrayList<>();
     String casillaFinal ="";
     int totalApuesta=0;
@@ -104,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        dbHelper = new DatabaseHelper(this);
         // Obtiene la ActionBar
         ActionBar actionBar = getSupportActionBar();
 
@@ -727,6 +730,22 @@ public class MainActivity extends AppCompatActivity {
             // Si se ha quedado sin dinero
             Toast.makeText(this, "¡Juego terminado! Te has quedado sin dinero.", Toast.LENGTH_SHORT).show();
         }
+
+        // Aquí calculamos si el jugador ganó, perdió o no ganó nada
+        int diferencia = currentBalance - 1000; // Calculamos la diferencia respecto a las 1000 fichas iniciales
+
+        // Si la diferencia es positiva, el jugador ganó; si es negativa, el jugador perdió
+        boolean gano = diferencia > 0; // Si diferencia > 0, el jugador ganó, de lo contrario, perdió
+
+        // Obtener el ID de la partida desde el Intent o desde la actividad actual si ya lo tienes guardado
+        long idPartida = getIntent().getLongExtra("idPartida", -1); // Recuperamos el ID de la partida
+
+        if (idPartida != -1) {
+            // Actualizar el registro de la partida con el resultado del juego
+            dbHelper.actualizarPartida(idPartida, diferencia); // Pasamos la diferencia (ganancia o pérdida)
+        }
+
+        // Pasar los datos a la pantalla GameOverActivity
         Intent intent = new Intent(this, GameOverActivity.class);
         intent.putExtra("roundCount", roundCount);
         intent.putExtra("currentBalance", currentBalance);

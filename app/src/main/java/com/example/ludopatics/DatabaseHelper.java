@@ -6,6 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "ludopatics.db";
     private static final int DATABASE_VERSION = 3;  // Aumentado por la nueva tabla 'partidas' y campo en 'historico_tiradas'
@@ -46,7 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String createPartidasTable = "CREATE TABLE " + TABLE_PARTIDAS + " (" +
                 COLUMN_PARTIDA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_PARTIDA_JUGADOR_ID + " INTEGER, " +
-                COLUMN_PARTIDA_FECHA + " TEXT, " +
+                COLUMN_PARTIDA_FECHA + " TEXT DEFAULT CURRENT_TIMESTAMP, " +
                 COLUMN_HIST_GANO + " INTEGER , " +  // Permite valores NULL
                 "FOREIGN KEY(" + COLUMN_PARTIDA_JUGADOR_ID + ") REFERENCES " + TABLE_USUARIOS + "(" + COLUMN_ID + "))";
         db.execSQL(createPartidasTable);
@@ -81,6 +85,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("CREATE INDEX IF NOT EXISTS idx_partida_id ON " + TABLE_HISTORICO + " (" + COLUMN_HIST_PARTIDA_ID + ")");
         }
         if (oldVersion < 4) {  // Nueva versión de la DB
+            db.execSQL("ALTER TABLE " + TABLE_PARTIDAS + " ADD COLUMN " + COLUMN_PARTIDA_FECHA + " TEXT DEFAULT CURRENT_TIMESTAMP");
+
             db.execSQL("ALTER TABLE " + TABLE_PARTIDAS + " ADD COLUMN " + COLUMN_HIST_GANO + " INTEGER ");
         }
     }
@@ -129,16 +135,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return jugadorId;
     }
 
+    public boolean actualizarPartida(long partidaId, int diferencia) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        // Insertamos el valor para "HIST_GANO" (Si el jugador ganó o no)
+        values.put(COLUMN_HIST_GANO, diferencia);  // Guardamos la diferencia de fichas como ganancia o pérdida
+
+        // Actualizamos la tabla de partidas con el ID de la partida
+        int rowsUpdated = db.update(TABLE_PARTIDAS, values, COLUMN_PARTIDA_ID + " = ?", new String[]{String.valueOf(partidaId)});
+        db.close();
+
+        return rowsUpdated > 0; // Retorna true si se actualizó correctamente, false si no
+    }
 
     // Método para crear una nueva partida para un jugador
-    public boolean crearPartida(int jugadorId) {
+    public long crearPartida(int jugadorId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_PARTIDA_JUGADOR_ID, jugadorId);
+        values.put(COLUMN_PARTIDA_FECHA, getFechaActual()); // Puedes poner la fecha actual si es necesario
 
+        // Insertar la partida en la base de datos
         long result = db.insert(TABLE_PARTIDAS, null, values);
+
+        if (result != -1) {
+            // Si la inserción fue exitosa, obtenemos el ID de la partida recién insertada
+            result = db.getLastInsertRowId();  // Devuelve el ID de la fila recién insertada
+        }
+
         db.close();
-        return result != -1;
+        return result;  // Retorna el ID de la partida o -1 si la inserción falla
+    }
+
+    // Método para obtener la fecha actual en formato adecuado (Texto)
+    private String getFechaActual() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        return sdf.format(new Date());
     }
 
     // Método para guardar el histórico de una tirada (con partida_id)
