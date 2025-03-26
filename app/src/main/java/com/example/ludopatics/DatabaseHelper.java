@@ -46,7 +46,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String createPartidasTable = "CREATE TABLE " + TABLE_PARTIDAS + " (" +
                 COLUMN_PARTIDA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_PARTIDA_JUGADOR_ID + " INTEGER, " +
-                COLUMN_PARTIDA_FECHA + " TEXT, " +  // Columna de fecha y hora
+                COLUMN_PARTIDA_FECHA + " TEXT, " +
+                COLUMN_HIST_GANO + " INTEGER , " +  // Permite valores NULL
                 "FOREIGN KEY(" + COLUMN_PARTIDA_JUGADOR_ID + ") REFERENCES " + TABLE_USUARIOS + "(" + COLUMN_ID + "))";
         db.execSQL(createPartidasTable);
 
@@ -78,6 +79,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             // Añadir la relación entre 'partidas' y 'historico_tiradas'
             db.execSQL("ALTER TABLE " + TABLE_HISTORICO + " ADD COLUMN " + COLUMN_HIST_PARTIDA_ID + " INTEGER");
             db.execSQL("CREATE INDEX IF NOT EXISTS idx_partida_id ON " + TABLE_HISTORICO + " (" + COLUMN_HIST_PARTIDA_ID + ")");
+        }
+        if (oldVersion < 4) {  // Nueva versión de la DB
+            db.execSQL("ALTER TABLE " + TABLE_PARTIDAS + " ADD COLUMN " + COLUMN_HIST_GANO + " INTEGER ");
         }
     }
 
