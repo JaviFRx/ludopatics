@@ -5,14 +5,18 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "ludopatics.db";
-    private static final int DATABASE_VERSION = 3;  // Aumentado por la nueva tabla 'partidas' y campo en 'historico_tiradas'
+    private static final int DATABASE_VERSION = 6;  // Aumentado por la nueva tabla 'partidas' y campo en 'historico_tiradas'
 
     // Definición de las tablas
     private static final String TABLE_USUARIOS = "usuarios";
@@ -22,6 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_PARTIDAS = "partidas";
     private static final String COLUMN_PARTIDA_ID = "id";
     private static final String COLUMN_PARTIDA_JUGADOR_ID = "jugador_id";  // Nueva columna para vincular con 'usuarios'
+    private static final String COLUMN_SALDO = "saldofinal";
 
     private static final String COLUMN_PARTIDA_FECHA = "fecha";
     private static final String TABLE_HISTORICO = "historico_tiradas";
@@ -72,22 +77,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 2) {
-            // Añadir la tabla 'partidas' y la relación con 'usuarios'
-            db.execSQL("CREATE TABLE " + TABLE_PARTIDAS + " (" +
+        if (oldVersion == 6) { // Nueva versión con la columna 'saldo' y la tabla 'partidas' actualizada
+            // Primero creamos la nueva tabla 'partidas' con la columna 'saldo'
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_PARTIDAS + "_new (" +
                     COLUMN_PARTIDA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COLUMN_PARTIDA_JUGADOR_ID + " INTEGER, " +
+                    COLUMN_PARTIDA_FECHA + " TEXT DEFAULT CURRENT_TIMESTAMP, " +
+                    COLUMN_SALDO + " INTEGER DEFAULT 0, " +  // Agregar la columna saldo
                     "FOREIGN KEY(" + COLUMN_PARTIDA_JUGADOR_ID + ") REFERENCES " + TABLE_USUARIOS + "(" + COLUMN_ID + "))");
-        }
-        if (oldVersion < 3) {
-            // Añadir la relación entre 'partidas' y 'historico_tiradas'
-            db.execSQL("ALTER TABLE " + TABLE_HISTORICO + " ADD COLUMN " + COLUMN_HIST_PARTIDA_ID + " INTEGER");
-            db.execSQL("CREATE INDEX IF NOT EXISTS idx_partida_id ON " + TABLE_HISTORICO + " (" + COLUMN_HIST_PARTIDA_ID + ")");
-        }
-        if (oldVersion < 4) {  // Nueva versión de la DB
-            db.execSQL("ALTER TABLE " + TABLE_PARTIDAS + " ADD COLUMN " + COLUMN_PARTIDA_FECHA + " TEXT DEFAULT CURRENT_TIMESTAMP");
 
-            db.execSQL("ALTER TABLE " + TABLE_PARTIDAS + " ADD COLUMN " + COLUMN_HIST_GANO + " INTEGER ");
+            // Copiar los datos de la tabla antigua a la nueva
+            db.execSQL("INSERT INTO " + TABLE_PARTIDAS + "_new (" +
+                    COLUMN_PARTIDA_ID + ", " + COLUMN_PARTIDA_JUGADOR_ID + ", " +
+                    COLUMN_PARTIDA_FECHA + ", " + COLUMN_SALDO + ") " +
+                    "SELECT " + COLUMN_PARTIDA_ID + ", " + COLUMN_PARTIDA_JUGADOR_ID + ", " +
+                    COLUMN_PARTIDA_FECHA + ", " + COLUMN_SALDO + " FROM " + TABLE_PARTIDAS);
+
+            // Eliminar la tabla antigua
+            db.execSQL("DROP TABLE " + TABLE_PARTIDAS);
+
+            // Renombrar la nueva tabla con el nombre original
+            db.execSQL("ALTER TABLE " + TABLE_PARTIDAS + "_new RENAME TO " + TABLE_PARTIDAS);
         }
     }
 
@@ -97,10 +107,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_NOMBRE, nombre);
 
-        long result = db.insertWithOnConflict(TABLE_USUARIOS, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+        long result = db.insertWithOnConflict(TABLE_USUARIOS, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+
         db.close();
-        return result != -1;
+
+        if (result == -1) {
+            Log.e("Database", "Error al guardar el nombre");
+            return false; // No se guardó el nombre
+        } else {
+            Log.i("Database", "Nombre guardado correctamente");
+            return true; // El nombre se guardó correctamente
+        }
     }
+
 
     // Método para obtener el nombre de un usuario
     public String obtenerNombre() {
@@ -117,56 +136,59 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public int obtenerIdJugador(String nombre) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT " + COLUMN_ID + " FROM " + TABLE_USUARIOS + " WHERE " + COLUMN_NOMBRE + " = ?", new String[]{nombre});
+        if (nombre == null) {
+            return -1;  // Retorna -1 si el nombre es nulo
+        }
 
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
         int jugadorId = -1;  // Valor por defecto en caso de no encontrar al jugador
 
-            if (cursor.moveToFirst()) {
-                // Verificar que el índice de la columna es válido
+        try {
+            cursor = db.rawQuery("SELECT " + COLUMN_ID + " FROM " + TABLE_USUARIOS + " WHERE " + COLUMN_NOMBRE + " = ?", new String[]{nombre});
+
+            if (cursor != null && cursor.moveToFirst()) {
                 int columnIndex = cursor.getColumnIndex(COLUMN_ID);
                 if (columnIndex >= 0) {
                     jugadorId = cursor.getInt(columnIndex);
                 }
-
-            cursor.close();
+            }
+        } catch (Exception e) {
+            Log.e("DatabaseHelper", "Error al obtener ID de jugador", e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
         }
-        db.close();
+
         return jugadorId;
     }
 
-    public boolean actualizarPartida(long partidaId, int diferencia) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-
-        // Insertamos el valor para "HIST_GANO" (Si el jugador ganó o no)
-        values.put(COLUMN_HIST_GANO, diferencia);  // Guardamos la diferencia de fichas como ganancia o pérdida
-
-        // Actualizamos la tabla de partidas con el ID de la partida
-        int rowsUpdated = db.update(TABLE_PARTIDAS, values, COLUMN_PARTIDA_ID + " = ?", new String[]{String.valueOf(partidaId)});
-        db.close();
-
-        return rowsUpdated > 0; // Retorna true si se actualizó correctamente, false si no
-    }
 
     // Método para crear una nueva partida para un jugador
-    public long crearPartida(int jugadorId) {
+    public long crearPartida(int usuarioId, int saldoFinal) {
         SQLiteDatabase db = this.getWritableDatabase();
+
         ContentValues values = new ContentValues();
-        values.put(COLUMN_PARTIDA_JUGADOR_ID, jugadorId);
-        values.put(COLUMN_PARTIDA_FECHA, getFechaActual()); // Puedes poner la fecha actual si es necesario
+        values.put(COLUMN_PARTIDA_JUGADOR_ID, usuarioId);  // Asociar la partida al jugador
+        values.put(COLUMN_SALDO, saldoFinal);
 
-        // Insertar la partida en la base de datos
-        long result = db.insert(TABLE_PARTIDAS, null, values);
+        values.put(COLUMN_PARTIDA_FECHA, System.currentTimeMillis()); // Guardar la fecha actual en milisegundos
 
-        if (result != -1) {
-            // Si la inserción fue exitosa, obtenemos el ID de la partida recién insertada
-            result = db.getLastInsertRowId();  // Devuelve el ID de la fila recién insertada
+        long resultado = db.insert("partidas", null, values);
+
+        if (resultado == -1) {
+            Log.e("DatabaseHelper", "Error al insertar partida con usuarioId: " + usuarioId);
+        } else {
+            Log.d("DatabaseHelper", "Partida creada con éxito, ID: " + resultado);
         }
 
-        db.close();
-        return result;  // Retorna el ID de la partida o -1 si la inserción falla
+        db.close();  // Cierra la BD para liberar recursos
+
+        return resultado; // Devuelve el ID de la partida creada o -1 si hubo error
     }
+
 
     // Método para obtener la fecha actual en formato adecuado (Texto)
     private String getFechaActual() {
@@ -202,4 +224,50 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         " WHERE " + COLUMN_HIST_USUARIO_ID + " = ? ORDER BY " + COLUMN_HIST_FECHA + " DESC",
                 new String[]{String.valueOf(usuarioId)});
     }
+    public List<Partida> obtenerPartidas(int usuarioId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        List<Partida> partidasList = new ArrayList<>();
+
+        // Ejecutar la consulta, ajustando las columnas para que coincidan con los nombres de la base de datos
+        Cursor cursor = db.rawQuery("SELECT " + COLUMN_HIST_PARTIDA_ID + ", " +
+                        COLUMN_HIST_USUARIO_ID + ", " +  // Asegurándote de obtener el ID del jugador también
+                        COLUMN_HIST_FECHA + ", " +
+                        COLUMN_HIST_SALDO + " FROM " + TABLE_HISTORICO +
+                        " WHERE " + COLUMN_HIST_USUARIO_ID + " = ? ORDER BY " + COLUMN_HIST_FECHA + " DESC",
+                new String[]{String.valueOf(usuarioId)});
+
+        // Verificamos si la consulta obtuvo resultados
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                // Verificamos si el índice de cada columna es válido antes de acceder a su valor
+                int idPartidaIndex = cursor.getColumnIndex(COLUMN_HIST_PARTIDA_ID);
+                int usuarioIdIndex = cursor.getColumnIndex(COLUMN_HIST_USUARIO_ID); // Para obtener el id del jugador
+                int fechaIndex = cursor.getColumnIndex(COLUMN_HIST_FECHA);
+                int saldoIndex = cursor.getColumnIndex(COLUMN_HIST_SALDO);
+
+                // Si alguno de los índices es -1, eso indica que la columna no existe
+                if (idPartidaIndex != -1 && usuarioIdIndex != -1 && fechaIndex != -1 && saldoIndex != -1) {
+                    // Si los índices son válidos, obtenemos los valores
+                    int idPartida = cursor.getInt(idPartidaIndex);
+                    int idJugador = cursor.getInt(usuarioIdIndex);  // Obtener el id del jugador (aunque no se use aquí, es útil)
+                    String fecha = cursor.getString(fechaIndex);
+                    double saldoFinal = cursor.getDouble(saldoIndex);  // El saldo final es un double
+
+                    // Crear el objeto Partida y agregarlo a la lista
+                    partidasList.add(new Partida(idPartida, idJugador, fecha, saldoFinal));
+                } else {
+                    // Si algún índice es inválido, puedes mostrar un mensaje de error o manejarlo de alguna otra forma
+                    Log.e("DatabaseHelper", "Error: columna no encontrada en el cursor");
+                }
+            } while (cursor.moveToNext());
+        }
+
+        if (cursor != null) {
+            cursor.close();
+        }
+
+        db.close();
+        return partidasList;
+    }
+
 }

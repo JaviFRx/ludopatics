@@ -41,15 +41,15 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
 
     private final List<Apuesta> listaApuestas = new ArrayList<>();
-    String casillaFinal ="";
-    int totalApuesta=0;
+    String casillaFinal = "";
+    int totalApuesta = 0;
     private String selectedColor = ""; // Variable para almacenar el color apostado
     private String resColor = "";
     private ImageView ruletaImage;
     private TextView apuestaTextView;
     private Button btnGirar;
 
-    private CirculosView circleView,circulo1,circulo2,circulo3,circulo4,circulo5;
+    private CirculosView circleView, circulo1, circulo2, circulo3, circulo4, circulo5;
 
     private MediaPlayer mediaPlayer;
     public static MediaPlayer mediaPlayer2;
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
     // Variables para el seguimiento de la apuesta y el saldo
     private int currentBalance = 1000; // Saldo inicial
     private int currentBetAmount = 0; // Cantidad de apuesta actual
-    private String nombreUsuario="";
+    private String nombreUsuario = "";
     private final String numeroSeleccionado = "";
     private String selectedParImpar = "null";
     // Definimos los números de la ruleta en orden
@@ -140,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         TextView tvUsername = findViewById(R.id.username); // Obtener el TextView
         // Obtener el nombre de usuario desde el Intent
         nombreUsuario = getIntent().getStringExtra("nombreUsuario");
@@ -157,8 +156,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Asegúrate de liberar los recursos al finalizar
         mediaPlayer2.setOnCompletionListener(mp -> {
-                    mediaPlayer2.release();
-                    mediaPlayer2 = null;
+            mediaPlayer2.release();
+            mediaPlayer2 = null;
         });
         // Inicializar las vistas
         ruletaImage = findViewById(R.id.ruletaImage);
@@ -193,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Referencias a los botones
         btnodd = findViewById(R.id.odd_button);
-        btneven=  findViewById(R.id.even_button);
+        btneven = findViewById(R.id.even_button);
         Button redButton = findViewById(R.id.red_button);
         Button greenButton = findViewById(R.id.green_button);
         Button blackButton = findViewById(R.id.black_button);
@@ -255,9 +254,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
-
 
 
     // Método para aumentar la apuesta
@@ -392,7 +388,6 @@ public class MainActivity extends AppCompatActivity {
                 }
 
 
-
                 // Usamos un Handler para hacer una pausa antes de habilitar los botones y resetear los TextViews
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -418,7 +413,7 @@ public class MainActivity extends AppCompatActivity {
                         apuestaParImparTextView.setText("Apuesta Par/Impar: Ninguna");
                     }
                 }, 3000);
-                selectedColor="null";// Pausa de 2 segundos (2000 milisegundos) antes de habilitar los botones y resetear los TextViews
+                selectedColor = "null";// Pausa de 2 segundos (2000 milisegundos) antes de habilitar los botones y resetear los TextViews
             }
 
             @Override
@@ -433,35 +428,35 @@ public class MainActivity extends AppCompatActivity {
 
     // Método para reproducir el sonido
     private void reproducirSonido() {
-    // Pausa el audio de jazz si está reproduciéndose
-    if (mediaPlayer2 != null && mediaPlayer2.isPlaying()) {
-        mediaPlayer2.pause();
-    }
-
-    // Detener y liberar el reproductor de sonidos de la ruleta si existe
-    if (mediaPlayer != null) {
-        if (mediaPlayer.isPlaying()) {
-            mediaPlayer.stop();
+        // Pausa el audio de jazz si está reproduciéndose
+        if (mediaPlayer2 != null && mediaPlayer2.isPlaying()) {
+            mediaPlayer2.pause();
         }
-        mediaPlayer.release();
-        mediaPlayer = null;
-    }
 
-    // Crear y reproducir el nuevo sonido (ruleta)
-    mediaPlayer = MediaPlayer.create(this, R.raw.efecto);
-    mediaPlayer.start();
-
-    // Listener para retomar el audio de jazz después de que el sonido de la ruleta termine
-    mediaPlayer.setOnCompletionListener(mp -> {
-        mediaPlayer.release();
-        mediaPlayer = null;
-
-        // Retomar el audio de jazz si no fue liberado
-        if (mediaPlayer2 != null) {
-            mediaPlayer2.start();
+        // Detener y liberar el reproductor de sonidos de la ruleta si existe
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
+            mediaPlayer.release();
+            mediaPlayer = null;
         }
-    });
-}
+
+        // Crear y reproducir el nuevo sonido (ruleta)
+        mediaPlayer = MediaPlayer.create(this, R.raw.efecto);
+        mediaPlayer.start();
+
+        // Listener para retomar el audio de jazz después de que el sonido de la ruleta termine
+        mediaPlayer.setOnCompletionListener(mp -> {
+            mediaPlayer.release();
+            mediaPlayer = null;
+
+            // Retomar el audio de jazz si no fue liberado
+            if (mediaPlayer2 != null) {
+                mediaPlayer2.start();
+            }
+        });
+    }
 
     private void calcularCasilla(int angle) {
         // Normalizar el ángulo a un valor entre 0-360
@@ -525,6 +520,7 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onDestroy();
     }
+
     private void mostrarSelectorNumero() {
         // Crear un NumberPicker
         NumberPicker numberPicker = new NumberPicker(this);
@@ -588,7 +584,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     private void agregarApuesta(String tipo, String valor) {
         if (currentBetAmount <= 0) {
             Toast.makeText(this, "Primero selecciona un monto de apuesta", Toast.LENGTH_SHORT).show();
@@ -645,7 +640,8 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Comprueba todas las apuestas y actualiza el saldo según los resultados
-     * @param resColor El color resultante de la ruleta (rojo, negro o verde)
+     *
+     * @param resColor     El color resultante de la ruleta (rojo, negro o verde)
      * @param casillaFinal El número resultante de la ruleta
      */
     private void comprobarApuestas(String resColor, String casillaFinal) {
@@ -714,6 +710,7 @@ public class MainActivity extends AppCompatActivity {
         balanceValue.setText(String.valueOf(currentBalance));
         apuestaTextView.setText(mensajeResultado.toString());
     }
+
     public int calcularTotalApuesta() {
         int totalApuesta = 0;
         for (Apuesta apuesta : listaApuestas) {
@@ -721,6 +718,7 @@ public class MainActivity extends AppCompatActivity {
         }
         return totalApuesta;
     }
+
     private void finalizarJuego() {
         // Aquí puedes mostrar un mensaje al jugador o realizar otras acciones
         if (roundCount >= 10) {
@@ -731,18 +729,16 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "¡Juego terminado! Te has quedado sin dinero.", Toast.LENGTH_SHORT).show();
         }
 
-        // Aquí calculamos si el jugador ganó, perdió o no ganó nada
-        int diferencia = currentBalance - 1000; // Calculamos la diferencia respecto a las 1000 fichas iniciales
 
-        // Si la diferencia es positiva, el jugador ganó; si es negativa, el jugador perdió
-        boolean gano = diferencia > 0; // Si diferencia > 0, el jugador ganó, de lo contrario, perdió
+        // Usar el método obtenerIdJugador para obtener el ID del jugador desde la base de datos
+        int usuarioId = dbHelper.obtenerIdJugador(nombreUsuario);
 
-        // Obtener el ID de la partida desde el Intent o desde la actividad actual si ya lo tienes guardado
-        long idPartida = getIntent().getLongExtra("idPartida", -1); // Recuperamos el ID de la partida
-
-        if (idPartida != -1) {
-            // Actualizar el registro de la partida con el resultado del juego
-            dbHelper.actualizarPartida(idPartida, diferencia); // Pasamos la diferencia (ganancia o pérdida)
+        if (usuarioId != -1) {
+            // Guardar la partida en la base de datos
+            long idPartida = dbHelper.crearPartida(usuarioId, currentBalance); // Usar currentBalance como saldo final
+            Log.d("Juego", "Partida guardada con ID: " + idPartida);
+        } else {
+            Log.e("Juego", "Error: No se encontró el ID para el jugador con nombre: " + nombreUsuario);
         }
 
         // Pasar los datos a la pantalla GameOverActivity
@@ -752,14 +748,13 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("nombreUsuario", nombreUsuario);
         startActivity(intent);
 
-        // Finalizar la actividad actual para que el usuario no regrese a ella
+        // Finalizar esta actividad
         finish();
 
-        // Deshabilitar los botones para que el jugador no pueda seguir apostando ni girando
+        // Deshabilitar botones para evitar más apuestas o giros
         betButtonPlus1.setEnabled(false);
         betButtonPlus10.setEnabled(false);
         betButtonPlus100.setEnabled(false);
         btnGirar.setEnabled(false);
     }
-
 }

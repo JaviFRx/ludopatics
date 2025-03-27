@@ -1,11 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tvItem"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:padding="8dp"
-    android:textColor="@android:color/white"
-    android:textSize="18sp"
-    android:fontFamily="@font/madimione_regular"
-    android:gravity="center"
-    android:background="@drawable/transparent" />
+    android:background="@drawable/transparent"
+    android:gravity="center_vertical">
+
+    <!-- ID de la partida -->
+    <TextView
+        android:id="@+id/tvPartidaId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ID de Partida"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="4dp"/>
+
+    <!-- Fecha de la partida -->
+    <TextView
+        android:id="@+id/tvFecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fecha"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:layout_marginBottom="4dp"/>
+
+    <!-- Saldo final de la partida -->
+    <TextView
+        android:id="@+id/tvSaldo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Saldo Final"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:layout_marginBottom="4dp"/>
+
+</LinearLayout>

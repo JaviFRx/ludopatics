@@ -6,18 +6,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HistorialActivity extends AppCompatActivity {
-
-    private ImageButton btnBack;
+    private DatabaseHelper dbHelper;
     private RecyclerView recyclerHistorial;
 
     @Override
@@ -26,7 +25,7 @@ public class HistorialActivity extends AppCompatActivity {
         setContentView(R.layout.activity_historial);
 
         // Obtener referencias de las vistas
-        btnBack = findViewById(R.id.btnBack);
+        ImageButton btnBack = findViewById(R.id.btnBack);
         recyclerHistorial = findViewById(R.id.recyclerHistorial);
 
         // Acción para el botón de retroceso: cierra la Activity
@@ -35,32 +34,39 @@ public class HistorialActivity extends AppCompatActivity {
         // Configuramos el RecyclerView con un LinearLayoutManager
         recyclerHistorial.setLayoutManager(new LinearLayoutManager(this));
 
-        // Creamos algunos datos de ejemplo para el historial
-        List<String> historialData = new ArrayList<>();
-        historialData.add("Partida 1: Ganó 100");
-        historialData.add("Partida 2: Perdió 50");
-        historialData.add("Partida 3: Empató");
-        historialData.add("Partida 4: Ganó 200");
+        // Inicializar DatabaseHelper
+        dbHelper = new DatabaseHelper(this);
 
-        // Creamos el adaptador y se lo asignamos al RecyclerView
-        HistorialAdapter adapter = new HistorialAdapter(historialData);
-        recyclerHistorial.setAdapter(adapter);
+        // Obtener el ID del usuario (ajustar según cómo obtienes el nombre)
+        String nombreUsuario = getIntent().getStringExtra("NOMBRE_USUARIO");
+        int usuarioId = dbHelper.obtenerIdJugador(nombreUsuario);
+
+        // Verificar que usuarioId es válido
+        if (usuarioId != -1) {
+            // Obtener historial de partidas
+            List<Partida> historialList = dbHelper.obtenerPartidas(usuarioId);
+
+            // Crear y asignar el adaptador al RecyclerView
+            HistorialAdapter adapter = new HistorialAdapter(historialList);
+            recyclerHistorial.setAdapter(adapter);
+        } else {
+            Toast.makeText(this, "No se encontró el jugador.", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    // Declara la clase HistorialAdapter como una clase anidada estática,
-    // pero asegúrate de que esté fuera de cualquier método, directamente en la clase HistorialActivity.
+    // Adaptador para mostrar el historial de partidas
     public static class HistorialAdapter extends RecyclerView.Adapter<HistorialAdapter.ViewHolder> {
 
-        private final List<String> data;
+        private final List<Partida> data;
 
-        public HistorialAdapter(List<String> data) {
+        public HistorialAdapter(List<Partida> data) {
             this.data = data;
         }
 
         @NonNull
         @Override
         public HistorialAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            // Inflamos el layout personalizado para cada ítem
+            // Inflar el layout del item de historial
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_historial, parent, false);
             return new ViewHolder(view);
@@ -68,8 +74,12 @@ public class HistorialActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull HistorialAdapter.ViewHolder holder, int position) {
-            String record = data.get(position);
-            holder.tvItem.setText(record);
+            Partida partida = data.get(position);
+
+            // Mostrar la información de la partida (ID, fecha, y saldo final)
+            holder.tvPartidaId.setText("ID Partida: " + partida.getIdPartida());
+            holder.tvFecha.setText("Fecha: " + partida.getFecha());
+            holder.tvSaldo.setText("Saldo Final: " + partida.getSaldoFinal());
         }
 
         @Override
@@ -78,11 +88,13 @@ public class HistorialActivity extends AppCompatActivity {
         }
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
-            TextView tvItem;
+            TextView tvPartidaId, tvFecha, tvSaldo;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
-                tvItem = itemView.findViewById(R.id.tvItem);
+                tvPartidaId = itemView.findViewById(R.id.tvPartidaId);
+                tvFecha = itemView.findViewById(R.id.tvFecha);
+                tvSaldo = itemView.findViewById(R.id.tvSaldo);
             }
         }
     }

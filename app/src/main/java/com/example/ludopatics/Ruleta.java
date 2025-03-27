@@ -61,35 +61,16 @@ public class Ruleta extends AppCompatActivity {
         // Botón "JUGAR"
         Button btnJugar = findViewById(R.id.btnJugar);
         btnJugar.setOnClickListener(v -> {
-            String nombre = etNombreUsuario.getText().toString().trim();
+            String nombre = etNombreUsuario.getText().toString().trim(); // Asegurar que obtenemos el nombre
             if (!nombre.isEmpty()) {
-                // Intentar obtener el ID del jugador por su nombre
-                int jugadorId = dbHelper.obtenerIdJugador(nombre);
-
-                // Si el jugador no existe, lo creamos
-                if (jugadorId == -1) {
-                    // Crear el usuario
-                    boolean guardado = dbHelper.guardarNombre(nombre);
-                    if (!guardado) {
-                        return; // Si no se guarda el usuario, terminamos aquí.
-                    }
-                    // Obtener el ID del nuevo jugador
-                    jugadorId = dbHelper.obtenerIdJugador(nombre);
-                }
-
-                // Crear la partida para el jugador (nuevo o existente)
-                long partidaCreada = dbHelper.crearPartida(jugadorId);
-                if (partidaCreada != -1) {
-                    // Crear el intent y pasar al siguiente activity
-                    Intent intent = new Intent(Ruleta.this, MainActivity.class);
-                    intent.putExtra("nombreUsuario", nombre);  // Enviar el nombre al intent
-                    intent.putExtra("idPartida", partidaCreada);
-                    startActivity(intent);
-                    finish();
-                }
+                Intent intent = new Intent(Ruleta.this, Menu.class);
+                intent.putExtra("nombreUsuario", nombre);  // Enviar el nombre al intent
+                startActivity(intent);
+                finish();
             }
         });
     }
+
 
     @Override
     protected void onDestroy() {

@@ -12,40 +12,39 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Ludopatics"
         tools:targetApi="31">
-
-        <!-- SplashActivity como actividad principal -->
+        <activity
+            android:name=".HistorialActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Menu"
+            android:exported="false" /> <!-- SplashActivity como actividad principal -->
         <activity
             android:name=".SplashActivity"
             android:exported="true"
-            android:theme="@style/Theme.Ludopatics.NoActionBar"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Ludopatics.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.Ludopatics.ActionBar"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.Ludopatics.ActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity>
-
-        <!-- Otros activities -->
+        </activity> <!-- Otros activities -->
         <activity
             android:name=".Ruleta"
             android:exported="false"
             android:label="@string/title_activity_ruleta"
             android:theme="@style/Theme.Ludopatics" />
-
-        <activity android:name=".GameOverActivity">
-
-        </activity>
-
+        <activity android:name=".GameOverActivity" />
     </application>
 
 </manifest>
