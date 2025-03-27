@@ -72,7 +72,6 @@ public class HistorialActivity extends AppCompatActivity {
             return new ViewHolder(view);
         }
 
-        @Override
         public void onBindViewHolder(@NonNull HistorialAdapter.ViewHolder holder, int position) {
             Partida partida = data.get(position);
 
