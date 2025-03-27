@@ -641,6 +641,11 @@ public class MainActivity extends AppCompatActivity {
     private void actualizarSaldoUI() {
         balanceValue.setText(String.valueOf(currentBalance));
 
+        // Si el saldo llega a 0, desactivar botones de apuesta
+        boolean haySaldo = currentBalance > 0;
+        betButtonPlus1.setEnabled(haySaldo);
+        betButtonPlus10.setEnabled(haySaldo);
+        betButtonPlus100.setEnabled(haySaldo);
     }
 
     /**
