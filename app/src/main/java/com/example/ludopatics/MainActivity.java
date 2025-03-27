@@ -609,7 +609,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Restar la nueva apuesta del saldo
-        currentBalance -= currentBetAmount;
+        if (currentBalance >= currentBetAmount) {
+            currentBalance -= currentBetAmount;
+        } else {
+            Toast.makeText(this, "No tienes suficiente saldo para esta apuesta", Toast.LENGTH_SHORT).show();
+            return; // Salir sin registrar la apuesta
+        }
 
         // Agregar la nueva apuesta
         listaApuestas.add(new Apuesta(tipo, valor, currentBetAmount));
@@ -636,6 +641,11 @@ public class MainActivity extends AppCompatActivity {
     private void actualizarSaldoUI() {
         balanceValue.setText(String.valueOf(currentBalance));
 
+        // Si el saldo llega a 0, desactivar botones de apuesta
+        boolean haySaldo = currentBalance > 0;
+        betButtonPlus1.setEnabled(haySaldo);
+        betButtonPlus10.setEnabled(haySaldo);
+        betButtonPlus100.setEnabled(haySaldo);
     }
 
     /**
