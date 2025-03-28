@@ -229,16 +229,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflar el archivo menu.xml para que aparezcan los íconos en la ActionBar
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+            // Inflar el archivo menu.xml para que aparezcan los íconos en la ActionBar
+            getMenuInflater().inflate(R.menu.menu, menu);
+            return true;
+        }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.music_toggle) {  // Verifica si es el botón de música
+        // Verifica si se ha pulsado el botón de música
+        if (item.getItemId() == R.id.music_toggle) {
             if (mediaPlayer2.isPlaying()) {
                 // Detener la música si está reproduciéndose
                 mediaPlayer2.pause();
@@ -252,24 +253,57 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         }
+
+        // Verifica si se ha pulsado el botón de perfil
+        if (item.getItemId() == R.id.action_profile) {
+            // Acción para el perfil
+            startActivity(new Intent(this, PerfilActivity.class));
+            return true;
+        }
+
+        // Verifica si se ha pulsado el botón de historial
+        if (item.getItemId() == R.id.action_history) {
+            // Acción para el historial
+            // Aquí puedes manejar la lógica para ver el historial
+            return true;
+        }
+
+        // Verifica si se ha pulsado el botón de login
+        if (item.getItemId() == R.id.action_login) {
+            // Acción para login
+            // Aquí puedes manejar la lógica de login
+            return true;
+        }
+
+        // Si no se ha pulsado ninguna de las opciones anteriores
         return super.onOptionsItemSelected(item);
     }
 
 
+
+
     // Método para aumentar la apuesta
     private void increaseBet(int amount) {
-        // Verificar si el usuario tiene suficiente saldo
-        if (currentBalance >= amount) {
-            // Solo aumentar la apuesta (NO restar del saldo aún)
+        // Verificar si el monto a apostar no excede el saldo disponible
+        if (currentBalance >= currentBetAmount + amount) {
+            // Si tiene suficiente saldo, aumentar la apuesta
             currentBetAmount += amount;
 
-            // Actualizar la vista del monto de apuesta
+            // Actualizar la vista con el nuevo monto de apuesta
             updateBetAmountText();
         } else {
-            // Mostrar mensaje si no hay suficiente saldo
-            Toast.makeText(this, "No tienes suficiente saldo", Toast.LENGTH_SHORT).show();
+            // Si no hay suficiente saldo, establecer la apuesta al saldo disponible
+            currentBetAmount = currentBalance;
+
+            // Mostrar mensaje de que no hay suficiente saldo y que se ajustó la apuesta
+            Toast.makeText(this, "No tienes suficiente saldo. Se ajustó la apuesta al saldo disponible.", Toast.LENGTH_SHORT).show();
+
+            // Actualizar la vista con el monto de apuesta ajustado
+            updateBetAmountText();
         }
     }
+
+
 
     // Método para actualizar el texto de la cantidad de apuesta
     private void updateBetAmountText() {
@@ -280,19 +314,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // Método para colocar la apuesta
-    private void placeBet() {
-        if (currentBetAmount <= 0) {
-            Toast.makeText(this, "Debes ingresar una cantidad para apostar", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
-        // Validar que el usuario haya seleccionado al menos una opción
-        if (selectedColor.isEmpty() && selectedParImpar.isEmpty() && numeroSeleccionado.isEmpty()) {
-            Toast.makeText(this, "Debes seleccionar una opción: Color, Número o Par/Impar", Toast.LENGTH_SHORT).show();
-            return;
-        }
-    }
 
 
     private void girarRuleta() {

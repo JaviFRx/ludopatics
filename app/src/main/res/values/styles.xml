@@ -23,6 +23,11 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <style name="MenuPopupStyle">
+        <item name="android:background">@android:color/black</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
     <style name="Theme.Ludopatics.ActionBar" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="android:windowActionBar">true</item>
         <item name="android:windowNoTitle">true</item>

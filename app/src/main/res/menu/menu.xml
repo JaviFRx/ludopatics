@@ -3,14 +3,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".Main">
 
-
-
-    <!-- Botón del altavoz a la derecha -->
+    <!-- Botón del altavoz -->
     <item
         android:id="@+id/music_toggle"
         android:icon="@drawable/speakeroff"
-        android:title=""
+        android:title="Música"
         android:orderInCategory="2"
-        app:showAsAction="ifRoom" />
-</menu>
+        app:showAsAction="ifRoom"
+        android:popupTheme="@style/MenuPopupStyle" /> <!-- Agregar el tema oscuro aquí -->
 
+    <!-- Perfil -->
+    <item
+        android:id="@+id/action_profile"
+        android:title="Perfil"
+        android:icon="@drawable/ic_usuario_default"
+        android:orderInCategory="3"
+        app:showAsAction="ifRoom"
+        android:popupTheme="@style/MenuPopupStyle" />
+
+    <!-- Ruleta -->
+    <item
+        android:id="@+id/action_login"
+        android:title="Login"
+        android:orderInCategory="4"
+        app:showAsAction="never"
+        android:popupTheme="@style/MenuPopupStyle" />
+
+    <!-- Historial -->
+    <item
+        android:id="@+id/action_history"
+        android:title="Historial"
+        android:orderInCategory="5"
+        app:showAsAction="ifRoom"
+        android:popupTheme="@style/MenuPopupStyle" />
+</menu>
