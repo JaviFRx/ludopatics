@@ -63,8 +63,10 @@ public class Menu extends AppCompatActivity {
             startActivity(intent);        });
 
         btnMiPerfil.setOnClickListener(v -> {
-            // Lógica para "MI PERFIL"
-            Log.d("Menu", "Se pulsó MI PERFIL");
+            Intent intent = new Intent(Menu.this, PerfilActivity.class);
+            intent.putExtra("nombreUsuario", nombreUsuario);  // Pasa el nombre al perfil
+            startActivity(intent);
         });
+
     }
 }
