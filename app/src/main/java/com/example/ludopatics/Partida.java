@@ -4,10 +4,10 @@ public class Partida {
     private int idPartida;      // ID de la partida
     private int idJugador;      // ID del jugador
     private String fecha;       // Fecha de la partida
-    private double saldoFinal;  // Saldo final después de la partida
+    private int saldoFinal;  // Saldo final después de la partida
 
     // Constructor para inicializar los campos
-    public Partida(int idPartida, int idJugador, String fecha, double saldoFinal) {
+    public Partida(int idPartida, int idJugador, String fecha, int saldoFinal) {
         this.idPartida = idPartida;
         this.idJugador = idJugador;
         this.fecha = fecha;
@@ -27,7 +27,7 @@ public class Partida {
         return fecha;
     }
 
-    public double getSaldoFinal() {
+    public int getSaldoFinal() {
         return saldoFinal;
     }
 
@@ -44,7 +44,7 @@ public class Partida {
         this.fecha = fecha;
     }
 
-    public void setSaldoFinal(double saldoFinal) {
+    public void setSaldoFinal(int saldoFinal) {
         this.saldoFinal = saldoFinal;
     }
 }

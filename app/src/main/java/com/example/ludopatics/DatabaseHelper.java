@@ -10,13 +10,14 @@ import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "ludopatics.db";
-    private static final int DATABASE_VERSION = 6;  // Aumentado por la nueva tabla 'partidas' y campo en 'historico_tiradas'
+    private static final int DATABASE_VERSION = 7;  // Aumentado por la nueva tabla 'partidas' y campo en 'historico_tiradas'
 
     // Definición de las tablas
     private static final String TABLE_USUARIOS = "usuarios";
@@ -77,29 +78,85 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion == 6) { // Nueva versión con la columna 'saldo' y la tabla 'partidas' actualizada
-            // Primero creamos la nueva tabla 'partidas' con la columna 'saldo'
+        // En este ejemplo, asumimos que estamos migrando desde la versión 6 a la 7.
+        if (oldVersion == 6) {
+            // 1. Crear la nueva tabla con la estructura deseada (incluye la columna 'saldo')
             db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_PARTIDAS + "_new (" +
                     COLUMN_PARTIDA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COLUMN_PARTIDA_JUGADOR_ID + " INTEGER, " +
                     COLUMN_PARTIDA_FECHA + " TEXT DEFAULT CURRENT_TIMESTAMP, " +
-                    COLUMN_SALDO + " INTEGER DEFAULT 0, " +  // Agregar la columna saldo
+                    COLUMN_SALDO + " INTEGER DEFAULT 0, " +
                     "FOREIGN KEY(" + COLUMN_PARTIDA_JUGADOR_ID + ") REFERENCES " + TABLE_USUARIOS + "(" + COLUMN_ID + "))");
 
-            // Copiar los datos de la tabla antigua a la nueva
+            // 2. Migrar los datos de la tabla antigua a la nueva.
+            // Como la tabla antigua solo tiene 3 columnas, asignamos un 0 de forma predeterminada a la columna 'saldo'
             db.execSQL("INSERT INTO " + TABLE_PARTIDAS + "_new (" +
-                    COLUMN_PARTIDA_ID + ", " + COLUMN_PARTIDA_JUGADOR_ID + ", " +
-                    COLUMN_PARTIDA_FECHA + ", " + COLUMN_SALDO + ") " +
-                    "SELECT " + COLUMN_PARTIDA_ID + ", " + COLUMN_PARTIDA_JUGADOR_ID + ", " +
-                    COLUMN_PARTIDA_FECHA + ", " + COLUMN_SALDO + " FROM " + TABLE_PARTIDAS);
+                    COLUMN_PARTIDA_ID + ", " +
+                    COLUMN_PARTIDA_JUGADOR_ID + ", " +
+                    COLUMN_PARTIDA_FECHA + ", " +
+                    COLUMN_SALDO + ") " +
+                    "SELECT " +
+                    COLUMN_PARTIDA_ID + ", " +
+                    COLUMN_PARTIDA_JUGADOR_ID + ", " +
+                    COLUMN_PARTIDA_FECHA + ", " +
+                    "0 FROM " + TABLE_PARTIDAS);
 
-            // Eliminar la tabla antigua
-            db.execSQL("DROP TABLE " + TABLE_PARTIDAS);
+            // 3. Eliminar la tabla antigua
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_PARTIDAS);
 
-            // Renombrar la nueva tabla con el nombre original
+            // 4. Renombrar la nueva tabla para que adopte el nombre original
             db.execSQL("ALTER TABLE " + TABLE_PARTIDAS + "_new RENAME TO " + TABLE_PARTIDAS);
         }
     }
+
+    public void imprimirPartidas() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_PARTIDAS, null, null, null, null, null, null);
+
+        Log.d("PARTIDAS", "Total de partidas: " + cursor.getCount());
+
+        // Registra las columnas disponibles para depuración
+        String[] columnNames = cursor.getColumnNames();
+        Log.d("PARTIDAS", "Columnas disponibles: " + Arrays.toString(columnNames));
+
+        // Obtener los índices de las columnas
+        int idIndex = cursor.getColumnIndex(COLUMN_PARTIDA_ID);
+        int jugadorIdIndex = cursor.getColumnIndex(COLUMN_PARTIDA_JUGADOR_ID);
+        int fechaIndex = cursor.getColumnIndex(COLUMN_PARTIDA_FECHA);
+        int saldoIndex = cursor.getColumnIndex(COLUMN_SALDO);
+
+        // Verificar que los índices sean válidos
+        if (idIndex == -1 || jugadorIdIndex == -1 || fechaIndex == -1 || saldoIndex == -1) {
+            Log.e("PARTIDAS", "Una o más columnas no existen en la tabla.");
+            cursor.close();
+            db.close();
+            return;
+        }
+
+        // Recorrer el cursor e imprimir cada registro
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(idIndex);
+            int jugadorId = cursor.getInt(jugadorIdIndex);
+            String fecha = cursor.getString(fechaIndex);
+            int saldo = cursor.getInt(saldoIndex);
+
+            Log.d("PARTIDAS", "Partida - ID: " + id +
+                    ", Jugador ID: " + jugadorId +
+                    ", Fecha: " + fecha +
+                    ", Saldo: " + saldo);
+        }
+
+        cursor.close();
+        db.close();
+    }
+
+    public void eliminarPartidas() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int filasEliminadas = db.delete(TABLE_PARTIDAS, null, null);
+        Log.d("PARTIDAS", "Número de registros eliminados: " + filasEliminadas);
+        db.close();
+    }
+
 
     // Método para guardar el nombre de un usuario
     public boolean guardarNombre(String nombre) {

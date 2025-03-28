@@ -19,7 +19,9 @@ public class SplashActivity extends AppCompatActivity {
 
         // Encuentra el ImageView en la pantalla de inicio y establece el GIF usando Glide
         ImageView splashImage = findViewById(R.id.splashImage);
-
+        //DatabaseHelper dbHelper = new DatabaseHelper(this);
+        //dbHelper.imprimirPartidas();
+        //dbHelper.eliminarPartidas();
         // Cargar el GIF con Glide
         Glide.with(this)
                 .load(R.drawable.presents)

@@ -18,11 +18,13 @@ import java.util.List;
 public class HistorialActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     private RecyclerView recyclerHistorial;
+    private TextView tvTittle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historial);
+
 
         // Obtener referencias de las vistas
         ImageButton btnBack = findViewById(R.id.btnBack);
@@ -39,6 +41,7 @@ public class HistorialActivity extends AppCompatActivity {
 
         // Obtener el ID del usuario (ajustar según cómo obtienes el nombre)
         String nombreUsuario = getIntent().getStringExtra("NOMBRE_USUARIO");
+        tvTittle.setText("HISTORIAL DE: " + nombreUsuario);
         int usuarioId = dbHelper.obtenerIdJugador(nombreUsuario);
 
         // Verificar que usuarioId es válido
