@@ -60,12 +60,13 @@ public class Menu extends AppCompatActivity {
         btnHistorial.setOnClickListener(v -> {
             // Lógica para "HISTORIAL"
             Intent intent = new Intent(Menu.this, HistorialActivity.class);
-            intent.putExtra("NOMBRE_USUARIO", nombreUsuario);
             startActivity(intent);        });
 
         btnMiPerfil.setOnClickListener(v -> {
-            // Lógica para "MI PERFIL"
-            Log.d("Menu", "Se pulsó MI PERFIL");
+            Intent intent = new Intent(Menu.this, PerfilActivity.class);
+            intent.putExtra("nombreUsuario", nombreUsuario);  // Pasa el nombre al perfil
+            startActivity(intent);
         });
+
     }
 }
