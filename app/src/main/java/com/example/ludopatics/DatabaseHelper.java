@@ -296,39 +296,46 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         List<Partida> partidasList = new ArrayList<>();
 
-        Cursor cursor = db.rawQuery("SELECT " + COLUMN_HIST_PARTIDA_ID + ", " +
-                        COLUMN_HIST_USUARIO_ID + ", " +
-                        COLUMN_HIST_FECHA + ", " +
-                        COLUMN_HIST_SALDO + " FROM " + TABLE_HISTORICO +
-                        " WHERE " + COLUMN_HIST_USUARIO_ID + " = ? ORDER BY " + COLUMN_HIST_FECHA + " DESC",
+        // Consulta para obtener las partidas
+        Cursor cursor = db.rawQuery("SELECT " + COLUMN_PARTIDA_ID + ", " +
+                        COLUMN_PARTIDA_JUGADOR_ID + ", " +
+                        COLUMN_PARTIDA_FECHA + ", " +
+                        COLUMN_SALDO + " FROM " + TABLE_PARTIDAS +
+                        " WHERE " + COLUMN_PARTIDA_JUGADOR_ID + " = ? ORDER BY " + COLUMN_PARTIDA_FECHA + " DESC",
                 new String[]{String.valueOf(usuarioId)});
 
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                int idPartidaIndex = cursor.getColumnIndex(COLUMN_HIST_PARTIDA_ID);
-                int usuarioIdIndex = cursor.getColumnIndex(COLUMN_HIST_USUARIO_ID);
-                int fechaIndex = cursor.getColumnIndex(COLUMN_HIST_FECHA);
-                int saldoIndex = cursor.getColumnIndex(COLUMN_HIST_SALDO);
-
-                if (idPartidaIndex != -1 && usuarioIdIndex != -1 && fechaIndex != -1 && saldoIndex != -1) {
-                    int idPartida = cursor.getInt(idPartidaIndex);
-                    int idJugador = cursor.getInt(usuarioIdIndex);
-                    String fecha = cursor.getString(fechaIndex);
-                    int saldoFinal = cursor.getInt(saldoIndex);
-
-                    partidasList.add(new Partida(idPartida, idJugador, fecha, saldoFinal));
-                } else {
-                    Log.e("DatabaseHelper", "Error: columna no encontrada en el cursor");
-                }
-            } while (cursor.moveToNext());
-        }
-
+        // Procesar el cursor
         if (cursor != null) {
-            cursor.close();
+            try {
+                if (cursor.moveToFirst()) {
+                    do {
+                        // Obtener los índices de las columnas
+                        int idIndex = cursor.getColumnIndex(COLUMN_PARTIDA_ID);
+                        int jugadorIdIndex = cursor.getColumnIndex(COLUMN_PARTIDA_JUGADOR_ID);
+                        int fechaIndex = cursor.getColumnIndex(COLUMN_PARTIDA_FECHA);
+                        int saldoIndex = cursor.getColumnIndex(COLUMN_SALDO);
+
+                        // Validar que las columnas existen y no son -1
+                        if (idIndex != -1 && jugadorIdIndex != -1 && fechaIndex != -1 && saldoIndex != -1) {
+                            int idPartida = cursor.getInt(idIndex);
+                            int idJugador = cursor.getInt(jugadorIdIndex);
+                            String fecha = cursor.getString(fechaIndex);
+                            int saldoFinal = cursor.getInt(saldoIndex);
+
+                            // Agregar la partida a la lista
+                            partidasList.add(new Partida(idPartida, idJugador, fecha, saldoFinal));
+                        } else {
+                            Log.e("DatabaseHelper", "Error: columna no encontrada en el cursor");
+                        }
+                    } while (cursor.moveToNext());
+                }
+            } finally {
+                cursor.close(); // Asegurarse de cerrar el cursor
+            }
         }
 
-        db.close();
-        return partidasList;
+        return partidasList.isEmpty() ? new ArrayList<>() : partidasList;
     }
+
 
 }

@@ -29,7 +29,7 @@ public class HistorialActivity extends AppCompatActivity {
         // Obtener referencias de las vistas
         ImageButton btnBack = findViewById(R.id.btnBack);
         recyclerHistorial = findViewById(R.id.recyclerHistorial);
-
+        tvTittle = findViewById(R.id.tvTitle);
         // Acción para el botón de retroceso: cierra la Activity
         btnBack.setOnClickListener(v -> finish());
 
@@ -79,7 +79,7 @@ public class HistorialActivity extends AppCompatActivity {
             Partida partida = data.get(position);
 
             // Mostrar la información de la partida (ID, fecha, y saldo final)
-            holder.tvPartidaId.setText("ID Partida: " + partida.getIdPartida());
+            holder.tvPartidaId.setText("Partida: " + partida.getIdPartida());
             holder.tvFecha.setText("Fecha: " + partida.getFecha());
             holder.tvSaldo.setText("Saldo Final: " + partida.getSaldoFinal());
         }
