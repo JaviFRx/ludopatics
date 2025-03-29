@@ -44,6 +44,24 @@ public class GameOverActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        Button exitButton = findViewById(R.id.exitButton);
+        exitButton.setOnClickListener(v -> {
+            if (MainActivity.mediaPlayer2 != null) {
+                if (MainActivity.mediaPlayer2.isPlaying()) {
+                    MainActivity.mediaPlayer2.stop();
+                }
+                MainActivity.mediaPlayer2.release();
+                MainActivity.mediaPlayer2 = null;
             }
+
+            // Volver a la actividad de menú principal
+            Intent intent = new Intent(GameOverActivity.this, Menu.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("nombreUsuario", nombreUsuario); // Por si necesitas conservar el nombre
+            startActivity(intent);
+            finish(); // Finaliza esta actividad
+        });
+    }
     }
 
