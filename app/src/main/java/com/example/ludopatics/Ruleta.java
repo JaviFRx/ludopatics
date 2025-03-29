@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -62,11 +63,24 @@ public class Ruleta extends AppCompatActivity {
         Button btnJugar = findViewById(R.id.btnJugar);
         btnJugar.setOnClickListener(v -> {
             String nombre = etNombreUsuario.getText().toString().trim(); // Asegurar que obtenemos el nombre
+
             if (!nombre.isEmpty()) {
-                Intent intent = new Intent(Ruleta.this, Menu.class);
-                intent.putExtra("nombreUsuario", nombre);  // Enviar el nombre al intent
-                startActivity(intent);
-                finish();
+                // Guardar el nombre en la base de datos
+                if (dbHelper.guardarNombre(nombre)) {
+                    Log.i("Database", "El nombre se guardó exitosamente en la BD");
+
+                    // Cambiar a la siguiente actividad
+                    Intent intent = new Intent(Ruleta.this, Menu.class);
+                    intent.putExtra("nombreUsuario", nombre);  // Enviar el nombre al intent
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Log.e("Database", "No se pudo guardar el nombre en la BD");
+                    Toast.makeText(this, "Error al guardar el nombre", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                // Mostrar mensaje si el nombre está vacío
+                Toast.makeText(this, "Por favor, ingresa un nombre", Toast.LENGTH_SHORT).show();
             }
         });
     }

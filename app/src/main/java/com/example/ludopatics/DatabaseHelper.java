@@ -79,7 +79,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // En este ejemplo, asumimos que estamos migrando desde la versión 6 a la 7.
-        if (oldVersion == 6) {
+        if (oldVersion <= 6) {
             // 1. Crear la nueva tabla con la estructura deseada (incluye la columna 'saldo')
             db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_PARTIDAS + "_new (" +
                     COLUMN_PARTIDA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
