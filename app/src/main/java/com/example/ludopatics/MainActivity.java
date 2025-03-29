@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     private int currentBalance = 1000; // Saldo inicial
     private int currentBetAmount = 0; // Cantidad de apuesta actual
     private String nombreUsuario = "";
-    private final String numeroSeleccionado = "";
+    private String numeroSeleccionado = "";
     private String selectedParImpar = "null";
     // Definimos los números de la ruleta en orden
     private final String[] casillasRuleta = {
@@ -558,8 +558,8 @@ public class MainActivity extends AppCompatActivity {
         builder.setTitle("Selecciona un número")
                 .setView(numberPicker)
                 .setPositiveButton("Seleccionar", (dialog, which) -> {
-                    int numeroSeleccionado = numberPicker.getValue();
-                    apuestaNumeroTextView.setText("Apostaste " + currentBetAmount + " al " + numeroSeleccionado);
+                    numeroSeleccionado = String.valueOf(numberPicker.getValue());
+                    agregarApuesta("numero", numeroSeleccionado); // REGISTRA LA APUESTA CORRECTAMENTE
                     Toast.makeText(this, "Número seleccionado: " + numeroSeleccionado, Toast.LENGTH_SHORT).show();
                 })
                 .setNegativeButton("Cancelar", null);
