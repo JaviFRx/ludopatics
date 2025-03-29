@@ -259,21 +259,25 @@ public class MainActivity extends AppCompatActivity {
         // Verifica si se ha pulsado el botón de perfil
         if (item.getItemId() == R.id.action_profile) {
             // Acción para el perfil
-            startActivity(new Intent(this, PerfilActivity.class));
+            Intent intent = new Intent(this,PerfilActivity.class);
+            intent.putExtra("nombreUsuario", nombreUsuario);  // Pasar el nombre de usuario
+            startActivity(intent);
             return true;
         }
 
         // Verifica si se ha pulsado el botón de historial
         if (item.getItemId() == R.id.action_history) {
-            // Acción para el historial
-            // Aquí puedes manejar la lógica para ver el historial
+            Intent intent = new Intent(this, HistorialActivity.class);
+            intent.putExtra("nombreUsuario", nombreUsuario);  // Pasar el nombre de usuario
+            startActivity(intent);
             return true;
         }
 
         // Verifica si se ha pulsado el botón de login
         if (item.getItemId() == R.id.action_login) {
-            // Acción para login
-            // Aquí puedes manejar la lógica de login
+            Intent intent = new Intent(this, Ruleta.class);
+            intent.putExtra("nombreUsuario", nombreUsuario);  // Pasar el nombre de usuario
+            startActivity(intent);
             return true;
         }
 

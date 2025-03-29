@@ -40,7 +40,7 @@ public class HistorialActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
 
         // Obtener el ID del usuario (ajustar según cómo obtienes el nombre)
-        String nombreUsuario = getIntent().getStringExtra("NOMBRE_USUARIO");
+        String nombreUsuario = getIntent().getStringExtra("nombreUsuario");
         tvTittle.setText("HISTORIAL DE: " + nombreUsuario);
         int usuarioId = dbHelper.obtenerIdJugador(nombreUsuario);
 
