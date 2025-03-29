@@ -58,9 +58,11 @@ public class Menu extends AppCompatActivity {
         });
 
         btnHistorial.setOnClickListener(v -> {
-            // Lógica para "HISTORIAL"
             Intent intent = new Intent(Menu.this, HistorialActivity.class);
-            startActivity(intent);        });
+            intent.putExtra("NOMBRE_USUARIO", nombreUsuario); // <-- ESTA LÍNEA FALTABA
+            startActivity(intent);
+        });
+
 
         btnMiPerfil.setOnClickListener(v -> {
             Intent intent = new Intent(Menu.this, PerfilActivity.class);
