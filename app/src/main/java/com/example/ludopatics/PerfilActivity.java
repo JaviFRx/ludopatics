@@ -17,7 +17,6 @@ public class PerfilActivity extends AppCompatActivity {
     private int usuarioId = -1;
 
     @Override
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
