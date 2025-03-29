@@ -374,7 +374,7 @@ public class MainActivity extends AppCompatActivity {
                 String color = resColor;
                 roundCount++;
                 roundTextView.setText("Round #" + roundCount);
-
+                Log.d("DEBUG", "Antes de comprobarApuestas - currentBetAmount: " + currentBetAmount);
                 comprobarApuestas(resColor, casillaFinal);
                 // Mover los colores hacia la izquierda
                 circulo1.setCircleColor(circulo2.getCircleColor());
@@ -686,68 +686,57 @@ public class MainActivity extends AppCompatActivity {
         StringBuilder mensajeResultado = new StringBuilder();
         boolean ganoAlgo = false;
 
-        // Comprobar apuesta al color
-        if (selectedColor.equals(resColor)) {
-            ganoAlgo = true;
-            if (resColor.equals("verde")) {
-                // Si el color es verde, multiplica la apuesta por 14
-                currentBalance += currentBetAmount * 14;
-                mensajeResultado.append("¡Ganaste! Color verde. Multiplicaste por 14.");
-            } else {
-                // Si el color es rojo o negro, multiplica la apuesta por 2
-                currentBalance += currentBetAmount * 2;
-                mensajeResultado.append("¡Ganaste! Color ").append(resColor).append(". Multiplicaste por 2.");
-            }
-        } else if (!selectedColor.equals("null")) {
-            mensajeResultado.append("Perdiste en color. ");
-        }
+        // Recorrer la lista de apuestas
+        for (Apuesta apuesta : listaApuestas) {
+            switch (apuesta.tipo) {
+                case "color":
+                    if (apuesta.valor.equals(resColor)) {
+                        ganoAlgo = true;
+                        int multiplicador = resColor.equals("verde") ? 14 : 2;
+                        currentBalance += apuesta.monto * multiplicador;
+                        mensajeResultado.append("\n¡Ganaste! Color ").append(resColor).append(". Multiplicaste por ").append(multiplicador).append(".");
+                    } else {
+                        mensajeResultado.append("\nPerdiste en color.");
+                    }
+                    break;
 
-        // Comprobar apuesta al número
-        if (!numeroSeleccionado.isEmpty() && numeroSeleccionado.equals(casillaFinal)) {
-            ganoAlgo = true;
-            // Si el número apostado coincide con el número resultado
-            currentBalance += currentBetAmount * 35; // La ruleta paga 35 veces la apuesta por el número
-            if (mensajeResultado.length() > 0) {
-                mensajeResultado.append("\n");
-            }
-            mensajeResultado.append("¡Ganaste! Número ").append(casillaFinal).append(". Multiplicaste por 35.");
-        } else if (!numeroSeleccionado.isEmpty()) {
-            if (mensajeResultado.length() > 0) {
-                mensajeResultado.append("\n");
-            }
-            mensajeResultado.append("Perdiste en número. ");
-        }
+                case "numero":
+                    if (apuesta.valor.equals(casillaFinal)) {
+                        ganoAlgo = true;
+                        currentBalance += apuesta.monto * 35;
+                        mensajeResultado.append("\n¡Ganaste! Número ").append(casillaFinal).append(". Multiplicaste por 35.");
+                    } else {
+                        mensajeResultado.append("\nPerdiste en número.");
+                    }
+                    break;
 
-        // Comprobar apuesta a par/impar
-        if (!selectedParImpar.isEmpty()) {
-            int resultadoNumero = Integer.parseInt(casillaFinal);
-            boolean esPar = resultadoNumero % 2 == 0;
-
-            if ((selectedParImpar.equals("par") && esPar) || (selectedParImpar.equals("impar") && !esPar)) {
-                ganoAlgo = true;
-                // Si la apuesta coincide con el resultado, gana el doble
-                currentBalance += currentBetAmount * 2;
-                if (mensajeResultado.length() > 0) {
-                    mensajeResultado.append("\n");
-                }
-                mensajeResultado.append("¡Ganaste! Apuesta a ").append(selectedParImpar).append(". Multiplicaste por 2.");
-            } else {
-                if (mensajeResultado.length() > 0) {
-                    mensajeResultado.append("\n");
-                }
-                mensajeResultado.append("Perdiste en ").append(selectedParImpar).append(".");
+                case "parImpar":
+                    int resultadoNumero = Integer.parseInt(casillaFinal);
+                    boolean esPar = resultadoNumero % 2 == 0;
+                    if ((apuesta.valor.equals("par") && esPar) || (apuesta.valor.equals("impar") && !esPar)) {
+                        ganoAlgo = true;
+                        currentBalance += apuesta.monto * 2;
+                        mensajeResultado.append("\n¡Ganaste! Apuesta a ").append(apuesta.valor).append(". Multiplicaste por 2.");
+                    } else {
+                        mensajeResultado.append("\nPerdiste en ").append(apuesta.valor).append(".");
+                    }
+                    break;
             }
         }
 
-        // Si no ganó nada y no hay mensajes, mostrar mensaje genérico
-        if (!ganoAlgo && mensajeResultado.length() == 0) {
-            mensajeResultado.append("Perdiste. Inténtalo de nuevo.");
+        // Si no ganó nada, mostrar mensaje genérico
+        if (!ganoAlgo) {
+            mensajeResultado.append("\nPerdiste. Inténtalo de nuevo.");
         }
+
+        // Limpiar la lista de apuestas después de comprobarlas
+        listaApuestas.clear();
 
         // Actualizar la UI
         balanceValue.setText(String.valueOf(currentBalance));
-        apuestaTextView.setText(mensajeResultado.toString());
+        apuestaTextView.setText(mensajeResultado.toString().trim());
     }
+
 
     public int calcularTotalApuesta() {
         int totalApuesta = 0;

@@ -59,7 +59,7 @@ public class Menu extends AppCompatActivity {
 
         btnHistorial.setOnClickListener(v -> {
             Intent intent = new Intent(Menu.this, HistorialActivity.class);
-            intent.putExtra("NOMBRE_USUARIO", nombreUsuario); // <-- ESTA LÍNEA FALTABA
+            intent.putExtra("nombreUsuario", nombreUsuario); // <-- ESTA LÍNEA FALTABA
             startActivity(intent);
         });
 
