@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView ruletaImage;
     private TextView apuestaTextView;
     private Button btnGirar;
+    private int idPartidaActual = -1;
+
 
     private CirculosView circleView, circulo1, circulo2, circulo3, circulo4, circulo5;
 

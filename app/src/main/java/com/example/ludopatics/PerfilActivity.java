@@ -2,6 +2,7 @@ package com.example.ludopatics;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,6 +45,8 @@ public class PerfilActivity extends AppCompatActivity {
         // Inicializar base de datos y obtener ID
         dbHelper = new DatabaseHelper(this);
         usuarioId = dbHelper.obtenerIdJugador(nombreUsuario);
+        Log.d("Perfil", "ID del usuario " + nombreUsuario + ": " + usuarioId);
+
 
         // Cargar y mostrar estadísticas
         cargarEstadisticas();
