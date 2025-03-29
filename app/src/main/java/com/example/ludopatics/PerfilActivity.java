@@ -2,6 +2,7 @@ package com.example.ludopatics;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -16,6 +17,7 @@ public class PerfilActivity extends AppCompatActivity {
     private int usuarioId = -1;
 
     @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
@@ -26,6 +28,10 @@ public class PerfilActivity extends AppCompatActivity {
         tvPrecisionColor = findViewById(R.id.tvPrecisionColor);
         tvPrecisionParImpar = findViewById(R.id.tvPrecisionParImpar);
         tvPrecisionNumero = findViewById(R.id.tvPrecisionNumero);
+
+        // Botón de volver
+        ImageButton btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v -> finish());
 
         // Recibir nombre del intent
         nombreUsuario = getIntent().getStringExtra("nombreUsuario");
@@ -43,6 +49,7 @@ public class PerfilActivity extends AppCompatActivity {
         // Cargar y mostrar estadísticas
         cargarEstadisticas();
     }
+
 
     private void cargarEstadisticas() {
         Cursor cursor = dbHelper.obtenerHistorico(usuarioId);
@@ -87,4 +94,6 @@ public class PerfilActivity extends AppCompatActivity {
         tvPrecisionParImpar.setText("Par/Impar: " + pctParImpar + "%");
         tvPrecisionNumero.setText("Número: " + pctNumero + "%");
     }
+
+
 }
