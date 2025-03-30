@@ -189,7 +189,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         boolean existe = cursor.moveToFirst(); // Si hay resultados, el nombre ya existe
         cursor.close();
-        db.close();
 
         return existe;
     }
