@@ -17,7 +17,7 @@ import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "ludopatics.db";
-    private static final int DATABASE_VERSION = 7;  // Aumentado por la nueva tabla 'partidas' y campo en 'historico_tiradas'
+    private static final int DATABASE_VERSION = 9;  // Aumentado por la nueva tabla 'partidas' y campo en 'historico_tiradas'
 
     // Definición de las tablas
     private static final String TABLE_USUARIOS = "usuarios";
@@ -78,41 +78,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Verificar si la columna 'saldo' ya existe en la tabla 'TABLE_PARTIDAS'
-        if (!columnExists(db, TABLE_PARTIDAS, COLUMN_SALDO)) {
-            Log.d("DatabaseUpgrade", "La columna 'saldo' no existe, iniciando migración...");
+        if (oldVersion < newVersion) {
+            // Verificar si la columna 'gano' existe
+            if (columnExists(db, TABLE_PARTIDAS, COLUMN_HIST_GANO)) {
+                Log.d("DatabaseUpgrade", "La columna 'gano' existe, cambiando su nombre a 'saldofinal'...");
 
-            // 1. Crear la nueva tabla con la estructura correcta
-            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_PARTIDAS + "_new (" +
-                    COLUMN_PARTIDA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_PARTIDA_JUGADOR_ID + " INTEGER, " +
-                    COLUMN_PARTIDA_FECHA + " TEXT DEFAULT CURRENT_TIMESTAMP, " +
-                    COLUMN_SALDO + " INTEGER DEFAULT 0, " +
-                    "FOREIGN KEY(" + COLUMN_PARTIDA_JUGADOR_ID + ") REFERENCES " + TABLE_USUARIOS + "(" + COLUMN_ID + "))");
+                // Paso 1: Crear una nueva tabla con la estructura modificada
+                db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_PARTIDAS + "_new (" +
+                        COLUMN_PARTIDA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        COLUMN_PARTIDA_JUGADOR_ID + " INTEGER, " +
+                        COLUMN_PARTIDA_FECHA + " TEXT DEFAULT CURRENT_TIMESTAMP, " +
+                        COLUMN_SALDO + " INTEGER DEFAULT 0, " +
+                        "FOREIGN KEY(" + COLUMN_PARTIDA_JUGADOR_ID + ") REFERENCES " + TABLE_USUARIOS + "(" + COLUMN_ID + "))");
 
-            // 2. Migrar los datos de la tabla antigua a la nueva
-            db.execSQL("INSERT INTO " + TABLE_PARTIDAS + "_new (" +
-                    COLUMN_PARTIDA_ID + ", " +
-                    COLUMN_PARTIDA_JUGADOR_ID + ", " +
-                    COLUMN_PARTIDA_FECHA + ", " +
-                    COLUMN_SALDO + ") " +
-                    "SELECT " +
-                    COLUMN_PARTIDA_ID + ", " +
-                    COLUMN_PARTIDA_JUGADOR_ID + ", " +
-                    COLUMN_PARTIDA_FECHA + ", " +
-                    "0 FROM " + TABLE_PARTIDAS);
+                // Paso 2: Copiar los datos de la tabla antigua a la nueva, renombrando 'gano' a 'saldofinal'
+                db.execSQL("INSERT INTO " + TABLE_PARTIDAS + "_new (" +
+                        COLUMN_PARTIDA_ID + ", " +
+                        COLUMN_PARTIDA_JUGADOR_ID + ", " +
+                        COLUMN_PARTIDA_FECHA + ", " +
+                        COLUMN_SALDO + ") " +
+                        "SELECT " +
+                        COLUMN_PARTIDA_ID + ", " +
+                        COLUMN_PARTIDA_JUGADOR_ID + ", " +
+                        COLUMN_PARTIDA_FECHA + ", " +
+                        "gano FROM " + TABLE_PARTIDAS);
 
-            // 3. Eliminar la tabla antigua
-            db.execSQL("DROP TABLE IF EXISTS " + TABLE_PARTIDAS);
+                // Paso 3: Eliminar la tabla antigua
+                db.execSQL("DROP TABLE IF EXISTS " + TABLE_PARTIDAS);
 
-            // 4. Renombrar la nueva tabla
-            db.execSQL("ALTER TABLE " + TABLE_PARTIDAS + "_new RENAME TO " + TABLE_PARTIDAS);
+                // Paso 4: Renombrar la nueva tabla con el nombre original
+                db.execSQL("ALTER TABLE " + TABLE_PARTIDAS + "_new RENAME TO " + TABLE_PARTIDAS);
 
-            Log.d("DatabaseUpgrade", "Migración completada correctamente.");
-        } else {
-            Log.d("DatabaseUpgrade", "La columna 'saldo' ya existe, no es necesario actualizar.");
+                Log.d("DatabaseUpgrade", "Renombrado completado correctamente.");
+            } else {
+                Log.d("DatabaseUpgrade", "La columna 'gano' no existe, no se necesita actualización.");
+            }
         }
     }
+
+
 
     // Método para verificar si una columna existe en una tabla
     private boolean columnExists(SQLiteDatabase db, String tableName, String columnName) {
@@ -201,7 +205,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_NOMBRE, nombre);
 
         long result = db.insert(TABLE_USUARIOS, null, values);
-        db.close();
+        //db.close();
 
         if (result == -1) {
             Log.e("Database", "Error al guardar el nombre");
