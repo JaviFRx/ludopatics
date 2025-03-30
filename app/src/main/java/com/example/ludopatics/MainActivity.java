@@ -2,11 +2,20 @@ package com.example.ludopatics;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.AdaptiveIconDrawable;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.AbsoluteSizeSpan;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -108,22 +117,26 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         dbHelper = new DatabaseHelper(this);
-        // Obtiene la ActionBar
         ActionBar actionBar = getSupportActionBar();
 
         if (actionBar != null) {
             actionBar.setDisplayShowHomeEnabled(true);
             actionBar.setDisplayUseLogoEnabled(true);
+
+            // Restaurar el ícono sin cambios
             actionBar.setLogo(R.mipmap.ic_launcher);
 
-            // Configurar el título
-            actionBar.setDisplayShowTitleEnabled(true);
+            // Restaurar el título original
             actionBar.setTitle("Ludopatics");
-            actionBar.hide();
 
+            // Mantener la ActionBar oculta hasta que se pulse el botón
+            actionBar.hide();
         }
-        final boolean[] isActionBarVisible = {false};
+
+
+    final boolean[] isActionBarVisible = {false};
 
         // Configurar el botón de imagen
         ImageButton menuButton = findViewById(R.id.btn_toggle_actionbar);

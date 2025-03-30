@@ -9,7 +9,7 @@
         android:icon="@drawable/speakeroff"
         android:title="Música"
         android:orderInCategory="2"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:popupTheme="@style/MenuPopupStyle" /> <!-- Agregar el tema oscuro aquí -->
 
     <!-- Perfil -->
@@ -18,7 +18,7 @@
         android:title="Perfil"
         android:icon="@drawable/ic_usuario_default"
         android:orderInCategory="3"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:popupTheme="@style/MenuPopupStyle" />
 
     <!-- Ruleta -->
@@ -26,14 +26,15 @@
         android:id="@+id/action_login"
         android:title="Login"
         android:orderInCategory="4"
-        app:showAsAction="never"
+        app:showAsAction="always"
         android:popupTheme="@style/MenuPopupStyle" />
 
     <!-- Historial -->
     <item
         android:id="@+id/action_history"
         android:title="Historial"
+        android:icon="@drawable/pergamino"
         android:orderInCategory="5"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:popupTheme="@style/MenuPopupStyle" />
 </menu>
