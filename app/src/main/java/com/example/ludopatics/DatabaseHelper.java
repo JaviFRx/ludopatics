@@ -161,21 +161,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Método para guardar el nombre de un usuario
     public boolean guardarNombre(String nombre) {
         SQLiteDatabase db = this.getWritableDatabase();
+
+        // Verificar si el nombre ya existe
+        if (existeNombre(nombre)) {
+            Log.i("Database", "El nombre ya existe, no se inserta.");
+            return true; // No insertar si ya está en la base de datos
+        }
+
+        // Si no existe, lo insertamos
         ContentValues values = new ContentValues();
         values.put(COLUMN_NOMBRE, nombre);
 
-        long result = db.insertWithOnConflict(TABLE_USUARIOS, null, values, SQLiteDatabase.CONFLICT_IGNORE);
-
+        long result = db.insert(TABLE_USUARIOS, null, values);
         db.close();
 
         if (result == -1) {
             Log.e("Database", "Error al guardar el nombre");
-            return false; // No se guardó el nombre
+            return false;
         } else {
             Log.i("Database", "Nombre guardado correctamente");
-            return true; // El nombre se guardó correctamente
+            return true;
         }
     }
+    public boolean existeNombre(String nombre) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT 1 FROM " + TABLE_USUARIOS + " WHERE " + COLUMN_NOMBRE + " = ?", new String[]{nombre});
+
+        boolean existe = cursor.moveToFirst(); // Si hay resultados, el nombre ya existe
+        cursor.close();
+        db.close();
+
+        return existe;
+    }
+
 
 
     // Método para obtener el nombre de un usuario
