@@ -2,22 +2,12 @@ package com.example.ludopatics;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.AdaptiveIconDrawable;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.AbsoluteSizeSpan;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -34,7 +24,6 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
-import androidx.core.view.GestureDetectorCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import java.util.ArrayList;
@@ -45,19 +34,18 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import androidx.appcompat.app.ActionBar;
+/** @noinspection SpellCheckingInspection*/
 public class MainActivity extends AppCompatActivity {
 
     private DatabaseHelper dbHelper;
 
     private final List<Apuesta> listaApuestas = new ArrayList<>();
     String casillaFinal = "";
-    int totalApuesta = 0;
     private String selectedColor = ""; // Variable para almacenar el color apostado
     private String resColor = "";
     private ImageView ruletaImage;
     private TextView apuestaTextView;
     private Button btnGirar;
-    private int idPartidaActual = -1;
 
 
     private CirculosView circleView, circulo1, circulo2, circulo3, circulo4, circulo5;
@@ -68,10 +56,6 @@ public class MainActivity extends AppCompatActivity {
     // Variables para manejar las apuestas
     private TextView balanceValue;
     private TextView betAmount;
-    private GestureDetector gestureDetector;
-    private boolean isActionBarVisible = false;
-    private Handler hideHandler = new Handler();
-
     private TextView apuestaNumeroTextView;
     private TextView apuestaParImparTextView;
     private Button betButtonPlus1;
@@ -79,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
     private Button betButtonPlus100;
     private Button btnodd;
     private Button btneven;
-    private Button num_Button;
     private TextView roundTextView;
     private int roundCount = 0;
 

@@ -78,9 +78,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // En este ejemplo, asumimos que estamos migrando desde la versión 6 a la 7.
-        if (oldVersion <= 6) {
-            // 1. Crear la nueva tabla con la estructura deseada (incluye la columna 'saldo')
+        // Verificar si la columna 'saldo' ya existe en la tabla 'TABLE_PARTIDAS'
+        if (!columnExists(db, TABLE_PARTIDAS, COLUMN_SALDO)) {
+            Log.d("DatabaseUpgrade", "La columna 'saldo' no existe, iniciando migración...");
+
+            // 1. Crear la nueva tabla con la estructura correcta
             db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_PARTIDAS + "_new (" +
                     COLUMN_PARTIDA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COLUMN_PARTIDA_JUGADOR_ID + " INTEGER, " +
@@ -88,8 +90,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     COLUMN_SALDO + " INTEGER DEFAULT 0, " +
                     "FOREIGN KEY(" + COLUMN_PARTIDA_JUGADOR_ID + ") REFERENCES " + TABLE_USUARIOS + "(" + COLUMN_ID + "))");
 
-            // 2. Migrar los datos de la tabla antigua a la nueva.
-            // Como la tabla antigua solo tiene 3 columnas, asignamos un 0 de forma predeterminada a la columna 'saldo'
+            // 2. Migrar los datos de la tabla antigua a la nueva
             db.execSQL("INSERT INTO " + TABLE_PARTIDAS + "_new (" +
                     COLUMN_PARTIDA_ID + ", " +
                     COLUMN_PARTIDA_JUGADOR_ID + ", " +
@@ -104,10 +105,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             // 3. Eliminar la tabla antigua
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_PARTIDAS);
 
-            // 4. Renombrar la nueva tabla para que adopte el nombre original
+            // 4. Renombrar la nueva tabla
             db.execSQL("ALTER TABLE " + TABLE_PARTIDAS + "_new RENAME TO " + TABLE_PARTIDAS);
+
+            Log.d("DatabaseUpgrade", "Migración completada correctamente.");
+        } else {
+            Log.d("DatabaseUpgrade", "La columna 'saldo' ya existe, no es necesario actualizar.");
         }
     }
+
+    // Método para verificar si una columna existe en una tabla
+    private boolean columnExists(SQLiteDatabase db, String tableName, String columnName) {
+        boolean exists = false;
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("PRAGMA table_info(" + tableName + ");", null);
+            while (cursor.moveToNext()) {
+                int columnIndex = cursor.getColumnIndex("name");
+                if (columnIndex != -1) {
+                    String existingColumn = cursor.getString(columnIndex);
+                    if (existingColumn.equalsIgnoreCase(columnName)) {
+                        exists = true;
+                        break;
+                    }
+                }
+            }
+        } finally {
+            if (cursor != null) cursor.close();
+        }
+        return exists;
+    }
+
 
     public void imprimirPartidas() {
         SQLiteDatabase db = this.getReadableDatabase();
