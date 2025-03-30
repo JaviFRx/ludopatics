@@ -7,5 +7,8 @@
     <string name="hint_nombre_usuario">Introduce tu nombre</string>
     <string name="bet_and_spin">Bet and Spin</string>
     <string name="bet_amount_minimum_1">Bet Amount: minimum 1</string>
-
+    <string name="music_title">Música</string>
+    <string name="profile_title">Perfil</string>
+    <string name="login_title">Login</string>
+    <string name="history_title">Historial</string>
 </resources>

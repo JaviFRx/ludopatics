@@ -7,15 +7,16 @@
     <item
         android:id="@+id/music_toggle"
         android:icon="@drawable/speakeroff"
-        android:title="Música"
+        android:title="@string/music_title"
         android:orderInCategory="2"
         app:showAsAction="always"
-        android:popupTheme="@style/MenuPopupStyle" /> <!-- Agregar el tema oscuro aquí -->
+        android:popupTheme="@style/MenuPopupStyle"
+        tools:ignore="AlwaysShowAction" />
 
     <!-- Perfil -->
     <item
         android:id="@+id/action_profile"
-        android:title="Perfil"
+        android:title="@string/profile_title"
         android:icon="@drawable/ic_usuario_default"
         android:orderInCategory="3"
         app:showAsAction="always"
@@ -24,7 +25,7 @@
     <!-- Ruleta -->
     <item
         android:id="@+id/action_login"
-        android:title="Login"
+        android:title="@string/login_title"
         android:icon="@drawable/login"
         android:orderInCategory="4"
         app:showAsAction="always"
@@ -33,7 +34,7 @@
     <!-- Historial -->
     <item
         android:id="@+id/action_history"
-        android:title="Historial"
+        android:title="@string/history_title"
         android:icon="@drawable/pergamino"
         android:orderInCategory="5"
         app:showAsAction="always"
