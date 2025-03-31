@@ -30,16 +30,15 @@ public class HistorialActivity extends AppCompatActivity {
         ImageButton btnBack = findViewById(R.id.btnBack);
         recyclerHistorial = findViewById(R.id.recyclerHistorial);
         tvTittle = findViewById(R.id.tvTitle);
-        // Acción para el botón de retroceso: cierra la Activity
+        // Acción para el botón de volver hacia atras: cierra la Activity
         btnBack.setOnClickListener(v -> finish());
 
-        // Configuramos el RecyclerView con un LinearLayoutManager
         recyclerHistorial.setLayoutManager(new LinearLayoutManager(this));
 
-        // Inicializar DatabaseHelper
+        // Iniciamos DatabaseHelper
         dbHelper = new DatabaseHelper(this);
 
-        // Obtener el ID del usuario (ajustar según cómo obtienes el nombre)
+        // Obtener el ID del usuario
         String nombreUsuario = getIntent().getStringExtra("nombreUsuario");
         tvTittle.setText("HISTORIAL DE: " + nombreUsuario);
         int usuarioId = dbHelper.obtenerIdJugador(nombreUsuario);
@@ -69,7 +68,7 @@ public class HistorialActivity extends AppCompatActivity {
         @NonNull
         @Override
         public HistorialAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            // Inflar el layout del item de historial
+
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_historial, parent, false);
             return new ViewHolder(view);

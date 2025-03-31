@@ -34,7 +34,7 @@ public class CirculosView extends View {
         paint.setAntiAlias(true);
         paint.setColor(circleColor);
 
-        // Inicialización de la pintura para el texto
+        // Pintura para el texto
         textPaint = new TextPaint();
         textPaint.setAntiAlias(true);
         textPaint.setColor(Color.WHITE); // Color del texto
@@ -54,7 +54,7 @@ public class CirculosView extends View {
 
         // Dibujar el círculo con el color actual
         canvas.drawCircle(centerX, centerY, radius, paint);
-        // Dibujar el texto en el centro del círculo
+        // Texto en el centro del círculo
         if (!text.isEmpty()) {
             float textY = centerY - ((textPaint.descent() + textPaint.ascent()) / 2); // Centrar verticalmente
             canvas.drawText(text, centerX, textY, textPaint);

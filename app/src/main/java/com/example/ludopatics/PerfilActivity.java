@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.imageview.ShapeableImageView;
 
 public class PerfilActivity extends AppCompatActivity {
@@ -22,7 +24,7 @@ public class PerfilActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
-        // Referencias a vistas
+        // Referencia a vistas
         imgPerfil = findViewById(R.id.imgPerfil);
         tvNombrePerfil = findViewById(R.id.tvNombrePerfil);
         tvPrecisionColor = findViewById(R.id.tvPrecisionColor);
@@ -40,18 +42,19 @@ public class PerfilActivity extends AppCompatActivity {
         }
 
         tvNombrePerfil.setText(nombreUsuario);
-        imgPerfil.setImageResource(R.drawable.ic_usuario_default); // Imagen circular de perfil
+        imgPerfil.setImageResource(R.drawable.ic_usuario_default); // Imagen en forma cicular para el perfil
 
         // Inicializar base de datos y obtener ID
         dbHelper = new DatabaseHelper(this);
         usuarioId = dbHelper.obtenerIdJugador(nombreUsuario);
         Log.d("Perfil", "ID del usuario " + nombreUsuario + ": " + usuarioId);
-
-
-        // Cargar y mostrar estadísticas
-        cargarEstadisticas();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        cargarEstadisticas(); // Sirve para que se recarguen las estadísticas siempre que se vuelva a esta pantalla
+    }
 
     private void cargarEstadisticas() {
         Cursor cursor = dbHelper.obtenerHistorico(usuarioId);
@@ -96,6 +99,4 @@ public class PerfilActivity extends AppCompatActivity {
         tvPrecisionParImpar.setText("Par/Impar: " + pctParImpar + "%");
         tvPrecisionNumero.setText("Número: " + pctNumero + "%");
     }
-
-
 }

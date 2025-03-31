@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final List<Apuesta> listaApuestas = new ArrayList<>();
     String casillaFinal = "";
-    private String selectedColor = ""; // Variable para almacenar el color apostado
+    private String selectedColor = ""; // Almacena el color al que se apuesta
     private String resColor = "";
     private ImageView ruletaImage;
     private TextView apuestaTextView;
@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
     private Button betButtonPlus1;
     private Button betButtonPlus10;
     private Button betButtonPlus100;
-    private Button btnodd;
-    private Button btneven;
+    private Button btnpar;
+    private Button btnimpar;
     private TextView roundTextView;
     private int roundCount = 0;
 
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         // Inicia la reproducción del audio
         mediaPlayer2.start();
 
-        // Asegúrate de liberar los recursos al finalizar
+
         mediaPlayer2.setOnCompletionListener(mp -> {
             mediaPlayer2.release();
             mediaPlayer2 = null;
@@ -189,8 +189,8 @@ public class MainActivity extends AppCompatActivity {
         betButtonPlus100.setOnClickListener(view -> increaseBet(100));
 
         // Referencias a los botones
-        btnodd = findViewById(R.id.odd_button);
-        btneven = findViewById(R.id.even_button);
+        btnpar = findViewById(R.id.odd_button);
+        btnimpar = findViewById(R.id.even_button);
         Button redButton = findViewById(R.id.red_button);
         Button greenButton = findViewById(R.id.green_button);
         Button blackButton = findViewById(R.id.black_button);
@@ -215,12 +215,12 @@ public class MainActivity extends AppCompatActivity {
             selectedColor = "verde"; // Actualizar el color seleccionado
         });
 
-        btnodd.setOnClickListener(v -> {
-            agregarApuesta("parImpar", "par");  // Make sure the parameter count is consistent
+        btnpar.setOnClickListener(v -> {
+            agregarApuesta("parImpar", "par");
             selectedParImpar = "par"; // Actualizar la selección de par/impar
         });
-        btneven.setOnClickListener(v -> {
-            agregarApuesta("parImpar", "impar");  // Make sure the parameter count is consistent
+        btnimpar.setOnClickListener(v -> {
+            agregarApuesta("parImpar", "impar");
             selectedParImpar = "impar"; // Actualizar la selección de par/impar
         });
 
@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onCreateOptionsMenu(Menu menu) {
-            // Inflar el archivo menu.xml para que aparezcan los íconos en la ActionBar
+            // Usar menu.xml para que aparezcan los iconos en la ActionBar
             getMenuInflater().inflate(R.menu.menu, menu);
             return true;
         }
@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
         // Verifica si se ha pulsado el botón de historial
         if (item.getItemId() == R.id.action_history) {
             Intent intent = new Intent(this, HistorialActivity.class);
-            intent.putExtra("nombreUsuario", nombreUsuario);  // Pasar el nombre de usuario
+            intent.putExtra("nombreUsuario", nombreUsuario);
             startActivity(intent);
             return true;
         }
@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
         // Verifica si se ha pulsado el botón de login
         if (item.getItemId() == R.id.action_login) {
             Intent intent = new Intent(this, Ruleta.class);
-            intent.putExtra("nombreUsuario", nombreUsuario);  // Pasar el nombre de usuario
+            intent.putExtra("nombreUsuario", nombreUsuario);
             startActivity(intent);
             return true;
         }
@@ -310,9 +310,9 @@ public class MainActivity extends AppCompatActivity {
     // Método para actualizar el texto de la cantidad de apuesta
     private void updateBetAmountText() {
         if (currentBetAmount > 0) {
-            betAmount.setText("Bet Amount: " + currentBetAmount);
+            betAmount.setText("Cantidad Apostada: " + currentBetAmount);
         } else {
-            betAmount.setText("Bet Amount: minimum 1");
+            betAmount.setText("Cantidad Apostada: minimo 1");
         }
     }
 
@@ -369,7 +369,7 @@ public class MainActivity extends AppCompatActivity {
                 calcularCasilla(angle);
                 String color = resColor;
                 roundCount++;
-                roundTextView.setText("Round #" + roundCount);
+                roundTextView.setText("Ronda #" + roundCount);
                 Log.d("DEBUG", "Antes de comprobarApuestas - currentBetAmount: " + currentBetAmount);
                 comprobarApuestas(resColor, casillaFinal);
                 // Mover los colores hacia la izquierda
@@ -457,7 +457,7 @@ public class MainActivity extends AppCompatActivity {
             mediaPlayer2.pause();
         }
 
-        // Detener y liberar el reproductor de sonidos de la ruleta si existe
+        // Detener y liberar el reproductor de sonidos de la ruleta
         if (mediaPlayer != null) {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
@@ -466,7 +466,7 @@ public class MainActivity extends AppCompatActivity {
             mediaPlayer = null;
         }
 
-        // Crear y reproducir el nuevo sonido (ruleta)
+        // Crear y reproducir el nuevo sonido de la ruleta
         mediaPlayer = MediaPlayer.create(this, R.raw.efecto);
         mediaPlayer.start();
 
@@ -520,7 +520,7 @@ public class MainActivity extends AppCompatActivity {
             colorNumero = Color.BLACK;
         } else {
             resColor = "gris";
-            colorNumero = Color.GRAY; // Por si hay algún error
+            colorNumero = Color.GRAY;
         }
 
         // Actualizar el CirculosView con el color correspondiente
@@ -595,7 +595,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Método para cambiar el color del texto en el NumberPicker sin usar reflexión.
+     * Método para cambiar el color del texto en el NumberPicker
      */
     private void setNumberPickerTextColor(NumberPicker numberPicker, int color) {
         for (int i = 0; i < numberPicker.getChildCount(); i++) {
@@ -627,7 +627,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        // Actualizar UI para mostrar que se reembolsó una apuesta (opcional)
+        // Actualizar UI para mostrar que se reembolsó una apuesta
         if (replacingExistingBet) {
             actualizarSaldoUI(); // Actualizar saldo después del reembolso
         }
@@ -659,7 +659,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         actualizarSaldoUI(); // Asegurar que la interfaz muestra el saldo correcto
-        currentBetAmount = 0; // Reiniciar el monto apostado *después* de actualizar la UI
+        currentBetAmount = 0; // Reiniciar el monto apostado despues de actualizar la UI
     }
 
     private void actualizarSaldoUI() {
@@ -743,7 +743,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void finalizarJuego() {
-        // Aquí puedes mostrar un mensaje al jugador o realizar otras acciones
+
         if (roundCount >= 10) {
             // Si se han alcanzado las 10 rondas
             Toast.makeText(this, "¡Juego terminado! Has alcanzado el límite de rondas.", Toast.LENGTH_SHORT).show();

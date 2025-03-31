@@ -256,7 +256,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_SALDO, saldo);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         String fecha = dateFormat.format(new Date());
-        values.put(COLUMN_PARTIDA_FECHA, fecha); // Guardar la fecha actual en milisegundos
+        values.put(COLUMN_PARTIDA_FECHA, fecha); // Guardar la fecha actual
 
         long resultado = db.insert("partidas", null, values);
 
@@ -297,7 +297,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Método para obtener el histórico de tiradas de un usuario
     public Cursor obtenerHistorico(int usuarioId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery("SELECT " + COLUMN_HIST_PARTIDA_ID + ", " +  // Ahora también se obtiene el ID de la partida
+        return db.rawQuery("SELECT " + COLUMN_HIST_PARTIDA_ID + ", " +  // Se obtiene el ID de la partida
                         COLUMN_HIST_APUESTA + ", " +
                         COLUMN_HIST_RESULTADO + ", " +
                         COLUMN_HIST_SALDO + ", " +

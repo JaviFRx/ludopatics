@@ -19,14 +19,14 @@ public class Menu extends AppCompatActivity {
         // Se establece el layout activity_usuario.xml, que tiene el id "main" en la raíz
         setContentView(R.layout.activity_menu);
 
-        // Configuración de EdgeToEdge (si lo deseas, puede ir después de setContentView)
+        // Configuración de EdgeToEdge
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
         String nombreUsuario = getIntent().getStringExtra("nombreUsuario");
-        // "Escaneamos" (obtenemos las referencias) de los botones y otros views:
+        // Escaneamos la referencia de los botones y otros views:
         Button btnExit = findViewById(R.id.btnExit);
         TextView tvUsername = findViewById(R.id.tvUsername);
         TextView tvTitle = findViewById(R.id.tvTitle);
@@ -34,10 +34,9 @@ public class Menu extends AppCompatActivity {
         Button btnMultijugador = findViewById(R.id.btnMultijugador);
         Button btnHistorial = findViewById(R.id.btnHistorial);
         Button btnMiPerfil = findViewById(R.id.btnMiPerfil);
-        TextView tvGifPlaceholder = findViewById(R.id.tvGifPlaceholder);
         tvUsername.setText(nombreUsuario);
 
-        // Ejemplo: asignar listeners a los botones
+        // Asignamos listeners a los botones
         btnExit.setOnClickListener(v -> {
             // Cierra la Activity o realiza otra acción
             finish();
@@ -59,7 +58,7 @@ public class Menu extends AppCompatActivity {
 
         btnHistorial.setOnClickListener(v -> {
             Intent intent = new Intent(Menu.this, HistorialActivity.class);
-            intent.putExtra("nombreUsuario", nombreUsuario); // <-- ESTA LÍNEA FALTABA
+            intent.putExtra("nombreUsuario", nombreUsuario);
             startActivity(intent);
         });
 
