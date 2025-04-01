@@ -36,7 +36,6 @@ public class Menu extends AppCompatActivity {
         Button btnMiPerfil = findViewById(R.id.btnMiPerfil);
         Button btnComoJugar = findViewById(R.id.btnComoJugar);
 
-        TextView tvGifPlaceholder = findViewById(R.id.tvGifPlaceholder);
         tvUsername.setText(nombreUsuario);
 
         // Asignamos listeners a los botones
