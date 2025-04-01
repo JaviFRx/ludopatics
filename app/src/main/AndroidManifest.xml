@@ -38,6 +38,8 @@
 
         </activity>
 
+        <activity android:name=".ComoJugarActivity"
+            android:exported="true"/>
 
 
         <activity

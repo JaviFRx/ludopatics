@@ -72,5 +72,10 @@ public class Menu extends AppCompatActivity {
             startActivity(intent);
         });
 
+        btnComoJugar.setOnClickListener(v -> {
+            Intent intent = new Intent(Menu.this, ComoJugarActivity.class);
+            startActivity(intent);
+        });
+
     }
 }
