@@ -34,6 +34,9 @@ public class Menu extends AppCompatActivity {
         Button btnMultijugador = findViewById(R.id.btnMultijugador);
         Button btnHistorial = findViewById(R.id.btnHistorial);
         Button btnMiPerfil = findViewById(R.id.btnMiPerfil);
+        Button btnComoJugar = findViewById(R.id.btnComoJugar);
+
+        TextView tvGifPlaceholder = findViewById(R.id.tvGifPlaceholder);
         tvUsername.setText(nombreUsuario);
 
         // Asignamos listeners a los botones
@@ -66,6 +69,11 @@ public class Menu extends AppCompatActivity {
         btnMiPerfil.setOnClickListener(v -> {
             Intent intent = new Intent(Menu.this, PerfilActivity.class);
             intent.putExtra("nombreUsuario", nombreUsuario);  // Pasa el nombre al perfil
+            startActivity(intent);
+        });
+
+        btnComoJugar.setOnClickListener(v -> {
+            Intent intent = new Intent(Menu.this, ComoJugarActivity.class);
             startActivity(intent);
         });
 

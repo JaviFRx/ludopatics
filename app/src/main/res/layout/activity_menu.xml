@@ -116,6 +116,18 @@ android:gravity="center" />
     android:background="@drawable/transparent"
     android:textStyle="bold" />
 
+    <Button
+        android:id="@+id/btnComoJugar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/transparent"
+        android:backgroundTint="@android:color/darker_gray"
+        android:fontFamily="@font/madimione_regular"
+        android:text="CÓMO JUGAR"
+        android:textColor="@android:color/white"
+        android:textStyle="bold" />
+
 </LinearLayout>
 
     <!-- Marcador para el GIF (puede ser un ImageView si ya tienes la imagen animada) -->
