@@ -34,6 +34,8 @@ public class Menu extends AppCompatActivity {
         Button btnMultijugador = findViewById(R.id.btnMultijugador);
         Button btnHistorial = findViewById(R.id.btnHistorial);
         Button btnMiPerfil = findViewById(R.id.btnMiPerfil);
+        Button btnComoJugar = findViewById(R.id.btnComoJugar);
+
         TextView tvGifPlaceholder = findViewById(R.id.tvGifPlaceholder);
         tvUsername.setText(nombreUsuario);
 
