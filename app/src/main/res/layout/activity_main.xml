@@ -54,7 +54,7 @@
             android:fontFamily="@font/madimione_regular"
             android:gravity="start|center_vertical"
             android:paddingLeft="50sp"
-            android:text="Username"
+            android:text="Nombre de usuario"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/madimione_regular"
                 android:gravity="center_horizontal"
-                android:text="Balance"
+                android:text="Saldo"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -134,7 +134,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/madimione_regular"
                 android:gravity="center"
-                android:text="Recent"
+                android:text="Reciente"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -190,7 +190,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/madimione_regular"
                 android:gravity="center"
-                android:text="Round #1"
+                android:text="@string/round"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -236,7 +236,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="@android:color/holo_red_dark"
                 android:fontFamily="@font/madimione_regular"
-                android:text="RED\nX2"
+                android:text="@string/red"
                 android:textColor="@android:color/white"
                 android:textSize="15sp" />
 
@@ -248,7 +248,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="@android:color/holo_green_dark"
                 android:fontFamily="@font/madimione_regular"
-                android:text="GREEN\nX14"
+                android:text="@string/green"
                 android:textColor="@android:color/white"
                 android:textSize="15sp" />
 
@@ -260,7 +260,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="@android:color/black"
                 android:fontFamily="@font/madimione_regular"
-                android:text="BLACK\nX2"
+                android:text="@string/black"
                 android:textColor="@android:color/white"
                 android:textSize="15sp" />
         </LinearLayout>
@@ -282,7 +282,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="@android:color/white"
                 android:fontFamily="@font/madimione_regular"
-                android:text="ODD\nX2"
+                android:text="@string/odd"
                 android:textColor="@android:color/black"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -296,7 +296,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="@android:color/white"
                 android:fontFamily="@font/madimione_regular"
-                android:text="EVEN\nX2"
+                android:text="@string/even"
                 android:textColor="@android:color/black"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -311,7 +311,7 @@
             android:layout_weight="1"
             android:backgroundTint="@android:color/holo_blue_light"
             android:fontFamily="@font/madimione_regular"
-            android:text="NUM\nX35"
+            android:text="@string/number"
             android:textColor="@android:color/white"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -409,7 +409,7 @@
             android:fontFamily="@font/madimione_regular"
             android:gravity="center"
             android:padding="8dp"
-            android:text="No has apostado nada a Color"
+            android:text="@string/no_bet_color"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -421,7 +421,7 @@
             android:fontFamily="@font/madimione_regular"
             android:gravity="center"
             android:padding="8dp"
-            android:text="No has apostado nada a Numero"
+            android:text="@string/no_bet_number"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -433,7 +433,7 @@
             android:fontFamily="@font/madimione_regular"
             android:gravity="center"
             android:padding="8dp"
-            android:text="No has apostado nada a Par-Impar"
+            android:text="@string/no_bet_even_odd"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -458,7 +458,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/white"
             android:fontFamily="@font/madimione_regular"
-            android:text="+1"
+            android:text="@string/plus_1"
             android:textColor="@android:color/black"
             android:textStyle="bold" />
 
@@ -469,7 +469,7 @@
             android:layout_marginStart="16dp"
             android:backgroundTint="@android:color/white"
             android:fontFamily="@font/madimione_regular"
-            android:text="+10"
+            android:text="@string/plus_10"
             android:textColor="@android:color/black"
             android:textStyle="bold" />
 
@@ -480,7 +480,7 @@
             android:layout_marginStart="16dp"
             android:backgroundTint="@android:color/white"
             android:fontFamily="@font/madimione_regular"
-            android:text="+100"
+            android:text="@string/plus_100"
             android:textColor="@android:color/black"
             android:textStyle="bold" />
     </LinearLayout>

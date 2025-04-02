@@ -5,10 +5,27 @@
     <string name="authors_text">Autores:\n\nJavier Fernández\nAleix Ortiz\nGabriela Buil\nJordi Montserrat</string>
     <string name="play_button_text">JUGAR</string>
     <string name="hint_nombre_usuario">Introduce tu nombre</string>
-    <string name="bet_and_spin">Bet and Spin</string>
-    <string name="bet_amount_minimum_1">Bet Amount: minimum 1</string>
+    <string name="bet_and_spin">Apostar y girar</string>
+    <string name="bet_amount_minimum_1">Cantidad de apuesta: mínimo 1</string>
     <string name="music_title">Música</string>
     <string name="profile_title">Perfil</string>
     <string name="login_title">Login</string>
     <string name="history_title">Historial</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="balance">Saldo</string>
+    <string name="recent">Reciente</string>
+    <string name="round">Ronda #1</string>
+    <string name="red">ROJO\nX2</string>
+    <string name="green">VERDE\nX14</string>
+    <string name="black">NEGRO\nX2</string>
+    <string name="even">PAR\nX2</string>
+    <string name="odd">IMPAR\nX2</string>
+    <string name="number">NUM\nX35</string>
+    <string name="no_bet_color">No has apostado nada a Color</string>
+    <string name="no_bet_number">No has apostado nada a Número</string>
+    <string name="no_bet_even_odd">No has apostado nada a Par-Impar</string>
+    <string name="plus_1">+1</string>
+    <string name="plus_10">+10</string>
+    <string name="plus_100">+100</string>
+
 </resources>
