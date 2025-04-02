@@ -37,6 +37,8 @@ import androidx.appcompat.app.ActionBar;
 /** @noinspection SpellCheckingInspection*/
 public class MainActivity extends AppCompatActivity {
 
+    private boolean musicaActivada = true; // Indica si la música está activada o no
+
     private DatabaseHelper dbHelper;
 
     private final List<Apuesta> listaApuestas = new ArrayList<>();
@@ -241,11 +243,13 @@ public class MainActivity extends AppCompatActivity {
             if (mediaPlayer2.isPlaying()) {
                 // Detener la música si está reproduciéndose
                 mediaPlayer2.pause();
+                musicaActivada = false;
                 item.setIcon(R.drawable.speaker);  // Cambiar el ícono a uno de apagado
                 Toast.makeText(this, "Música detenida", Toast.LENGTH_SHORT).show();
             } else {
                 // Reanudar la música si está detenida
                 mediaPlayer2.start();
+                musicaActivada = true;
                 item.setIcon(R.drawable.speakeroff);  // Cambiar el ícono a uno de encendido
                 Toast.makeText(this, "Música iniciada", Toast.LENGTH_SHORT).show();
             }
@@ -475,9 +479,12 @@ public class MainActivity extends AppCompatActivity {
             mediaPlayer.release();
             mediaPlayer = null;
 
-            // Retomar el audio de jazz si no fue liberado
-            if (mediaPlayer2 != null) {
+            // Solo reanudar la música si `musicaActivada` es `true`
+            if (musicaActivada && mediaPlayer2 != null) {
+                Log.d("MUSICA", "Reanudando música tras ruleta");
                 mediaPlayer2.start();
+            } else {
+                Log.d("MUSICA", "Música desactivada por el usuario, no se reanuda.");
             }
         });
     }
