@@ -18,8 +18,8 @@
     <string name="red">ROJO\nX2</string>
     <string name="green">VERDE\nX14</string>
     <string name="black">NEGRO\nX2</string>
-    <string name="even">PAR\nX2</string>
-    <string name="odd">IMPAR\nX2</string>
+    <string name="even">IMPAR\nX2</string>
+    <string name="odd">PAR\nX2</string>
     <string name="number">NUM\nX35</string>
     <string name="no_bet_color">No has apostado nada a Color</string>
     <string name="no_bet_number">No has apostado nada a Número</string>
