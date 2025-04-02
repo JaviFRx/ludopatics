@@ -275,9 +275,10 @@ public class MainActivity extends AppCompatActivity {
 
         // Verifica si se ha pulsado el botón de login
         if (item.getItemId() == R.id.action_login) {
-            Intent intent = new Intent(this, Ruleta.class);
-            intent.putExtra("nombreUsuario", nombreUsuario);
-            startActivity(intent);
+            //Intent intent = new Intent(this, com.example.ludopatics.Menu.class);
+            //intent.putExtra("nombreUsuario", nombreUsuario);
+            //startActivity(intent);
+            finish();
             return true;
         }
 

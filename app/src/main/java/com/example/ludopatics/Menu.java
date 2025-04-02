@@ -40,7 +40,6 @@ public class Menu extends AppCompatActivity {
 
         // Asignamos listeners a los botones
         btnExit.setOnClickListener(v -> {
-            // Cierra la Activity o realiza otra acción
             finish();
         });
 
