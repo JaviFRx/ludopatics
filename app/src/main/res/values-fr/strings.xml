@@ -11,7 +11,7 @@
     <string name="profile_title">Profil</string>
     <string name="login_title">Connexion</string>
     <string name="history_title">Historique</string>
-    <string name="username">Nom d&apos;utilisateur</string>
+    <string name="username">Nom d//utilisateur</string>
     <string name="balance">Solde</string>
     <string name="recent">Récent</string>
     <string name="round">Tour #1</string>
@@ -21,10 +21,19 @@
     <string name="even">PAIR\nX2</string>
     <string name="odd">IMPAIR\nX2</string>
     <string name="number">NUM\nX35</string>
-    <string name="no_bet_color">Vous n&apos;avez rien parié sur la couleur</string>
-    <string name="no_bet_number">Vous n&apos;avez rien parié sur le numéro</string>
-    <string name="no_bet_even_odd">Vous n&apos;avez rien parié sur Pair-Impair</string>
+    <string name="no_bet_color">Vous n//avez rien parié sur la couleur</string>
+    <string name="no_bet_number">Vous n//avez rien parié sur le numéro</string>
+    <string name="no_bet_even_odd">Vous n//avez rien parié sur Pair-Impair</string>
     <string name="plus_1">+1</string>
     <string name="plus_10">+10</string>
     <string name="plus_100">+100</string>
+    <string name="exit">Quitter</string>
+    <string name="username_label">Nom d//utilisateur</string>
+    <string name="ludopatics_title">LUDOPATICS</string>
+    <string name="jugar_solo">JOUER SEUL</string>
+    <string name="multijugador">MULTIJOUEUR</string>
+    <string name="historial">HISTORIQUE</string>
+    <string name="mi_perfil">MON PROFIL</string>
+    <string name="como_jugar">COMMENT JOUER</string>
+
 </resources>

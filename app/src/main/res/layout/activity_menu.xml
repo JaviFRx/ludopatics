@@ -10,33 +10,73 @@
     tools:context=".Menu">
 
     <!-- Botón "Exit" en la esquina superior izquierda -->
-<Button
-android:id="@+id/btnExit"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="Exit"
-android:textColor="@android:color/white"
-android:textAllCaps="false"
-android:backgroundTint="@android:color/transparent"
-android:fontFamily="@font/madimione_regular"
-android:textSize="16sp"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintTop_toTopOf="parent"
-android:layout_margin="16dp"/>
+    <Button
+        android:id="@+id/btnExit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Exit"
+        android:textColor="@android:color/white"
+        android:textAllCaps="false"
+        android:backgroundTint="@android:color/transparent"
+        android:fontFamily="@font/madimione_regular"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="16dp"/>
+
+    <!-- Imagen de la bandera de Inglaterra -->
+
+    <!-- Imagen de la bandera de Francia -->
+    <ImageView
+        android:id="@+id/imgEngland"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+
+        android:src="@drawable/england"
+        app:layout_constraintStart_toEndOf="@+id/btnExit"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <!-- Imagen de la bandera de España -->
+    <ImageView
+        android:id="@+id/imgFrance"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+
+        android:src="@drawable/france"
+        app:layout_constraintStart_toEndOf="@+id/imgEngland"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
 
     <!-- TextView "USERNAME" en la esquina superior derecha -->
-<TextView
-android:id="@+id/tvUsername"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="USERNAME"
-android:textColor="@android:color/white"
-android:textSize="16sp"
-android:textStyle="bold"
-android:fontFamily="@font/madimione_regular"
-app:layout_constraintEnd_toEndOf="parent"
-app:layout_constraintTop_toTopOf="parent"
-android:layout_margin="16dp"/>
+    <ImageView
+        android:id="@+id/imgSpain"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+
+        android:src="@drawable/spain"
+        app:layout_constraintStart_toEndOf="@+id/imgFrance"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="USERNAME"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/madimione_regular"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="16dp"/>
 
     <!-- Título "LUDOPATICS" centrado horizontalmente -->
     <TextView

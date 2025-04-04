@@ -27,5 +27,12 @@
     <string name="plus_1">+1</string>
     <string name="plus_10">+10</string>
     <string name="plus_100">+100</string>
-
+    <string name="exit">Salir</string>
+    <string name="username_label">Nombre de usuario</string>
+    <string name="ludopatics_title">LUDOPATICS</string>
+    <string name="jugar_solo">JUGAR SOLO</string>
+    <string name="multijugador">MULTIJUGADOR</string>
+    <string name="historial">HISTORIAL</string>
+    <string name="mi_perfil">MI PERFIL</string>
+    <string name="como_jugar">CÓMO JUGAR</string>
 </resources>
