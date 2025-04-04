@@ -20,7 +20,7 @@ public class Menu extends AppCompatActivity {
     // Declarar las vistas globalmente para poder acceder a ellas en cualquier parte de la clase
     private TextView tvUsername, tvTitle;
     private Button btnJugarSolo, btnMultijugador, btnHistorial, btnMiPerfil, btnComoJugar, btnExit;
-    private ImageView imgEngland, imgFrance;
+    private ImageView imgEngland, imgFrance, imgSpain,imgJapan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +48,16 @@ public class Menu extends AppCompatActivity {
         btnComoJugar = findViewById(R.id.btnComoJugar);
         imgEngland = findViewById(R.id.imgEngland);
         imgFrance = findViewById(R.id.imgFrance);
-
+        imgSpain = findViewById(R.id.imgSpain);
+        imgJapan = findViewById(R.id.imgJapan);
         // Establecer el nombre del usuario
         tvUsername.setText(nombreUsuario);
 
         // Asignamos listeners a los botones
         imgEngland.setOnClickListener(v -> changeLanguage("en"));  // Cambia el idioma a inglés
         imgFrance.setOnClickListener(v -> changeLanguage("fr"));  // Cambia el idioma a francés
-
+        imgSpain.setOnClickListener(v -> changeLanguage("es"));  // Cambia el idioma a francés
+        imgJapan.setOnClickListener(v -> changeLanguage("ja"));
         //btnExit.setOnClickListener(v -> finish());
 
         btnJugarSolo.setOnClickListener(v -> {

@@ -52,19 +52,29 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
-    <!-- TextView "USERNAME" en la esquina superior derecha -->
+
     <ImageView
         android:id="@+id/imgSpain"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="12dp"
         android:layout_marginTop="16dp"
-
         android:src="@drawable/spain"
         app:layout_constraintStart_toEndOf="@+id/imgFrance"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
+    <ImageView
+        android:id="@+id/imgJapan"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/japan"
+        app:layout_constraintStart_toEndOf="@+id/imgSpain"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+    <!-- TextView "USERNAME" en la esquina superior derecha -->
     <TextView
         android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
