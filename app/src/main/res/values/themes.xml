@@ -1,7 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.Ludopatics" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <!-- Personaliza el color de la ActionBar -->
+        <item name="colorPrimary">@color/lila</item>
+        <item name="colorPrimaryVariant">@color/lila</item>
+        <item name="colorOnPrimary">#000000</item> <!-- Usamos negro para crear un buen contraste -->
     </style>
 </resources>

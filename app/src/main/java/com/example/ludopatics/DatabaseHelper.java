@@ -14,6 +14,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
+
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "ludopatics.db";
@@ -255,7 +257,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_PARTIDA_JUGADOR_ID, usuarioId);  // Asociar la partida al jugador
         values.put(COLUMN_SALDO, saldo);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Madrid")); // Ajusta la zona horaria según tu ubicación
         String fecha = dateFormat.format(new Date());
+
         values.put(COLUMN_PARTIDA_FECHA, fecha); // Guardar la fecha actual
 
         long resultado = db.insert("partidas", null, values);
