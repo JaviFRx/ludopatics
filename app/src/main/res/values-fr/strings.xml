@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Ludopatics</string>
+    <string name="title_activity_ruleta">Roulette</string>
+    <string name="title_main">LUDOPATICS</string>
+    <string name="authors_text">Auteurs:\n\nJavier Fernández\nAleix Ortiz\nGabriela Buil\nJordi Montserrat</string>
+    <string name="play_button_text">JOUER</string>
+    <string name="hint_nombre_usuario">Entrez votre nom</string>
+    <string name="bet_and_spin">Parier et tourner</string>
+    <string name="bet_amount_minimum_1">Montant du pari: minimum 1</string>
+    <string name="music_title">Musique</string>
+    <string name="profile_title">Profil</string>
+    <string name="login_title">Connexion</string>
+    <string name="history_title">Historique</string>
+    <string name="username">Nom d&apos;utilisateur</string>
+    <string name="balance">Solde</string>
+    <string name="recent">Récent</string>
+    <string name="round">Tour #1</string>
+    <string name="red">ROUGE\nX2</string>
+    <string name="green">VERT\nX14</string>
+    <string name="black">NOIR\nX2</string>
+    <string name="even">PAIR\nX2</string>
+    <string name="odd">IMPAIR\nX2</string>
+    <string name="number">NUM\nX35</string>
+    <string name="no_bet_color">Vous n&apos;avez rien parié sur la couleur</string>
+    <string name="no_bet_number">Vous n&apos;avez rien parié sur le numéro</string>
+    <string name="no_bet_even_odd">Vous n&apos;avez rien parié sur Pair-Impair</string>
+    <string name="plus_1">+1</string>
+    <string name="plus_10">+10</string>
+    <string name="plus_100">+100</string>
+</resources>
