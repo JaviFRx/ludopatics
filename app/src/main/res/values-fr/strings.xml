@@ -40,4 +40,6 @@
     <string name="primer_paso">Première étape :&#10;Choisissez un montant d\'argent à miser.</string>
     <string name="segundo_paso">Deuxième étape :&#10;Sélectionnez une option de pari.&#10;Vous ne pouvez affecter qu\'un montant par type de pari :&#10;· Couleur&#10;· Pair/Impair&#10;· Numéro&#10;Vous pouvez parier sur plusieurs types en choisissant un montant pour chacun.</string>
     <string name="instruccion_final">Pour modifier votre pari :&#10;Choisissez un nouveau montant et sélectionnez à nouveau le type de pari. Cela remplacera l\'ancien pari de ce type par le nouveau montant.</string>
+    <string name="select_music">Sélectionner la musique</string>
+
 </resources>

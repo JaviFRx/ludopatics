@@ -2,9 +2,11 @@ package com.example.ludopatics;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -54,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
     public static MediaPlayer mediaPlayer2;
+
+    private Uri audioUri;
 
     // Variables para manejar las apuestas
     private TextView balanceValue;
@@ -148,8 +152,17 @@ public class MainActivity extends AppCompatActivity {
         if (nombreUsuario != null && !nombreUsuario.isEmpty()) {
             tvUsername.setText(nombreUsuario);
         }
-        // Inicializa el MediaPlayer con el archivo de audio
-        mediaPlayer2 = MediaPlayer.create(this, R.raw.jazz);
+        // Recuperar la URI de la música seleccionada desde SharedPreferences
+        SharedPreferences prefs = getSharedPreferences("ludopatics", MODE_PRIVATE);
+        String uriString = prefs.getString("custom_music_uri", null);
+        if (uriString == null) {
+            // Inicializa el MediaPlayer con la música por defecto (jazz)
+            mediaPlayer2 = MediaPlayer.create(this, R.raw.jazz);
+        } else {
+            // Si hay música personalizada, usa la URI seleccionada
+            audioUri = Uri.parse(uriString);
+            mediaPlayer2 = MediaPlayer.create(this, audioUri);
+        }
 
         // Inicia la reproducción del audio
         mediaPlayer2.start();

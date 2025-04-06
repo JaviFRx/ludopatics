@@ -14,7 +14,7 @@
         android:id="@+id/btnExit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Exit"
+        android:text="@string/exit"
         android:textColor="@android:color/white"
         android:textAllCaps="false"
         android:backgroundTint="@android:color/transparent"
@@ -109,7 +109,7 @@
     <LinearLayout
         android:id="@+id/layoutButtons"
         android:layout_width="184dp"
-        android:layout_height="344dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
         android:layout_marginBottom="200dp"
         android:background="@drawable/transparent"
@@ -181,6 +181,19 @@
             android:text="CÓMO JUGAR"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnSeleccionarMusica"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/transparent"
+            android:backgroundTint="@android:color/darker_gray"
+            android:fontFamily="@font/madimione_regular"
+            android:text="Seleccionar Música"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
 
     </LinearLayout>
 

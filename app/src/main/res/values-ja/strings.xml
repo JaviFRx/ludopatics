@@ -40,5 +40,6 @@
     <string name="primer_paso">ステップ1:&#10;賭ける金額を選んでください。</string>
     <string name="segundo_paso">ステップ2:&#10;賭けのオプションを選んでください。&#10;各タイプの賭けには1つの金額しか設定できません：&#10;· 色&#10;· 奇数／偶数&#10;· 数字&#10;複数のタイプにそれぞれ別の金額で同時に賭けることができます。</string>
     <string name="instruccion_final">賭けを変更するには：&#10;新しい金額を選んで、もう一度その賭けタイプを選んでください。以前の同じタイプの賭けは新しい金額で上書きされます。</string>
+    <string name="select_music">音楽を選択</string>
 
 </resources>
