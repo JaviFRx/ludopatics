@@ -7,14 +7,14 @@
     android:background="@drawable/background_gradientvertical"
     android:padding="16dp">
 
-        <ImageButton
-            android:id="@+id/btnBack"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_back"
-            android:contentDescription="Volver"
-            android:layout_margin="8dp"/>
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_back"
+        android:contentDescription="@string/btn_back_description"
+        android:layout_margin="8dp"/>
 
     <!-- ScrollView para hacer el contenido desplazable -->
     <ScrollView
@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/madimione_regular"
-                android:text="CÓMO JUGAR"
+                android:text="@string/title_como_jugar"
                 android:textColor="#FDFDFD"
                 android:textSize="34sp"
                 android:layout_gravity="center_horizontal"
@@ -48,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/madimione_regular"
-                android:text="Primer Paso: \nElige un monto de dinero para apostar."
+                android:text="@string/primer_paso"
                 android:textColor="@color/blanco"
                 android:textSize="20sp"
                 android:layout_marginBottom="12dp"/>
@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/madimione_regular"
-                android:text="Segundo Paso:\nSelecciona una opción para apostar. \nSolo puedes asignar un monto por cada tipo de apuesta:\n· Color  \n· Par/Impar  \n· Número  \nPuedes apostar en varios tipos a la vez, eligiendo un monto para cada uno."
+                android:text="@string/segundo_paso"
                 android:textColor="@color/blanco"
                 android:textSize="20sp"
                 android:layout_marginBottom="12dp"/>
@@ -70,12 +70,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/madimione_regular"
-                android:text="Para cambiar tu apuesta:\nElige un nuevo monto y selecciona nuevamente el tipo de apuesta. Esto reemplazará la apuesta anterior de ese mismo tipo con el nuevo monto."
+                android:text="@string/instruccion_final"
                 android:textColor="@color/blanco"
                 android:textSize="20sp"
                 android:layout_marginBottom="62dp"/>
         </LinearLayout>
     </ScrollView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,4 +35,10 @@
     <string name="historial">HISTORIAL</string>
     <string name="mi_perfil">MI PERFIL</string>
     <string name="como_jugar">CÓMO JUGAR</string>
+    <string name="btn_back_description">Volver</string>
+    <string name="title_como_jugar">CÓMO JUGAR</string>
+    <string name="primer_paso">Primer Paso:&#10;Elige un monto de dinero para apostar.</string>
+    <string name="segundo_paso">Segundo Paso:&#10;Selecciona una opción para apostar.&#10;Solo puedes asignar un monto por cada tipo de apuesta:&#10;· Color&#10;· Par/Impar&#10;· Número&#10;Puedes apostar en varios tipos a la vez, eligiendo un monto para cada uno.</string>
+    <string name="instruccion_final">Para cambiar tu apuesta:&#10;Elige un nuevo monto y selecciona nuevamente el tipo de apuesta. Esto reemplazará la apuesta anterior de ese mismo tipo con el nuevo monto.</string>
+
 </resources>
