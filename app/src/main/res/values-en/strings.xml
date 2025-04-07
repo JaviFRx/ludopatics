@@ -24,6 +24,14 @@
     <string name="no_bet_color">You haven\'t bet anything on Color</string>
     <string name="no_bet_number">You haven\'t bet anything on Number</string>
     <string name="no_bet_even_odd">You haven\'t bet anything on Even-Odd</string>
+    <string name="bet_none">Bet: None</string>
+    <string name="bet_number_none">Number Bet: None</string>
+    <string name="bet_even_odd_none">Even/Odd Bet: None</string>
+    <string name="bet_color">You bet %1$d on color %2$s</string>
+    <string name="bet_number">You bet %1$d on number %2$s</string>
+    <string name="bet_even_odd">You bet %1$d on %2$s</string>
+    <string name="bet_unknown_type">Unknown bet type: %2$s</string>
+
     <string name="plus_1">+1</string>
     <string name="plus_10">+10</string>
     <string name="plus_100">+100</string>
@@ -41,6 +49,16 @@
     <string name="segundo_paso">Step Two:&#10;Select a betting option.&#10;You can only assign one amount per type of bet:&#10;· Color&#10;· Even/Odd&#10;· Number&#10;You can bet on multiple types at once by choosing an amount for each.</string>
     <string name="instruccion_final">To change your bet:&#10;Choose a new amount and select the bet type again. This will replace the previous bet of that type with the new amount.</string>
     <string name="select_music">Select Music</string>
-
+    <string name="music_stopped">Music stopped</string>
+    <string name="music_started">Music started</string>
+    <string name="insufficient_balance">You don\'t have enough balance. The bet has been adjusted to the available balance.</string>
+    <string name="bet_first">You must place a bet first</string>
+    <string name="select_bet_amount">First, select a bet amount</string>
+    <string name="no_sufficient_balance_bet">You don\'t have enough balance for this bet</string>
+    <string name="game_over_rounds_limit">Game over! You\'ve reached the round limit.</string>
+    <string name="game_over_no_money">Game over! You\'ve run out of money.</string>
+    <string name="bet_on_color_number_parity">You must bet on color, number, or odd/even</string>
+    <string name="selected_number">Selected number: %1$s</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

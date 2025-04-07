@@ -24,6 +24,13 @@
     <string name="no_bet_color">色に賭けていません</string>
     <string name="no_bet_number">番号に賭けていません</string>
     <string name="no_bet_even_odd">偶数・奇数に賭けていません</string>
+    <string name="bet_none">賭け：なし</string>
+    <string name="bet_number_none">数字の賭け：なし</string>
+    <string name="bet_even_odd_none">偶数/奇数の賭け：なし</string>
+    <string name="bet_color">%1$d の色に %2$s を賭けました</string>
+    <string name="bet_number">%1$d の数字に %2$s を賭けました</string>
+    <string name="bet_even_odd">%1$d に %2$s を賭けました</string>
+    <string name="bet_unknown_type">不明な賭けタイプ: %2$s</string>
     <string name="plus_1">+1</string>
     <string name="plus_10">+10</string>
     <string name="plus_100">+100</string>
@@ -41,5 +48,15 @@
     <string name="segundo_paso">ステップ2:&#10;賭けのオプションを選んでください。&#10;各タイプの賭けには1つの金額しか設定できません：&#10;· 色&#10;· 奇数／偶数&#10;· 数字&#10;複数のタイプにそれぞれ別の金額で同時に賭けることができます。</string>
     <string name="instruccion_final">賭けを変更するには：&#10;新しい金額を選んで、もう一度その賭けタイプを選んでください。以前の同じタイプの賭けは新しい金額で上書きされます。</string>
     <string name="select_music">音楽を選択</string>
-
+    <string name="music_stopped">音楽が停止しました。</string>
+    <string name="music_started">音楽が再生されました。</string>
+    <string name="insufficient_balance">残高が不足しています。ベットは利用可能な残高に調整されました。</string>
+    <string name="bet_first">まずベットを行ってください。</string>
+    <string name="select_bet_amount">まずベット額を選んでください。</string>
+    <string name="no_sufficient_balance_bet">このベットには十分な残高がありません。</string>
+    <string name="game_over_rounds_limit">ゲーム終了！ラウンド制限に達しました。</string>
+    <string name="game_over_no_money">ゲーム終了！お金がなくなりました。</string>
+    <string name="bet_on_color_number_parity">色、数字、または偶数/奇数にベットをしてください。</string>
+    <string name="selected_number">選択された番号：%1$s</string>
+    <string name="cancel">キャンセル</string>
 </resources>

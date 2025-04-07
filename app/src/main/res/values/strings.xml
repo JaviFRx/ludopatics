@@ -21,9 +21,16 @@
     <string name="even">IMPAR\nX2</string>
     <string name="odd">PAR\nX2</string>
     <string name="number">NUM\nX35</string>
+    <string name="bet_none">Apuesta: Ninguna</string>
+    <string name="bet_number_none">Apuesta al número: Ninguna</string>
+    <string name="bet_even_odd_none">Apuesta Par/Impar: Ninguna</string>
     <string name="no_bet_color">No has apostado nada a Color</string>
     <string name="no_bet_number">No has apostado nada a Número</string>
     <string name="no_bet_even_odd">No has apostado nada a Par-Impar</string>
+    <string name="bet_color">Apostaste %1$d al color %2$s</string>
+    <string name="bet_number">Apostaste %1$d al número %2$s</string>
+    <string name="bet_even_odd">Apostaste %1$d a %2$s</string>
+    <string name="bet_unknown_type">Tipo de apuesta desconocido: %2$s</string>
     <string name="plus_1">+1</string>
     <string name="plus_10">+10</string>
     <string name="plus_100">+100</string>
@@ -41,6 +48,17 @@
     <string name="segundo_paso">Segundo Paso:&#10;Selecciona una opción para apostar.&#10;Solo puedes asignar un monto por cada tipo de apuesta:&#10;· Color&#10;· Par/Impar&#10;· Número&#10;Puedes apostar en varios tipos a la vez, eligiendo un monto para cada uno.</string>
     <string name="instruccion_final">Para cambiar tu apuesta:&#10;Elige un nuevo monto y selecciona nuevamente el tipo de apuesta. Esto reemplazará la apuesta anterior de ese mismo tipo con el nuevo monto.</string>
     <string name="select_music">Seleccionar Música</string>
-
+    <string name="music_stopped">Música detenida</string>
+    <string name="music_started">Música iniciada</string>
+    <string name="insufficient_balance">No tienes suficiente saldo. Se ajustó la apuesta al saldo disponible.</string>
+    <string name="bet_first">Debes hacer una apuesta primero</string>
+    <string name="select_bet_amount">Primero selecciona un monto de apuesta</string>
+    <string name="no_sufficient_balance_bet">No tienes suficiente saldo para esta apuesta</string>
+    <string name="game_over_rounds_limit">¡Juego terminado! Has alcanzado el límite de rondas.</string>
+    <string name="game_over_no_money">¡Juego terminado! Te has quedado sin dinero.</string>
+    <string name="bet_on_color_number_parity">Debes hacer una apuesta a color, número o Par/Impar</string>
+    <string name="selected_number">Número seleccionado: %1$s</string>
+    <string name="cancel">Cancelar</string>
+    º
 
 </resources>

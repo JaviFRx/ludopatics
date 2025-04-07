@@ -5,25 +5,22 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.graphics.Insets;
-
 import java.util.Locale;
 
 public class Menu extends AppCompatActivity {
 
     // Declarar las vistas globalmente para poder acceder a ellas en cualquier parte de la clase
     private TextView tvUsername, tvTitle;
-    private Button btnJugarSolo, btnMultijugador, btnHistorial, btnMiPerfil, btnComoJugar, btnExit , btnSeleccionarMusica;
+    private Button btnJugarSolo, btnMultijugador, btnHistorial, btnMiPerfil, btnComoJugar, btnSeleccionarMusica, btnExit;
     private ImageView imgEngland, imgFrance, imgSpain,imgJapan;
     private ActivityResultLauncher<Intent> audioPickerLauncher;
 
@@ -65,6 +62,7 @@ public class Menu extends AppCompatActivity {
         imgFrance.setOnClickListener(v -> changeLanguage("fr"));  // Cambia el idioma a francés
         imgSpain.setOnClickListener(v -> changeLanguage("es"));  // Cambia el idioma a francés
         imgJapan.setOnClickListener(v -> changeLanguage("ja"));
+        btnExit.setOnClickListener(v -> finish());
         //btnExit.setOnClickListener(v -> finish());
         audioPickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -121,7 +119,6 @@ public class Menu extends AppCompatActivity {
             Intent intent = new Intent(Menu.this, ComoJugarActivity.class);
             startActivity(intent);
         });
-
     }
 
     private void changeLanguage(String languageCode) {

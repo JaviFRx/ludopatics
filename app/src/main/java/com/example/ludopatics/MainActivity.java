@@ -258,13 +258,13 @@ public class MainActivity extends AppCompatActivity {
                 mediaPlayer2.pause();
                 musicaActivada = false;
                 item.setIcon(R.drawable.speaker);  // Cambiar el ícono a uno de apagado
-                Toast.makeText(this, "Música detenida", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.music_stopped), Toast.LENGTH_SHORT).show();
             } else {
                 // Reanudar la música si está detenida
                 mediaPlayer2.start();
                 musicaActivada = true;
                 item.setIcon(R.drawable.speakeroff);  // Cambiar el ícono a uno de encendido
-                Toast.makeText(this, "Música iniciada", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.music_started), Toast.LENGTH_SHORT).show();
             }
             return true;
         }
@@ -316,7 +316,7 @@ public class MainActivity extends AppCompatActivity {
             currentBetAmount = currentBalance;
 
             // Mostrar mensaje de que no hay suficiente saldo y que se ajustó la apuesta
-            Toast.makeText(this, "No tienes suficiente saldo. Se ajustó la apuesta al saldo disponible.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.insufficient_balance), Toast.LENGTH_SHORT).show();
 
             // Actualizar la vista con el monto de apuesta ajustado
             updateBetAmountText();
@@ -339,13 +339,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void girarRuleta() {
         if (listaApuestas.isEmpty()) {
-            Toast.makeText(this, "Debes hacer una apuesta primero", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.bet_first), Toast.LENGTH_SHORT).show();
             return;
         }
 
         // Verificar si al menos una de las opciones ha sido seleccionada
         if (selectedColor.isEmpty() && selectedParImpar.isEmpty() && numeroSeleccionado.isEmpty()) {
-            Toast.makeText(this, "Debes hacer una apuesta a color, número o Par/Impar", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.bet_on_color_number_parity), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -450,9 +450,9 @@ public class MainActivity extends AppCompatActivity {
                         updateBetAmountText();
 
                         // Restablecer los TextViews a su contenido inicial
-                        apuestaTextView.setText("Apuesta: Ninguna");
-                        apuestaNumeroTextView.setText("Apuesta al número: Ninguna");
-                        apuestaParImparTextView.setText("Apuesta Par/Impar: Ninguna");
+                        apuestaTextView.setText(getString(R.string.bet_none));
+                        apuestaNumeroTextView.setText(getString(R.string.bet_number_none));
+                        apuestaParImparTextView.setText(getString(R.string.bet_even_odd_none));
                     }
                 }, 3000);
                 selectedColor = "null";// Pausa de 2 segundos (2000 milisegundos) antes de habilitar los botones y resetear los TextViews
@@ -583,7 +583,8 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("Seleccionar", (dialog, which) -> {
                     numeroSeleccionado = String.valueOf(numberPicker.getValue());
                     agregarApuesta("numero", numeroSeleccionado); // REGISTRA LA APUESTA CORRECTAMENTE
-                    Toast.makeText(this, "Número seleccionado: " + numeroSeleccionado, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.selected_number, numeroSeleccionado), Toast.LENGTH_SHORT).show();
+
                 })
                 .setNegativeButton("Cancelar", null);
 
@@ -631,7 +632,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void agregarApuesta(String tipo, String valor) {
         if (currentBetAmount <= 0) {
-            Toast.makeText(this, "Primero selecciona un monto de apuesta", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.bet_first), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -657,7 +658,7 @@ public class MainActivity extends AppCompatActivity {
         if (currentBalance >= currentBetAmount) {
             currentBalance -= currentBetAmount;
         } else {
-            Toast.makeText(this, "No tienes suficiente saldo para esta apuesta", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.no_sufficient_balance_bet), Toast.LENGTH_SHORT).show();
             return; // Salir sin registrar la apuesta
         }
 
@@ -667,17 +668,17 @@ public class MainActivity extends AppCompatActivity {
         // Actualizar UI
         switch (tipo) {
             case "color":
-                apuestaTextView.setText("Apostaste " + currentBetAmount + " al color " + valor);
+                apuestaTextView.setText(getString(R.string.bet_color, 100, "Rojo"));
                 break;
             case "numero":
-                apuestaNumeroTextView.setText("Apostaste " + currentBetAmount + " al número " + valor);
+                apuestaNumeroTextView.setText(getString(R.string.bet_number, currentBetAmount, valor));
                 break;
             case "parImpar":
-                apuestaParImparTextView.setText("Apostaste " + currentBetAmount + " a " + valor);
+                apuestaParImparTextView.setText(getString(R.string.bet_even_odd, currentBetAmount, valor));
                 break;
             default:
-                Log.e("Apuesta", "Tipo de apuesta desconocido: " + tipo);
-        }
+                }
+
 
         actualizarSaldoUI(); // Asegurar que la interfaz muestra el saldo correcto
         currentBetAmount = 0; // Reiniciar el monto apostado despues de actualizar la UI
@@ -767,11 +768,12 @@ public class MainActivity extends AppCompatActivity {
 
         if (roundCount >= 10) {
             // Si se han alcanzado las 10 rondas
-            Toast.makeText(this, "¡Juego terminado! Has alcanzado el límite de rondas.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.game_over_rounds_limit), Toast.LENGTH_SHORT).show();
         } else if (currentBalance <= 0) {
             // Si se ha quedado sin dinero
-            Toast.makeText(this, "¡Juego terminado! Te has quedado sin dinero.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.game_over_no_money), Toast.LENGTH_SHORT).show();
         }
+
 
 
         // Usar el método obtenerIdJugador para obtener el ID del jugador desde la base de datos

@@ -24,6 +24,13 @@
     <string name="no_bet_color">Vous n\'avez rien parié sur la couleur</string>
     <string name="no_bet_number">Vous n\'avez rien parié sur le numéro</string>
     <string name="no_bet_even_odd">Vous n\'avez rien parié sur Pair-Impair</string>
+    <string name="bet_none">Pari : Aucun</string>
+    <string name="bet_number_none">Pari sur le numéro : Aucun</string>
+    <string name="bet_even_odd_none">Pari Pair/Impair : Aucun</string>
+    <string name="bet_color">Vous avez misé %1$d sur la couleur %2$s</string>
+    <string name="bet_number">Vous avez misé %1$d sur le numéro %2$s</string>
+    <string name="bet_even_odd">Vous avez misé %1$d sur %2$s</string>
+    <string name="bet_unknown_type">Type de pari inconnu : %2$s</string>
     <string name="plus_1">+1</string>
     <string name="plus_10">+10</string>
     <string name="plus_100">+100</string>
@@ -41,5 +48,15 @@
     <string name="segundo_paso">Deuxième étape :&#10;Sélectionnez une option de pari.&#10;Vous ne pouvez affecter qu\'un montant par type de pari :&#10;· Couleur&#10;· Pair/Impair&#10;· Numéro&#10;Vous pouvez parier sur plusieurs types en choisissant un montant pour chacun.</string>
     <string name="instruccion_final">Pour modifier votre pari :&#10;Choisissez un nouveau montant et sélectionnez à nouveau le type de pari. Cela remplacera l\'ancien pari de ce type par le nouveau montant.</string>
     <string name="select_music">Sélectionner la musique</string>
-
+    <string name="music_stopped">Musique arrêtée</string>
+    <string name="music_started">Musique lancée</string>
+    <string name="insufficient_balance">Vous n&apos;avez pas assez de solde. La mise a été ajustée au solde disponible.</string>
+    <string name="bet_first">Vous devez d&apos;abord faire un pari</string>
+    <string name="select_bet_amount">Sélectionnez d&apos;abord un montant de pari</string>
+    <string name="no_sufficient_balance_bet">Vous n&apos;avez pas assez de solde pour ce pari</string>
+    <string name="game_over_rounds_limit">Jeu terminé ! Vous avez atteint la limite de tours.</string>
+    <string name="game_over_no_money">Jeu terminé ! Vous n&apos;avez plus d&apos;argent.</string>
+    <string name="bet_on_color_number_parity">Vous devez parier sur la couleur, le numéro ou pair/impair</string>
+    <string name="selected_number">Numéro sélectionné : %1$s</string>
+    <string name="cancel">Annuler</string>
 </resources>
