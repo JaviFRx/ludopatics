@@ -12,6 +12,7 @@ import android.os.Build;
 import android.util.Log;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
 import com.google.android.gms.tasks.OnSuccessListener;
 import android.Manifest;
 import androidx.core.app.ActivityCompat;
@@ -221,7 +222,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Verificar si el permiso de ubicación está concedido
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             // Obtener la última ubicación
-            fusedLocationClient.getLastLocation()
+            fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
                     .addOnSuccessListener(new OnSuccessListener<Location>() {
                         @Override
                         public void onSuccess(Location location) {

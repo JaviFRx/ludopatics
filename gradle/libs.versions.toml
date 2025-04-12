@@ -15,6 +15,7 @@ composeBom = "2024.04.01"
 playServicesLocation = "21.3.0"
 rxandroid = "3.0.0"
 rxjava = "3.1.0"
+playServicesTasks = "18.2.1"
 
 [libraries]
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
@@ -38,6 +39,7 @@ ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
+play-services-tasks = { group = "com.google.android.gms", name = "play-services-tasks", version.ref = "playServicesTasks" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
