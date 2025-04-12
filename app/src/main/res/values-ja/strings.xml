@@ -59,4 +59,7 @@
     <string name="bet_on_color_number_parity">色、数字、または偶数/奇数にベットをしてください。</string>
     <string name="selected_number">選択された番号：%1$s</string>
     <string name="cancel">キャンセル</string>
+    <string name="cantidad_apostada">賭け金：%1$d</string>
+    <string name="cantidad_minima">賭け金：最低1</string>
+    <string name="ronda_numero">ラウンド #%1$d</string>
 </resources>

@@ -288,9 +288,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Verifica si se ha pulsado el botón de login
         if (item.getItemId() == R.id.action_login) {
-            //Intent intent = new Intent(this, com.example.ludopatics.Menu.class);
-            //intent.putExtra("nombreUsuario", nombreUsuario);
-            //startActivity(intent);
+            Intent intent = new Intent(this, Menu.class);
+            intent.putExtra("nombreUsuario", nombreUsuario);
+            startActivity(intent);
             finish();
             return true;
         }
@@ -328,9 +328,9 @@ public class MainActivity extends AppCompatActivity {
     // Método para actualizar el texto de la cantidad de apuesta
     private void updateBetAmountText() {
         if (currentBetAmount > 0) {
-            betAmount.setText("Cantidad Apostada: " + currentBetAmount);
+            betAmount.setText(getString(R.string.cantidad_apostada, currentBetAmount));
         } else {
-            betAmount.setText("Cantidad Apostada: minimo 1");
+            betAmount.setText(getString(R.string.cantidad_minima));
         }
     }
 
@@ -370,7 +370,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAnimationStart(android.view.animation.Animation animation) {
 
-                int totalApostado = calcularTotalApuesta();
 
                 // Deshabilitar botones durante la animación
                 betButtonPlus1.setEnabled(false);
@@ -387,7 +386,7 @@ public class MainActivity extends AppCompatActivity {
                 calcularCasilla(angle);
                 String color = resColor;
                 roundCount++;
-                roundTextView.setText("Ronda #" + roundCount);
+                roundTextView.setText(getString(R.string.ronda_numero, roundCount));
                 Log.d("DEBUG", "Antes de comprobarApuestas - currentBetAmount: " + currentBetAmount);
                 comprobarApuestas(resColor, casillaFinal);
                 // Mover los colores hacia la izquierda
@@ -507,23 +506,7 @@ public class MainActivity extends AppCompatActivity {
         // Normalizar el ángulo a un valor entre 0-360
         int normalizedAngle = angle % 360;
 
-        // La ruleta tiene 37 casillas
-        int numCasillas = casillasRuleta.length;
-
-        // Cada casilla tiene un ángulo de 360° / 37
-        double anguloPorCasilla = 360.0 / numCasillas;
-
-        // Ajustar el ángulo para tener en cuenta la posición de inicio
-        int offsetAngulo = 0; // Ajusta este valor según sea necesario
-
-        // Calcular el índice con ajuste de dirección
-        int indice = numCasillas - 1 - (int) (((normalizedAngle + offsetAngulo) % 360) / anguloPorCasilla);
-
-        // Ajustar por el desplazamiento de una posición
-        indice = (indice + 1) % numCasillas;
-
-        // Asegurar que el índice esté dentro del rango
-        indice = (indice + numCasillas) % numCasillas;
+        int indice = getIndice(normalizedAngle);
 
         // Obtener el número de la casilla
         casillaFinal = casillasRuleta[indice];
@@ -551,6 +534,26 @@ public class MainActivity extends AppCompatActivity {
         // Para depuración
         Log.d("Ruleta", "Ángulo: " + normalizedAngle + ", Índice: " + indice +
                 ", Número: " + casillaFinal);
+    }
+
+    private int getIndice(int normalizedAngle) {
+        int numCasillas = casillasRuleta.length;
+
+        // Cada casilla tiene un ángulo de 360° / 37
+        double anguloPorCasilla = 360.0 / numCasillas;
+
+        // Ajustar el ángulo para tener en cuenta la posición de inicio
+        int offsetAngulo = 0; // Ajusta este valor según sea necesario
+
+        // Calcular el índice con ajuste de dirección
+        int indice = numCasillas - 1 - (int) (((normalizedAngle + offsetAngulo) % 360) / anguloPorCasilla);
+
+        // Ajustar por el desplazamiento de una posición
+        indice = (indice + 1) % numCasillas;
+
+        // Asegurar que el índice esté dentro del rango
+        indice = (indice + numCasillas) % numCasillas;
+        return indice;
     }
 
     @Override
@@ -756,13 +759,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public int calcularTotalApuesta() {
-        int totalApuesta = 0;
-        for (Apuesta apuesta : listaApuestas) {
-            totalApuesta += apuesta.monto;
-        }
-        return totalApuesta;
-    }
+
 
     private void finalizarJuego() {
 

@@ -60,5 +60,8 @@
     <string name="bet_on_color_number_parity">You must bet on color, number, or odd/even</string>
     <string name="selected_number">Selected number: %1$s</string>
     <string name="cancel">Cancel</string>
+    <string name="cantidad_apostada">Bet Amount: %1$d</string>
+    <string name="cantidad_minima">Bet Amount: minimum 1</string>
+    <string name="ronda_numero">Round #%1$d</string>
 
 </resources>

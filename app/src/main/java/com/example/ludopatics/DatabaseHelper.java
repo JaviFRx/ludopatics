@@ -1,12 +1,23 @@
 package com.example.ludopatics;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.location.Location;
 import android.os.Build;
 import android.util.Log;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+import android.Manifest;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,11 +26,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "ludopatics.db";
-    private static final int DATABASE_VERSION = 1;  // Aumentado por la nueva tabla 'partidas' y campo en 'historico_tiradas'
+    private static final int DATABASE_VERSION = 2;  // Aumentado por la nueva tabla 'partidas' y campo en 'historico_tiradas'
 
     // Definición de las tablas
     private static final String TABLE_USUARIOS = "usuarios";
@@ -41,10 +54,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_HIST_SALDO = "saldo";
     private static final String COLUMN_HIST_GANO = "gano";
     private static final String COLUMN_HIST_FECHA = "fecha";
-
+    private static final String COLUMN_USUARIO_LATITUD = "latitud";
+    private static final String COLUMN_USUARIO_LONGITUD = "longitud";
+    private Context context;
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
     // Constructor
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -52,9 +69,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Crear la tabla de usuarios
         String createUsersTable = "CREATE TABLE " + TABLE_USUARIOS + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_NOMBRE + " TEXT UNIQUE)";
+                COLUMN_NOMBRE + " TEXT UNIQUE, " +
+                COLUMN_USUARIO_LATITUD + " REAL, " +  // Nueva columna latitud
+                COLUMN_USUARIO_LONGITUD + " REAL)";   // Nueva columna longitud
         db.execSQL(createUsersTable);
-
         String createPartidasTable = "CREATE TABLE " + TABLE_PARTIDAS + " (" +
                 COLUMN_PARTIDA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_PARTIDA_JUGADOR_ID + " INTEGER, " +
@@ -80,7 +98,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion < 2) {
+            try {
+                // Verificar si las columnas latitud y longitud ya existen en la tabla usuarios.
+                db.execSQL("ALTER TABLE " + TABLE_USUARIOS + " ADD COLUMN " + COLUMN_USUARIO_LATITUD + " REAL");
+            } catch (Exception e) {
+                // Si la columna ya existe, no hacer nada.
+                Log.d("DBHelper", "Columna 'latitud' ya existe o no se necesita agregar");
+            }
 
+            try {
+                db.execSQL("ALTER TABLE " + TABLE_USUARIOS + " ADD COLUMN " + COLUMN_USUARIO_LONGITUD + " REAL");
+            } catch (Exception e) {
+                // Si la columna ya existe, no hacer nada.
+                Log.d("DBHelper", "Columna 'longitud' ya existe o no se necesita agregar");
+            }
+        }
     }
 
 
@@ -158,30 +191,72 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     // Método para guardar el nombre de un usuario
-    public boolean guardarNombre(String nombre) {
-        SQLiteDatabase db = this.getWritableDatabase();
+    public boolean guardarNombre(final String nombre) {
+        final SQLiteDatabase db = this.getWritableDatabase();
 
         // Verificar si el nombre ya existe
         if (existeNombre(nombre)) {
             Log.i("Database", "El nombre ya existe, no se inserta.");
-            return true; // No insertar si ya está en la base de datos
+            return false; // No insertar si ya está en la base de datos, devolver false
         }
 
-        // Si no existe, lo insertamos
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_NOMBRE, nombre);
+        // Ejecutar la tarea de obtener la ubicación en un hilo separado
+        executorService.submit(new Runnable() {
+            @Override
+            public void run() {
+                // Obtener la ubicación y guardar en la base de datos
+                obtenerUbicacionYGuardar(db, nombre); // Cambiar obtenerUbicacionYGuardar a que devuelva un booleano
 
-        long result = db.insert(TABLE_USUARIOS, null, values);
-        //db.close();
+            }
+        });
 
-        if (result == -1) {
-            Log.e("Database", "Error al guardar el nombre");
-            return false;
+        return true; // Si no hubo error al enviar la tarea, devolvemos true
+    }
+
+
+    private void obtenerUbicacionYGuardar(final SQLiteDatabase db, final String nombre) {
+        // Obtener el cliente de ubicación
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
+
+        // Verificar si el permiso de ubicación está concedido
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            // Obtener la última ubicación
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null) {
+                                double latitude = location.getLatitude();
+                                double longitude = location.getLongitude();
+
+                                // Insertar en la base de datos con la ubicación obtenida
+                                ContentValues values = new ContentValues();
+                                values.put(COLUMN_NOMBRE, nombre); // Asegúrate de que esta constante existe
+                                values.put("latitud", latitude);
+                                values.put("longitud", longitude);
+
+                                long result = db.insert(TABLE_USUARIOS, null, values); // Asegúrate de que esta constante también existe
+                                if (result == -1) {
+                                    Log.e("Database", "Error al guardar el nombre y la ubicación");
+                                } else {
+                                    Log.i("Database", "Nombre y ubicación guardados correctamente");
+                                }
+                            } else {
+                                Log.e("Location", "No se pudo obtener la ubicación");
+                            }
+                        }
+                    });
         } else {
-            Log.i("Database", "Nombre guardado correctamente");
-            return true;
+            // Solicitar permisos si no están otorgados
+            if (context instanceof Activity) {
+                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            } else {
+                Log.e("Permiso", "El contexto no es una Activity. No se puede solicitar el permiso.");
+            }
         }
     }
+
+
     public boolean existeNombre(String nombre) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT 1 FROM " + TABLE_USUARIOS + " WHERE " + COLUMN_NOMBRE + " = ?", new String[]{nombre});

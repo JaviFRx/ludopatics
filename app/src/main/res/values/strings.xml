@@ -59,6 +59,9 @@
     <string name="bet_on_color_number_parity">Debes hacer una apuesta a color, número o Par/Impar</string>
     <string name="selected_number">Número seleccionado: %1$s</string>
     <string name="cancel">Cancelar</string>
+    <string name="cantidad_apostada">Cantidad Apostada: %1$d</string>
+    <string name="cantidad_minima">Cantidad Apostada: mínimo 1</string>
+    <string name="ronda_numero">Ronda #%1$d</string>
     º
 
 </resources>
