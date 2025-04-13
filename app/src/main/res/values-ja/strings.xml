@@ -63,5 +63,5 @@
     <string name="cantidad_minima">賭け金：最低1</string>
     <string name="ronda_numero">ラウンド #%1$d</string>
     <string name="coordenadas">緯度: %1$s, 経度: %2$s</string>
-
+    <string name="game_over_win">おめでとうございます！あなたの勝ちです！</string>
 </resources>

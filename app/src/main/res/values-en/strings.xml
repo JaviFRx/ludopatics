@@ -64,6 +64,7 @@
     <string name="cantidad_minima">Bet Amount: minimum 1</string>
     <string name="ronda_numero">Round #%1$d</string>
     <string name="coordenadas">Lat: %1$s, Lon: %2$s</string>
+    <string name="game_over_win">Congratulations! You won!</string>
 
 
 </resources>
