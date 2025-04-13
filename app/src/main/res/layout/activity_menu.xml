@@ -9,7 +9,7 @@
     android:background="#4A0080"
     tools:context=".Menu">
 
-    <!-- Botón "Exit" en la esquina superior izquierda -->
+    <!-- Botón Exit -->
     <Button
         android:id="@+id/btnExit"
         android:layout_width="wrap_content"
@@ -22,36 +22,30 @@
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="16dp"/>
+        android:layout_margin="16dp" />
 
-    <!-- Imagen de la bandera de Inglaterra -->
-
-    <!-- Imagen de la bandera de Francia -->
+    <!-- Banderas -->
     <ImageView
         android:id="@+id/imgEngland"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-
         android:src="@drawable/england"
         app:layout_constraintStart_toEndOf="@+id/btnExit"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
-    <!-- Imagen de la bandera de España -->
     <ImageView
         android:id="@+id/imgFrance"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-
         android:src="@drawable/france"
         app:layout_constraintStart_toEndOf="@+id/imgEngland"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
-
 
     <ImageView
         android:id="@+id/imgSpain"
@@ -74,21 +68,49 @@
         app:layout_constraintStart_toEndOf="@+id/imgSpain"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
-    <!-- TextView "USERNAME" en la esquina superior derecha -->
-    <TextView
-        android:id="@+id/tvUsername"
+
+    <!-- Fila con Username + gota + coordenadas -->
+    <LinearLayout
+        android:id="@+id/layoutUbicacion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="USERNAME"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:fontFamily="@font/madimione_regular"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="16dp"/>
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@id/imgEngland"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <!-- Título "LUDOPATICS" centrado horizontalmente -->
+        <TextView
+            android:id="@+id/tvUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/madimione_regular"
+            android:text="@string/username"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="8dp" />
+
+        <ImageView
+            android:id="@+id/imgWaterDrop"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/oip"
+            android:layout_marginEnd="8dp"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/tvCoordinates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/madimione_regular"
+            android:text="Lat: 41.38, Lon: 2.17"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Título LUDOPATICS -->
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
@@ -97,15 +119,15 @@
         android:fontFamily="@font/jaini_regular"
         android:gravity="center"
         android:letterSpacing="0.2"
-        android:text="LUDOPATICS"
+        android:text="@string/ludopatics_title"
         android:textColor="@android:color/white"
         android:textSize="50sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutUbicacion"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnExit" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Contenedor de botones, centrado horizontalmente -->
+    <!-- Botones -->
     <LinearLayout
         android:id="@+id/layoutButtons"
         android:layout_width="184dp"
@@ -116,10 +138,10 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
         <Button
@@ -130,7 +152,7 @@
             android:background="@drawable/transparent"
             android:backgroundTint="@android:color/darker_gray"
             android:fontFamily="@font/madimione_regular"
-            android:text="JUGAR SOLO"
+            android:text="@string/jugar_solo"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 
@@ -142,7 +164,7 @@
             android:background="@drawable/transparent"
             android:backgroundTint="@android:color/darker_gray"
             android:fontFamily="@font/madimione_regular"
-            android:text="MULTIJUGADOR"
+            android:text="@string/multijugador"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 
@@ -193,10 +215,6 @@
             android:text="Seleccionar Música"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
-
-
     </LinearLayout>
-
-    <!-- Marcador para el GIF (puede ser un ImageView si ya tienes la imagen animada) -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
