@@ -14,67 +14,14 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_back"
         android:contentDescription="@string/btn_back_description"
-        android:layout_margin="8dp"/>
+        android:layout_margin="8dp" />
 
-    <!-- ScrollView para hacer el contenido desplazable -->
-    <ScrollView
+    <!-- WebView en lugar de TextViews -->
+    <WebView
+        android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/btnBack"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <!-- Contenedor del contenido dentro del ScrollView -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <!-- Título "CÓMO JUGAR" -->
-            <TextView
-                android:id="@+id/header_como_jugar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/madimione_regular"
-                android:text="@string/title_como_jugar"
-                android:textColor="#FDFDFD"
-                android:textSize="34sp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="20dp"/>
-
-            <!-- Primer Paso -->
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/madimione_regular"
-                android:text="@string/primer_paso"
-                android:textColor="@color/blanco"
-                android:textSize="20sp"
-                android:layout_marginBottom="12dp"/>
-
-            <!-- Segundo Paso -->
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/madimione_regular"
-                android:text="@string/segundo_paso"
-                android:textColor="@color/blanco"
-                android:textSize="20sp"
-                android:layout_marginBottom="12dp"/>
-
-            <!-- Instrucción final -->
-            <TextView
-                android:id="@+id/instruccion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/madimione_regular"
-                android:text="@string/instruccion_final"
-                android:textColor="@color/blanco"
-                android:textSize="20sp"
-                android:layout_marginBottom="62dp"/>
-        </LinearLayout>
-    </ScrollView>
-
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
