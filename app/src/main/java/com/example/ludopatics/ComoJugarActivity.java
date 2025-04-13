@@ -25,7 +25,7 @@ public class ComoJugarActivity extends AppCompatActivity {
                 "</style>" +
                 "</head>" +
                 "<body>" +
-                "<h1>CÓMO JUGAR</h1>" +
+                "<h1>" + getString(R.string.title_como_jugar) + "</h1>" +
                 "<p>1. " + getString(R.string.primer_paso) + "</p>" +
                 "<p>2. " + getString(R.string.segundo_paso) + "</p>" +
                 "<p>" + getString(R.string.instruccion_final) + "</p>" +
