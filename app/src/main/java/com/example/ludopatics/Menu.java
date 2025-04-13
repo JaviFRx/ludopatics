@@ -19,11 +19,11 @@ import java.util.Locale;
 public class Menu extends AppCompatActivity {
 
     // Declarar las vistas globalmente para poder acceder a ellas en cualquier parte de la clase
-    private TextView tvUsername, tvTitle;
+    private TextView tvUsername, tvTitle,tvCoordinates;
     private Button btnJugarSolo, btnMultijugador, btnHistorial, btnMiPerfil, btnComoJugar, btnSeleccionarMusica, btnExit;
     private ImageView imgEngland, imgFrance, imgSpain,imgJapan;
     private ActivityResultLauncher<Intent> audioPickerLauncher;
-
+    private String coordenadasTexto;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +54,10 @@ public class Menu extends AppCompatActivity {
         imgFrance = findViewById(R.id.imgFrance);
         imgSpain = findViewById(R.id.imgSpain);
         imgJapan = findViewById(R.id.imgJapan);
+        tvCoordinates = findViewById(R.id.tvCoordinates);
         // Establecer el nombre del usuario
         tvUsername.setText(nombreUsuario);
+
 
         // Asignamos listeners a los botones
         imgEngland.setOnClickListener(v -> changeLanguage("en"));  // Cambia el idioma a inglés
@@ -119,6 +121,25 @@ public class Menu extends AppCompatActivity {
             Intent intent = new Intent(Menu.this, ComoJugarActivity.class);
             startActivity(intent);
         });
+
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        // Obtener las coordenadas del usuario de la base de datos
+        float[] coordenadas = dbHelper.obtenerCoordenadas(nombreUsuario);
+        Locale locale = Locale.getDefault(); // o Locale.ROOT si prefieres un formato independiente de idioma
+
+        if (coordenadas != null) {
+            // Si las coordenadas existen, mostrarlas en el TextView
+            float latitud = coordenadas[0];
+            float longitud = coordenadas[1];
+
+            // Formatear el texto de las coordenadas y asignarlo al TextView
+            // Usar String.format para dar formato a los números flotantes
+            coordenadasTexto = String.format(locale, getString(R.string.coordenadas), String.format(locale, "%.6f", latitud), String.format(locale, "%.6f", longitud));
+            tvCoordinates.setText(coordenadasTexto);
+        } else {
+            // Si no se encontraron coordenadas, mostrar un mensaje de error
+            tvCoordinates.setText("No se encontraron coordenadas para este usuario.");
+        }
     }
 
     private void changeLanguage(String languageCode) {
@@ -145,5 +166,6 @@ public class Menu extends AppCompatActivity {
         btnComoJugar.setText(getString(R.string.como_jugar));
         btnExit.setText(getString(R.string.exit));
         btnSeleccionarMusica.setText(getString(R.string.select_music));
+        tvCoordinates.setText(coordenadasTexto);
     }
 }

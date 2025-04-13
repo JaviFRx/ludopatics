@@ -324,6 +324,54 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return jugadorId;
     }
 
+    public float[] obtenerCoordenadas(String nombre) {
+        if (nombre == null) {
+            Log.e("DatabaseHelper", "Nombre de usuario es nulo");
+            return null; // Si el nombre es nulo, devuelve null
+        }
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        float[] coordenadas = null;
+
+        try {
+            Log.d("DatabaseHelper", "Buscando coordenadas para el usuario: '" + nombre + "'");
+
+            cursor = db.rawQuery("SELECT latitud, longitud FROM " + TABLE_USUARIOS + " WHERE " + COLUMN_NOMBRE + " = ?", new String[]{nombre});
+
+            Log.d("DatabaseHelper", "Número de resultados: " + (cursor != null ? cursor.getCount() : "cursor nulo"));
+
+            if (cursor != null && cursor.moveToFirst()) {
+                // Obtener las coordenadas
+                int indexLatitud = cursor.getColumnIndex("latitud");
+                int indexLongitud = cursor.getColumnIndex("longitud");
+
+                if (indexLatitud >= 0 && indexLongitud >= 0) {
+                    float latitud = cursor.getFloat(indexLatitud);
+                    float longitud = cursor.getFloat(indexLongitud);
+
+                    coordenadas = new float[]{latitud, longitud}; // Guardamos las coordenadas en el array
+                    Log.d("DatabaseHelper", "Coordenadas encontradas: Latitud = " + latitud + ", Longitud = " + longitud);
+                } else {
+                    Log.e("DatabaseHelper", "Índices de columna no válidos para las coordenadas");
+                }
+            } else {
+                Log.e("DatabaseHelper", "No se encontró ningún usuario con ese nombre");
+            }
+        } catch (Exception e) {
+            Log.e("DatabaseHelper", "Error al obtener coordenadas del usuario", e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+
+        return coordenadas; // Devuelve el array de coordenadas o null si no se encontraron
+    }
+
+
+
 
     // Método para crear una nueva partida para un jugador
     public long crearPartida(int usuarioId, int saldo) {
