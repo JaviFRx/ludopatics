@@ -766,6 +766,12 @@ public class MainActivity extends AppCompatActivity {
         if (roundCount >= 10) {
             // Si se han alcanzado las 10 rondas
             Toast.makeText(this, getString(R.string.game_over_rounds_limit), Toast.LENGTH_SHORT).show();
+            if (currentBalance >= 1000) {
+                // Si su saldo es superior a 1000 significa que ha ganado
+                Toast.makeText(this, getString(R.string.game_over_win), Toast.LENGTH_SHORT).show();
+                //googleCalendar();
+                //gallery();
+            }
         } else if (currentBalance <= 0) {
             // Si se ha quedado sin dinero
             Toast.makeText(this, getString(R.string.game_over_no_money), Toast.LENGTH_SHORT).show();

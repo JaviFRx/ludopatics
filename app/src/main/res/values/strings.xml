@@ -56,6 +56,7 @@
     <string name="no_sufficient_balance_bet">No tienes suficiente saldo para esta apuesta</string>
     <string name="game_over_rounds_limit">¡Juego terminado! Has alcanzado el límite de rondas.</string>
     <string name="game_over_no_money">¡Juego terminado! Te has quedado sin dinero.</string>
+    <string name="game_over_win">¡Felicidades! ¡Has ganado!.</string>
     <string name="bet_on_color_number_parity">Debes hacer una apuesta a color, número o Par/Impar</string>
     <string name="selected_number">Número seleccionado: %1$s</string>
     <string name="cancel">Cancelar</string>
