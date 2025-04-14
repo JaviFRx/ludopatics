@@ -3,13 +3,11 @@ package com.example.ludopatics;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -25,14 +23,12 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -40,12 +36,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-
 import androidx.appcompat.app.ActionBar;
-
-/**
- * @noinspection SpellCheckingInspection
- */
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import android.Manifest;
+import android.content.pm.PackageManager;
+/** @noinspection SpellCheckingInspection*/
 public class MainActivity extends AppCompatActivity {
 
     private boolean musicaActivada = true; // Indica si la música está activada o no
@@ -134,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        final boolean[] isActionBarVisible = {false};
+    final boolean[] isActionBarVisible = {false};
 
         // Configurar el botón de imagen
         ImageButton menuButton = findViewById(R.id.btn_toggle_actionbar);
@@ -248,21 +245,15 @@ public class MainActivity extends AppCompatActivity {
             selectedParImpar = "impar"; // Actualizar la selección de par/impar
         });
 
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
-            }
+
+    }
+
+        @Override
+        public boolean onCreateOptionsMenu(Menu menu) {
+            // Usar menu.xml para que aparezcan los iconos en la ActionBar
+            getMenuInflater().inflate(R.menu.menu, menu);
+            return true;
         }
-
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Usar menu.xml para que aparezcan los iconos en la ActionBar
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -287,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
         // Verifica si se ha pulsado el botón de perfil
         if (item.getItemId() == R.id.action_profile) {
             // Acción para el perfil
-            Intent intent = new Intent(this, PerfilActivity.class);
+            Intent intent = new Intent(this,PerfilActivity.class);
             intent.putExtra("nombreUsuario", nombreUsuario);  // Pasar el nombre de usuario
             startActivity(intent);
             return true;
@@ -315,6 +306,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+
     // Método para aumentar la apuesta
     private void increaseBet(int amount) {
         // Verificar si el monto a apostar no excede el saldo disponible
@@ -337,6 +330,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     // Método para actualizar el texto de la cantidad de apuesta
     private void updateBetAmountText() {
         if (currentBetAmount > 0) {
@@ -345,6 +339,8 @@ public class MainActivity extends AppCompatActivity {
             betAmount.setText(getString(R.string.cantidad_minima));
         }
     }
+
+
 
 
     private void girarRuleta() {
@@ -690,7 +686,7 @@ public class MainActivity extends AppCompatActivity {
                 apuestaParImparTextView.setText(getString(R.string.bet_even_odd, currentBetAmount, valor));
                 break;
             default:
-        }
+                }
 
 
         actualizarSaldoUI(); // Asegurar que la interfaz muestra el saldo correcto
@@ -768,13 +764,20 @@ public class MainActivity extends AppCompatActivity {
         apuestaTextView.setText(mensajeResultado.toString().trim());
     }
 
+
+
+
     private void finalizarJuego() {
 
         if (roundCount >= 10) {
             // Si se han alcanzado las 10 rondas
             Toast.makeText(this, getString(R.string.game_over_rounds_limit), Toast.LENGTH_SHORT).show();
             if (currentBalance >= 1000) {
+                // Si su saldo es superior a 1000 significa que ha ganado
                 Toast.makeText(this, getString(R.string.game_over_win), Toast.LENGTH_SHORT).show();
+
+                //Añadir evento en el calendario
+                addEventCalendar.insertarVictoria(this);
 
                 // 🚀 Tomar y guardar la captura de pantalla al ganar
                 View rootView = getWindow().getDecorView().getRootView();
@@ -785,6 +788,8 @@ public class MainActivity extends AppCompatActivity {
             // Si se ha quedado sin dinero
             Toast.makeText(this, getString(R.string.game_over_no_money), Toast.LENGTH_SHORT).show();
         }
+
+
 
         // Usar el método obtenerIdJugador para obtener el ID del jugador desde la base de datos
         int usuarioId = dbHelper.obtenerIdJugador(nombreUsuario);
