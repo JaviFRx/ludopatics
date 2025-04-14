@@ -3,6 +3,7 @@ package com.example.ludopatics;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
@@ -774,8 +775,9 @@ public class MainActivity extends AppCompatActivity {
             if (currentBalance >= 1000) {
                 // Si su saldo es superior a 1000 significa que ha ganado
                 Toast.makeText(this, getString(R.string.game_over_win), Toast.LENGTH_SHORT).show();
+
+                //Añadir evento en el calendario
                 addEventCalendar.insertarVictoria(this);
-                //gallery();
 
                 // 🚀 Tomar y guardar la captura de pantalla al ganar
                 View rootView = getWindow().getDecorView().getRootView();
