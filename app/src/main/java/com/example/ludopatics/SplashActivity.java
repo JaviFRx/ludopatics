@@ -1,58 +1,91 @@
 package com.example.ludopatics;
 
 import android.content.Intent;
+import android.media.AudioAttributes;
+import android.media.AudioFocusRequest;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.widget.ImageView;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 
 public class SplashActivity extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
+    private AudioManager audioManager;
+    private AudioFocusRequest focusRequest;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        // Encuentra el ImageView en la pantalla de inicio y establece el GIF usando Glide
         ImageView splashImage = findViewById(R.id.splashImage);
-        //DatabaseHelper dbHelper = new DatabaseHelper(this);
-        //dbHelper.imprimirPartidas();
-        //dbHelper.eliminarPartidas();
-        // Cargar el GIF con Glide
-        Glide.with(this)
-                .load(R.drawable.presents)
-                .into(splashImage);
+        Glide.with(this).load(R.drawable.presents).into(splashImage);
 
-        // Inicializar y reproducir el audio
         mediaPlayer = MediaPlayer.create(this, R.raw.century);
-        mediaPlayer.start();
 
-        // Esperar a que termine el audio antes de abrir Ruleta
-        mediaPlayer.setOnCompletionListener(mp -> {
-            // Liberar el MediaPlayer
-            mp.release();
-            mediaPlayer = null;
+        configurarAudioFocus();
 
-            // Cambiar a la actividad Ruleta
-            Intent intent = new Intent(SplashActivity.this, Ruleta.class);
-            startActivity(intent);
-            finish(); // Cierra SplashActivity para que no pueda volver a ella
-        });
+        if (mediaPlayer != null) {
+            mediaPlayer.start();
+            mediaPlayer.setOnCompletionListener(mp -> {
+                Intent intent = new Intent(SplashActivity.this, Ruleta.class);
+                startActivity(intent);
+                finish();
+            });
+        }
+    }
+
+    private void configurarAudioFocus() {
+        audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .build();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            focusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                    .setAudioAttributes(audioAttributes)
+                    .setOnAudioFocusChangeListener(focusChange -> {
+                        switch (focusChange) {
+                            case AudioManager.AUDIOFOCUS_LOSS:
+                            case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                                if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                                    mediaPlayer.pause();
+                                }
+                                break;
+                            case AudioManager.AUDIOFOCUS_GAIN:
+                                if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+                                    mediaPlayer.start();
+                                }
+                                break;
+                        }
+                    })
+                    .build();
+
+            int result = audioManager.requestAudioFocus(focusRequest);
+            if (result != AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                mediaPlayer = null;
+            }
+        }
     }
 
     @Override
     protected void onDestroy() {
-        // Asegurarse de liberar el MediaPlayer al destruir la actividad
         if (mediaPlayer != null) {
             if (mediaPlayer.isPlaying()) {
                 mediaPlayer.stop();
             }
             mediaPlayer.release();
             mediaPlayer = null;
+        }
+        if (audioManager != null && focusRequest != null) {
+            audioManager.abandonAudioFocusRequest(focusRequest);
         }
         super.onDestroy();
     }
