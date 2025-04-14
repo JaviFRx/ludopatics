@@ -77,12 +77,12 @@ public class Ruleta extends AppCompatActivity {
         // Botón "JUGAR"
         Button btnJugar = findViewById(R.id.btnJugar);
         btnJugar.setOnClickListener(v -> {
-            String nombre = etNombreUsuario.getText().toString().trim(); // Asegurar que obtenemos el nombre
+            String nombre = etNombreUsuario.getText().toString().trim();
 
             if (!nombre.isEmpty()) {
-                // Guardar el nombre en la base de datos
-                if (dbHelper.guardarNombre(nombre)) {
-                    Log.i("Database", "El nombre se guardó exitosamente en la BD");
+                // Verificar si el nombre ya existe
+                if (dbHelper.existeNombre(nombre) || dbHelper.guardarNombre(nombre)) {
+                    Log.i("Database", "Nombre válido (nuevo o existente), entrando a la app...");
 
                     // Cambiar a la siguiente actividad
                     Intent intent = new Intent(Ruleta.this, Menu.class);
@@ -90,14 +90,14 @@ public class Ruleta extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else {
-                    Log.e("Database", "No se pudo guardar el nombre en la BD");
+                    Log.e("Database", "No se pudo guardar el nombre en la base de datos");
                     Toast.makeText(this, "Error al guardar el nombre", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                // Mostrar mensaje si el nombre está vacío
                 Toast.makeText(this, "Por favor, ingresa un nombre", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
 

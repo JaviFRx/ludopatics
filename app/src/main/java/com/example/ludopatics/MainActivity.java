@@ -763,6 +763,9 @@ public class MainActivity extends AppCompatActivity {
         apuestaTextView.setText(mensajeResultado.toString().trim());
     }
 
+
+
+
     private void finalizarJuego() {
 
         if (roundCount >= 10) {
@@ -773,6 +776,11 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, getString(R.string.game_over_win), Toast.LENGTH_SHORT).show();
                 addEventCalendar.insertarVictoria(this);
                 //gallery();
+
+                // 🚀 Tomar y guardar la captura de pantalla al ganar
+                View rootView = getWindow().getDecorView().getRootView();
+                Bitmap screenshot = ScreenshotUtils.takeScreenshot(rootView);
+                ScreenshotUtils.saveImageToGallery(this, screenshot);
             }
         } else if (currentBalance <= 0) {
             // Si se ha quedado sin dinero

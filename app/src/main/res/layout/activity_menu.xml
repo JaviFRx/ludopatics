@@ -176,7 +176,7 @@
             android:background="@drawable/transparent"
             android:backgroundTint="@android:color/darker_gray"
             android:fontFamily="@font/madimione_regular"
-            android:text="HISTORIAL"
+            android:text="@string/historial"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 
@@ -188,7 +188,7 @@
             android:background="@drawable/transparent"
             android:backgroundTint="@android:color/darker_gray"
             android:fontFamily="@font/madimione_regular"
-            android:text="MI PERFIL"
+            android:text="@string/mi_perfil"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 
@@ -200,7 +200,7 @@
             android:background="@drawable/transparent"
             android:backgroundTint="@android:color/darker_gray"
             android:fontFamily="@font/madimione_regular"
-            android:text="CÓMO JUGAR"
+            android:text="@string/como_jugar"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 
@@ -212,7 +212,7 @@
             android:background="@drawable/transparent"
             android:backgroundTint="@android:color/darker_gray"
             android:fontFamily="@font/madimione_regular"
-            android:text="Seleccionar Música"
+            android:text="@string/select_music"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
     </LinearLayout>
