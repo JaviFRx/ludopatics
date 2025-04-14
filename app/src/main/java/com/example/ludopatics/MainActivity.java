@@ -36,6 +36,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import androidx.appcompat.app.ActionBar;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import android.Manifest;
+import android.content.pm.PackageManager;
 /** @noinspection SpellCheckingInspection*/
 public class MainActivity extends AppCompatActivity {
 
@@ -758,9 +763,6 @@ public class MainActivity extends AppCompatActivity {
         apuestaTextView.setText(mensajeResultado.toString().trim());
     }
 
-
-
-
     private void finalizarJuego() {
 
         if (roundCount >= 10) {
@@ -769,7 +771,7 @@ public class MainActivity extends AppCompatActivity {
             if (currentBalance >= 1000) {
                 // Si su saldo es superior a 1000 significa que ha ganado
                 Toast.makeText(this, getString(R.string.game_over_win), Toast.LENGTH_SHORT).show();
-                //googleCalendar();
+                addEventCalendar.insertarVictoria(this);
                 //gallery();
             }
         } else if (currentBalance <= 0) {
