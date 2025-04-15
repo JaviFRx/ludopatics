@@ -2,14 +2,19 @@ package com.example.ludopatics;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.AudioAttributes;
+import android.media.AudioFocusRequest;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.VideoView;
+
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +30,9 @@ public class Ruleta extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     private EditText etNombreUsuario;
     private DatabaseHelper dbHelper;
+
+    private AudioManager audioManager;
+    private AudioFocusRequest focusRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +69,12 @@ public class Ruleta extends AppCompatActivity {
             videoView.start();
         });
 
-        // Reproducir audio en bucle
+        // Reproducir audio en bucle con buenas prácticas multimedia
         mediaPlayer = MediaPlayer.create(this, R.raw.ludopat);
-        mediaPlayer.setLooping(true);
-        mediaPlayer.start();
+        if (mediaPlayer != null) {
+            mediaPlayer.setLooping(true);
+            configurarAudioFocus();
+        }
 
         // Instanciar la base de datos
         dbHelper = new DatabaseHelper(this);
@@ -101,7 +111,44 @@ public class Ruleta extends AppCompatActivity {
         });
 
     }
+    private void configurarAudioFocus() {
+        audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_MEDIA)
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .build();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            focusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                    .setAudioAttributes(audioAttributes)
+                    .setOnAudioFocusChangeListener(focusChange -> {
+                        switch (focusChange) {
+                            case AudioManager.AUDIOFOCUS_LOSS:
+                            case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                                if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                                    mediaPlayer.pause();
+                                }
+                                break;
+                            case AudioManager.AUDIOFOCUS_GAIN:
+                                if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+                                    mediaPlayer.start();
+                                }
+                                break;
+                        }
+                    })
+                    .build();
+
+            int result = audioManager.requestAudioFocus(focusRequest);
+            if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                mediaPlayer.start();
+            } else {
+                Log.e("Ruleta", "No se pudo obtener el AudioFocus");
+            }
+        } else {
+            mediaPlayer.start();
+        }
+    }
 
     @Override
     protected void onDestroy() {
@@ -110,6 +157,9 @@ public class Ruleta extends AppCompatActivity {
             mediaPlayer.stop();
             mediaPlayer.release();
             mediaPlayer = null;
+        }
+        if (audioManager != null && focusRequest != null) {
+            audioManager.abandonAudioFocusRequest(focusRequest);
         }
     }
 
