@@ -18,11 +18,11 @@ public class GameOverActivity extends AppCompatActivity {
     String nombreUsuario = null;
     public static MediaPlayer mediaPlayer2;
 
-    // ✅ Audio Focus
+    // Audio Focus
     private AudioManager audioManager;
     private AudioFocusRequest focusRequest;
 
-    // ✅ Soporte de idioma
+    // Soporte de idioma
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(LocaleHelper.applyLocale(newBase));
@@ -78,7 +78,7 @@ public class GameOverActivity extends AppCompatActivity {
             finish();
         });
 
-        // ✅ Configurar enfoque de audio
+        // Configurar enfoque de audio
         configurarAudioFocus();
     }
 
