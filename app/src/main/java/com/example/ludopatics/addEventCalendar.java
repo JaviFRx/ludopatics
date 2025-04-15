@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -91,4 +92,33 @@ public class addEventCalendar {
 
         hilo.start();
     }
+
+    public static boolean verificarCalendarioDisponible(Context context) {
+        StringBuilder calendariosDisponibles = new StringBuilder();
+
+        Cursor cursor = context.getContentResolver().query(
+                CalendarContract.Calendars.CONTENT_URI,
+                new String[]{CalendarContract.Calendars._ID, CalendarContract.Calendars.CALENDAR_DISPLAY_NAME},
+                null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                long id = cursor.getLong(0);
+                String nombre = cursor.getString(1);
+                calendariosDisponibles.append("ID: ").append(id).append(" - ").append(nombre).append("\n");
+            } while (cursor.moveToNext());
+            cursor.close();
+
+            String resultado = calendariosDisponibles.toString();
+            if (!resultado.isEmpty()) {
+                Toast.makeText(context, "Calendarios disponibles:\n" + resultado, Toast.LENGTH_LONG).show();
+            }
+            return true;
+        } else {
+            Toast.makeText(context, "No se encontró ningún calendario compatible. Instala o configura Google Calendar.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+    }
+
+
 }

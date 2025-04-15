@@ -1,5 +1,7 @@
 package com.example.ludopatics;
 
+import static com.example.ludopatics.addEventCalendar.verificarCalendarioDisponible;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -815,7 +817,9 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, getString(R.string.game_over_win), Toast.LENGTH_SHORT).show();
 
                 //Añadir evento en el calendario
-                addEventCalendar.insertarVictoria(this);
+                if (verificarCalendarioDisponible(this)) {
+                    addEventCalendar.insertarVictoria(this);
+                }
 
                 // 🚀 Tomar y guardar la captura de pantalla al ganar
                 View rootView = getWindow().getDecorView().getRootView();
