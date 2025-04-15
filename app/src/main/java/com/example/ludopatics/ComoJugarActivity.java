@@ -1,5 +1,6 @@
 package com.example.ludopatics;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.widget.ImageButton;
@@ -7,6 +8,11 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ComoJugarActivity extends AppCompatActivity {
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.applyLocale(newBase));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

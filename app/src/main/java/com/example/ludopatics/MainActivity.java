@@ -1,5 +1,6 @@
 package com.example.ludopatics;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -101,7 +102,10 @@ public class MainActivity extends AppCompatActivity {
     ));
 
     // El 0 es verde
-
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.applyLocale(newBase));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,5 +1,6 @@
 package com.example.ludopatics;
 
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -12,6 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 public class GameOverActivity extends AppCompatActivity {
     String nombreUsuario=null;
     public static MediaPlayer mediaPlayer2;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.applyLocale(newBase));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

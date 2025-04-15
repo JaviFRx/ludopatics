@@ -1,5 +1,6 @@
 package com.example.ludopatics;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -24,6 +25,12 @@ public class Menu extends AppCompatActivity {
     private ImageView imgEngland, imgFrance, imgSpain,imgJapan;
     private ActivityResultLauncher<Intent> audioPickerLauncher;
     private String coordenadasTexto;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleHelper.applyLocale(newBase));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,18 +150,16 @@ public class Menu extends AppCompatActivity {
     }
 
     private void changeLanguage(String languageCode) {
-        // Establecer el idioma de la aplicación
-        Locale locale = new Locale(languageCode);
-        Locale.setDefault(locale);
+        // Guardar idioma en SharedPreferences
+        SharedPreferences prefs = getSharedPreferences("Settings", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("App_Lang", languageCode);
+        editor.apply();
 
-        // Actualizar la configuración global de la aplicación
-        Configuration config = getResources().getConfiguration();
-        config.setLocale(locale);
-        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-
-        // Actualizar los textos de la interfaz
-        updateUI();
+        // Reiniciar actividad para aplicar idioma
+        recreate(); // Esto recarga la UI con el nuevo contexto
     }
+
 
     private void updateUI() {
         // Actualiza los textos de la interfaz usando getString()
