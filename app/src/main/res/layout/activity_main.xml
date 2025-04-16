@@ -275,7 +275,7 @@
             android:translationZ="4dp">
 
             <Button
-                android:id="@+id/odd_button"
+                android:id="@+id/even_button"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="6dp"
@@ -289,7 +289,7 @@
 
 
             <Button
-                android:id="@+id/even_button"
+                android:id="@+id/odd_button"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="6dp"
