@@ -32,12 +32,9 @@ import android.widget.Toast;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -49,8 +46,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import android.Manifest;
-import android.content.pm.PackageManager;
 /** @noinspection SpellCheckingInspection*/
 public class MainActivity extends AppCompatActivity {
 
@@ -717,7 +712,7 @@ public class MainActivity extends AppCompatActivity {
         // Actualizar UI
         switch (tipo) {
             case "color":
-                apuestaTextView.setText(getString(R.string.bet_color, 100, "Rojo"));
+                apuestaTextView.setText(getString(R.string.bet_color,currentBetAmount, valor));
                 break;
             case "numero":
                 apuestaNumeroTextView.setText(getString(R.string.bet_number, currentBetAmount, valor));
