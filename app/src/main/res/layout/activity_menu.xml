@@ -31,7 +31,7 @@
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/england"
+        android:src="@drawable/united_kingdom"
         app:layout_constraintStart_toEndOf="@+id/btnExit"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
@@ -42,7 +42,7 @@
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/france"
+        android:src="@drawable/france_1"
         app:layout_constraintStart_toEndOf="@+id/imgEngland"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
