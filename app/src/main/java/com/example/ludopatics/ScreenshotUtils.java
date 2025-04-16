@@ -26,7 +26,7 @@ public class ScreenshotUtils {
         ContentValues values = new ContentValues();
         values.put(MediaStore.Images.Media.DISPLAY_NAME, filename);
         values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-        values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/VictoryCaptures");
+        values.put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/");
 
         Uri uri = context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 

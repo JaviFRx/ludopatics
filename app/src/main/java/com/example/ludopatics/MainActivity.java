@@ -758,10 +758,11 @@ public class MainActivity extends AppCompatActivity {
             switch (apuesta.tipo) {
                 case "color":
                     if (apuesta.valor.equals(resColor)) {
-                        ganoAlgo = true;
                         int multiplicador = resColor.equals("verde") ? 14 : 2;
                         currentBalance += apuesta.monto * multiplicador;
-                        mensajeResultado.append("\n¡Ganaste! Color ").append(resColor).append(". Multiplicaste por ").append(multiplicador).append(".");
+                        mensajeResultado.append("\n¡Ganaste! Color ").append(resColor)
+                                .append(". Multiplicaste por ").append(multiplicador).append(".");
+                        ganoAlgo = true;
                     } else {
                         mensajeResultado.append("\nPerdiste en color.");
                     }
@@ -769,9 +770,10 @@ public class MainActivity extends AppCompatActivity {
 
                 case "numero":
                     if (apuesta.valor.equals(casillaFinal)) {
-                        ganoAlgo = true;
                         currentBalance += apuesta.monto * 35;
-                        mensajeResultado.append("\n¡Ganaste! Número ").append(casillaFinal).append(". Multiplicaste por 35.");
+                        mensajeResultado.append("\n¡Ganaste! Número ").append(casillaFinal)
+                                .append(". Multiplicaste por 35.");
+                        ganoAlgo = true;
                     } else {
                         mensajeResultado.append("\nPerdiste en número.");
                     }
@@ -781,9 +783,10 @@ public class MainActivity extends AppCompatActivity {
                     int resultadoNumero = Integer.parseInt(casillaFinal);
                     boolean esPar = resultadoNumero % 2 == 0;
                     if ((apuesta.valor.equals("par") && esPar) || (apuesta.valor.equals("impar") && !esPar)) {
-                        ganoAlgo = true;
                         currentBalance += apuesta.monto * 2;
-                        mensajeResultado.append("\n¡Ganaste! Apuesta a ").append(apuesta.valor).append(". Multiplicaste por 2.");
+                        mensajeResultado.append("\n¡Ganaste! Apuesta a ").append(apuesta.valor)
+                                .append(". Multiplicaste por 2.");
+                        ganoAlgo = true;
                     } else {
                         mensajeResultado.append("\nPerdiste en ").append(apuesta.valor).append(".");
                     }
@@ -791,20 +794,24 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        // Si no ganó nada, mostrar mensaje genérico
+        // Si no ganó nada, mensaje genérico
         if (!ganoAlgo) {
             mensajeResultado.append("\nPerdiste. Inténtalo de nuevo.");
         }
 
-        // Limpiar la lista de apuestas después de comprobarlas
+        // Limpiar apuestas y actualizar UI
         listaApuestas.clear();
-
-        // Actualizar la UI
         balanceValue.setText(String.valueOf(currentBalance));
         apuestaTextView.setText(mensajeResultado.toString().trim());
+
+        // 📸 Hacer captura justo después de que el mensaje esté visible
+        if (ganoAlgo) {
+            View rootView = getWindow().getDecorView().getRootView();
+            Bitmap screenshot = ScreenshotUtils.takeScreenshot(rootView);
+            ScreenshotUtils.saveImageToGallery(this, screenshot);
+            Toast.makeText(this, "¡Captura guardada por victoria!", Toast.LENGTH_SHORT).show();
+        }
     }
-
-
 
 
     private void finalizarJuego() {
