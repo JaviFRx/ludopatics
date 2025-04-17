@@ -150,15 +150,14 @@ public class Menu extends AppCompatActivity {
     }
 
     private void changeLanguage(String languageCode) {
-        // Guardar idioma en SharedPreferences
-        SharedPreferences prefs = getSharedPreferences("Settings", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("App_Lang", languageCode);
-        editor.apply();
-
-        // Reiniciar actividad para aplicar idioma
-        recreate(); // Esto recarga la UI con el nuevo contexto
+        Locale locale = new Locale(languageCode);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.setLocale(locale);
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+        recreate();
     }
+
 
 
     private void updateUI() {
