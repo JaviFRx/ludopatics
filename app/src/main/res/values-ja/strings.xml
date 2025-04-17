@@ -64,4 +64,10 @@
     <string name="ronda_numero">ラウンド #%1$d</string>
     <string name="coordenadas">緯度: %1$s, 経度: %2$s</string>
     <string name="game_over_win">おめでとうございます！あなたの勝ちです！</string>
+    <string name="even_text">偶数</string>
+    <string name="odd_text">奇数</string>
+    <string name="color_red_text">赤</string>
+    <string name="color_black_text">黒</string>
+    <string name="color_green_text">緑</string>
+
 </resources>

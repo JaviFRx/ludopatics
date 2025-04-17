@@ -65,6 +65,12 @@
     <string name="ronda_numero">Round #%1$d</string>
     <string name="coordenadas">Lat: %1$s, Lon: %2$s</string>
     <string name="game_over_win">Congratulations! You won!</string>
+    <string name="even_text">even</string>
+    <string name="odd_text">odd</string>
+    <string name="color_red_text">red</string>
+    <string name="color_black_text">black</string>
+    <string name="color_green_text">green</string>
+
 
 
 </resources>

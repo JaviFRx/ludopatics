@@ -712,16 +712,46 @@ public class MainActivity extends AppCompatActivity {
         // Actualizar UI
         switch (tipo) {
             case "color":
-                apuestaTextView.setText(getString(R.string.bet_color,currentBetAmount, valor));
+                int colorResId;
+                switch (valor.toLowerCase()) {
+                    case "rojo":
+                        colorResId = R.string.color_red_text;
+                        break;
+                    case "negro":
+                        colorResId = R.string.color_black_text;
+                        break;
+                    case "verde":
+                        colorResId = R.string.color_green_text;
+                        break;
+                    default:
+                        colorResId = R.string.color_red_text; // o un string genérico como "desconocido"
+                        break;
+                }
+
+                apuestaTextView.setText(getString(R.string.bet_color, currentBetAmount, getString(colorResId)));
                 break;
+
             case "numero":
+                // Para número no hace falta traducir porque el número es universal
                 apuestaNumeroTextView.setText(getString(R.string.bet_number, currentBetAmount, valor));
                 break;
+
             case "parImpar":
-                apuestaParImparTextView.setText(getString(R.string.bet_even_odd, currentBetAmount, valor));
-                break;
-            default:
+                int parImparResId;
+                if (valor.equalsIgnoreCase("par")) {
+                    parImparResId = R.string.even_text;
+                } else {
+                    parImparResId = R.string.odd_text;
                 }
+
+                apuestaParImparTextView.setText(getString(R.string.bet_even_odd, currentBetAmount, getString(parImparResId)));
+                break;
+
+            default:
+                // Puedes poner un log si quieres detectar casos no contemplados
+                break;
+        }
+
 
 
         actualizarSaldoUI(); // Asegurar que la interfaz muestra el saldo correcto
