@@ -13,7 +13,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class HistorialActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
@@ -41,19 +50,51 @@ public class HistorialActivity extends AppCompatActivity {
         // Obtener el ID del usuario
         String nombreUsuario = getIntent().getStringExtra("nombreUsuario");
         tvTittle.setText("HISTORIAL DE: " + nombreUsuario);
-        int usuarioId = dbHelper.obtenerIdJugador(nombreUsuario);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
 
-        // Verificar que usuarioId es válido
-        if (usuarioId != -1) {
-            // Obtener historial de partidas
-            List<Partida> historialList = dbHelper.obtenerPartidas(usuarioId);
+        String campoFiltro;
+        String valorFiltro;
 
-            // Crear y asignar el adaptador al RecyclerView
-            HistorialAdapter adapter = new HistorialAdapter(historialList);
-            recyclerHistorial.setAdapter(adapter);
+// Si el usuario está logueado, usamos el UID
+        if (auth.getCurrentUser() != null) {
+            campoFiltro = "uid";
+            valorFiltro = auth.getCurrentUser().getUid();
         } else {
-            Toast.makeText(this, "No se encontró el jugador.", Toast.LENGTH_SHORT).show();
+            campoFiltro = "nombre";
+            valorFiltro = nombreUsuario;
         }
+
+        db.collection("puntuaciones")
+                .whereEqualTo(campoFiltro, valorFiltro)
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<Partida> historialList = new ArrayList<>();
+
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        String nombre = doc.getString("nombre");
+                        Long puntuacion = doc.getLong("puntuacion");
+                        Timestamp ts = doc.getTimestamp("timestamp");
+
+                        String fechaFormateada = ts != null
+                                ? new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(ts.toDate())
+                                : "Sin fecha";
+
+                        if (nombre != null && puntuacion != null) {
+                            historialList.add(new Partida(0, 0, fechaFormateada, puntuacion.intValue()));
+                        }
+                    }
+
+                    HistorialAdapter adapter = new HistorialAdapter(historialList);
+                    recyclerHistorial.setAdapter(adapter);
+
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Error al obtener historial desde Firebase", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                });
+
     }
 
     // Adaptador para mostrar el historial de partidas

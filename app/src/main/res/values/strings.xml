@@ -69,4 +69,6 @@
     <string name="color_red_text">rojo</string>
     <string name="color_black_text">negro</string>
     <string name="color_green_text">verde</string>
+    <string name="default_web_client_id">477719818133-e05hfu6pa4v6a47j49ckc23t1g5r136r.apps.googleusercontent.com</string>
+
 </resources>

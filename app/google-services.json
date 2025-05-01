@@ -12,7 +12,20 @@
           "package_name": "com.example.ludopatics"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "477719818133-98im7lg2lof6vhoeat2d13j5qendlgf0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ludopatics",
+            "certificate_hash": "87f282439eaf8687b215cc01736f15a4e962eb14"
+          }
+        },
+        {
+          "client_id": "477719818133-e05hfu6pa4v6a47j49ckc23t1g5r136r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCOXOV7aTb24MBn2dbQ-7_m9jVpD3jX73U"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "477719818133-e05hfu6pa4v6a47j49ckc23t1g5r136r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

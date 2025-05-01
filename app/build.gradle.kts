@@ -43,6 +43,15 @@ android {
 }
 
 dependencies {
+    // Firebase BoM (manejamos versiones desde aquí)
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
+
+    // Google Sign-In
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+
+    // Otros
     implementation(libs.play.services.location)
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -57,8 +66,15 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.play.services.tasks)
     implementation(libs.core.ktx)
-    implementation(libs.firebase.firestore)
-    implementation(libs.google.firebase.auth)
+
+    // RxJava / RxAndroid
+    implementation(libs.rxjava)
+    implementation(libs.rxandroid)
+
+    // Glide
+    implementation(libs.glide)
+
+    // Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -66,18 +82,5 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
-
-    // 🔥 Firebase BoM
-    implementation(libs.firebase.bom)
-
-    // 🔐 Firebase Auth y Google Sign-In
-    implementation(libs.firebase.auth)
-    implementation(libs.play.services.auth)
-
-    // RxJava / RxAndroid
-    implementation(libs.rxjava)
-    implementation(libs.rxandroid)
-
-    // Glide (para gifs si usas alguno)
-    implementation(libs.glide)
 }
+
