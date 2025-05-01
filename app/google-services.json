@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "477719818133",
+    "project_id": "ludopatics-bcee6",
+    "storage_bucket": "ludopatics-bcee6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:477719818133:android:23cb1d1b27b055a31dd09c",
+        "android_client_info": {
+          "package_name": "com.example.ludopatics"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOXOV7aTb24MBn2dbQ-7_m9jVpD3jX73U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

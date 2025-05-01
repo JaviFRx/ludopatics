@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.gms.google-services") // Firebase plugin
 }
 
 android {
@@ -14,7 +15,6 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -34,7 +34,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "11"  // Asegúrate de que Kotlin use Java 11
+        jvmTarget = "11"
     }
 
     buildFeatures {
@@ -65,13 +65,17 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
 
-    // RxJava
-    implementation(libs.rxjava)
+    // 🔥 Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
 
-    // RxAndroid (para facilitar la ejecución en el hilo principal)
+    // 🔐 Firebase Auth y Google Sign-In
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.android.gms:play-services-auth")
+
+    // RxJava / RxAndroid
+    implementation(libs.rxjava)
     implementation(libs.rxandroid)
 
-    //gif
+    // Glide (para gifs si usas alguno)
     implementation(libs.glide)
-
 }
