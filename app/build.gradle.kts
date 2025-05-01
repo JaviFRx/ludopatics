@@ -66,11 +66,11 @@ dependencies {
     debugImplementation(libs.ui.test.manifest)
 
     // 🔥 Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
+    implementation(libs.firebase.bom)
 
     // 🔐 Firebase Auth y Google Sign-In
-    implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.android.gms:play-services-auth")
+    implementation(libs.firebase.auth)
+    implementation(libs.play.services.auth)
 
     // RxJava / RxAndroid
     implementation(libs.rxjava)
