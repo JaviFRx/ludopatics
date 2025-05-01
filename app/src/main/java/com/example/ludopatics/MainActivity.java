@@ -41,11 +41,17 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.auth.FirebaseAuth;
+
+
 /** @noinspection SpellCheckingInspection*/
 public class MainActivity extends AppCompatActivity {
 
@@ -867,11 +873,43 @@ public class MainActivity extends AppCompatActivity {
 
         // Usar el método obtenerIdJugador para obtener el ID del jugador desde la base de datos
         int usuarioId = dbHelper.obtenerIdJugador(nombreUsuario);
-
         if (usuarioId != -1) {
-            // Guardar la partida en la base de datos
-            long idPartida = dbHelper.crearPartida(usuarioId, currentBalance); // Usar currentBalance como saldo final
+            // Guardar la partida en la base de datos local
+            long idPartida = dbHelper.crearPartida(usuarioId, currentBalance);
             Log.d("Juego", "Partida guardada con ID: " + idPartida);
+
+            // 🔥 Guardar en Firebase Firestore
+            FirebaseAuth auth = FirebaseAuth.getInstance();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            String uid = "";
+            String nombre = nombreUsuario;
+
+            if (auth.getCurrentUser() != null) {
+                uid = auth.getCurrentUser().getUid();
+                String nombreFirebase = auth.getCurrentUser().getDisplayName();
+                if (nombreFirebase != null && !nombreFirebase.isEmpty()) {
+                    nombre = nombreFirebase;
+                } else if (auth.getCurrentUser().getEmail() != null) {
+                    nombre = auth.getCurrentUser().getEmail();
+                }
+            }
+
+            Map<String, Object> datos = new HashMap<>();
+            datos.put("uid", uid);
+            datos.put("nombre", nombre);
+            datos.put("puntuacion", currentBalance);
+            datos.put("timestamp", com.google.firebase.firestore.FieldValue.serverTimestamp());
+
+            db.collection("puntuaciones")
+                    .add(datos)
+                    .addOnSuccessListener(documentReference -> {
+                        Log.d("Firestore", "Puntuación subida a Firestore con ID: " + documentReference.getId());
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("Firestore", "Error al subir puntuación a Firestore", e);
+                    });
+
         } else {
             Log.e("Juego", "Error: No se encontró el ID para el jugador con nombre: " + nombreUsuario);
         }
