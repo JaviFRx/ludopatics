@@ -22,6 +22,22 @@
           }
         },
         {
+          "client_id": "477719818133-aqcsh8hd0nlmp4hmetc9cuph5u0tego6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ludopatics",
+            "certificate_hash": "a802e7a6e31e28626c961da9b90b134b02a72f67"
+          }
+        },
+        {
+          "client_id": "477719818133-v1284bufpeuu9588sq484su0b2frrq9m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ludopatics",
+            "certificate_hash": "8787f2df6739fc848bbb80cafd4ec894eba1c576"
+          }
+        },
+        {
           "client_id": "477719818133-e05hfu6pa4v6a47j49ckc23t1g5r136r.apps.googleusercontent.com",
           "client_type": 3
         }
