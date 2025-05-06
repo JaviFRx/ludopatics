@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "477719818133-amrv9fjveokg50b1ecqh6fb3fjtioomo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ludopatics",
+            "certificate_hash": "2ec76a77d85b5f12c4be6348c03af5518c1c1992"
+          }
+        },
+        {
           "client_id": "477719818133-aqcsh8hd0nlmp4hmetc9cuph5u0tego6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
