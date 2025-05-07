@@ -24,6 +24,7 @@
         <activity
             android:name=".Menu"
             android:exported="true" /> <!-- SplashActivity como actividad principal -->
+        <activity android:name=".TopTenActivity" />
         <activity
             android:name=".SplashActivity"
             android:exported="true"

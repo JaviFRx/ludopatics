@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.graphics.Insets;
 import java.util.Locale;
+import android.util.Log;
 
 public class Menu extends AppCompatActivity {
 
@@ -105,10 +106,12 @@ public class Menu extends AppCompatActivity {
             intent.putExtra("nombreUsuario", nombreUsuario);  // Enviar el nombre al intent
             startActivity(intent);
         });
-
+        btnMultijugador = findViewById(R.id.btnMultijugador);
+        btnMultijugador.setText(getString(R.string.ranking));
         btnMultijugador.setOnClickListener(v -> {
             // Lógica para "MULTIJUGADOR"
-            Intent intent = new Intent(Menu.this, MainActivity.class);
+            Log.d("Menu", "Botón Ranking pulsado");
+            Intent intent = new Intent(Menu.this, TopTenActivity.class);
             startActivity(intent);
         });
 

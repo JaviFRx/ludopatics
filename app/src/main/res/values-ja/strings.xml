@@ -69,5 +69,7 @@
     <string name="color_red_text">赤</string>
     <string name="color_black_text">黒</string>
     <string name="color_green_text">緑</string>
+    <string name="premio_comun">共通賞: %1$d puntos</string>
+    <string name="ranking">Ranking</string>
 
 </resources>

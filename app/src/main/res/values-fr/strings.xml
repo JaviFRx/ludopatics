@@ -69,5 +69,7 @@
     <string name="color_red_text">rouge</string>
     <string name="color_black_text">noir</string>
     <string name="color_green_text">vert</string>
+    <string name="premio_comun">Prix commun: %1$d puntos</string>
+    <string name="ranking">Ranking</string>
 
 </resources>

@@ -164,7 +164,7 @@
             android:background="@drawable/transparent"
             android:backgroundTint="@android:color/darker_gray"
             android:fontFamily="@font/madimione_regular"
-            android:text="@string/multijugador"
+            android:text="@string/ranking"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 

@@ -70,6 +70,8 @@
     <string name="color_red_text">red</string>
     <string name="color_black_text">black</string>
     <string name="color_green_text">green</string>
+    <string name="premio_comun">Common prize: %1$d puntos</string>
+    <string name="ranking">Ranking</string>
 
 
 
