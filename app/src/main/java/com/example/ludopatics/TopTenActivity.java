@@ -45,27 +45,47 @@ public class TopTenActivity extends AppCompatActivity {
     }
 
     private void cargarTopTen() {
+        // Primero cargamos el ranking de puntuaciones
         db.collection("puntuaciones")
                 .orderBy("puntuacion", Query.Direction.DESCENDING)
                 .limit(10)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     listaTopTen.clear();
-                    int premioTotal = 0;
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                         String nombre = doc.getString("nombre");
                         Long puntos = doc.getLong("puntuacion");
                         if (nombre != null && puntos != null) {
                             listaTopTen.add(new Puntuacion("", nombre, puntos.intValue()));
-                            premioTotal += puntos;
                         }
                     }
-                    tvPremioComun.setText(getString(R.string.premio_comun, premioTotal));
                     adapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Error al cargar el ranking", Toast.LENGTH_SHORT).show();
                     Log.e("TOP10", "Error:", e);
                 });
+
+        // Luego cargamos el valor del bote
+        db.collection("bote")
+                .document("valor")
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Long boteValor = documentSnapshot.getLong("bote");
+                        if (boteValor != null) {
+                            tvPremioComun.setText(getString(R.string.premio_comun, boteValor));
+                        } else {
+                            tvPremioComun.setText(getString(R.string.premio_comun, 0));
+                        }
+                    } else {
+                        tvPremioComun.setText(getString(R.string.premio_comun, 0));
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Error al cargar el bote", Toast.LENGTH_SHORT).show();
+                    Log.e("BOTE", "Error:", e);
+                });
     }
+
 }

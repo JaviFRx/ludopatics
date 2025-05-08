@@ -48,8 +48,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.SetOptions;
 
 
 /** @noinspection SpellCheckingInspection*/
@@ -109,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
     private final Set<String> numerosRojos = new HashSet<>(Arrays.asList(
             "2", "4", "6", "8", "10", "11", "13", "15", "17", "20", "22", "24", "26", "28", "29", "31", "33", "35"
     ));
-
+    private int bote = 0;
     // El 0 es verde
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -257,6 +261,21 @@ public class MainActivity extends AppCompatActivity {
         btnimpar.setOnClickListener(v -> {
             agregarApuesta("parImpar", "impar");
             selectedParImpar = "impar"; // Actualizar la selección de par/impar
+        });
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference refBote = db.collection("bote").document("actual");
+
+        // Verificar si el documento de bote existe
+        refBote.get().addOnSuccessListener(documentSnapshot -> {
+            if (!documentSnapshot.exists()) {
+                // Si el documento no existe, inicializarlo con 0
+                Map<String, Object> inicializarBote = new HashMap<>();
+                inicializarBote.put("valor", 0);
+
+                refBote.set(inicializarBote)
+                        .addOnSuccessListener(aVoid -> Log.d("Firestore", "Bote inicializado con valor 0"))
+                        .addOnFailureListener(e -> Log.e("Firestore", "Error al inicializar el bote", e));
+            }
         });
 
 
@@ -848,37 +867,31 @@ public class MainActivity extends AppCompatActivity {
     private void finalizarJuego() {
 
         if (roundCount >= 10) {
-            // Si se han alcanzado las 10 rondas
             Toast.makeText(this, getString(R.string.game_over_rounds_limit), Toast.LENGTH_SHORT).show();
             if (currentBalance >= 1000) {
-                // Si su saldo es superior a 1000 significa que ha ganado
                 Toast.makeText(this, getString(R.string.game_over_win), Toast.LENGTH_SHORT).show();
 
-                //Añadir evento en el calendario
                 if (verificarCalendarioDisponible(this)) {
                     addEventCalendar.insertarVictoria(this);
                 }
 
-                // 🚀 Tomar y guardar la captura de pantalla al ganar
                 View rootView = getWindow().getDecorView().getRootView();
                 Bitmap screenshot = ScreenshotUtils.takeScreenshot(rootView);
                 ScreenshotUtils.saveImageToGallery(this, screenshot);
             }
         } else if (currentBalance <= 0) {
-            // Si se ha quedado sin dinero
             Toast.makeText(this, getString(R.string.game_over_no_money), Toast.LENGTH_SHORT).show();
+            currentBalance = 0;
+            bote += 1000;
+            Log.d("Juego", "Se añaden 1000 al bote. Total: " + bote);
         }
 
-
-
-        // Usar el método obtenerIdJugador para obtener el ID del jugador desde la base de datos
         int usuarioId = dbHelper.obtenerIdJugador(nombreUsuario);
         if (usuarioId != -1) {
-            // Guardar la partida en la base de datos local
             long idPartida = dbHelper.crearPartida(usuarioId, currentBalance);
             Log.d("Juego", "Partida guardada con ID: " + idPartida);
 
-            // 🔥 Guardar en Firebase Firestore
+            // Firestore - puntuaciones
             FirebaseAuth auth = FirebaseAuth.getInstance();
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -899,35 +912,47 @@ public class MainActivity extends AppCompatActivity {
             datos.put("uid", uid);
             datos.put("nombre", nombre);
             datos.put("puntuacion", currentBalance);
-            datos.put("timestamp", com.google.firebase.firestore.FieldValue.serverTimestamp());
+            datos.put("timestamp", FieldValue.serverTimestamp());
 
             db.collection("puntuaciones")
                     .add(datos)
-                    .addOnSuccessListener(documentReference -> {
-                        Log.d("Firestore", "Puntuación subida a Firestore con ID: " + documentReference.getId());
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.e("Firestore", "Error al subir puntuación a Firestore", e);
-                    });
-
+                    .addOnSuccessListener(doc -> Log.d("Firestore", "Puntuación subida"))
+                    .addOnFailureListener(e -> Log.e("Firestore", "Error puntuación", e));
         } else {
-            Log.e("Juego", "Error: No se encontró el ID para el jugador con nombre: " + nombreUsuario);
+            Log.e("Juego", "No se encontró ID para " + nombreUsuario);
         }
 
-        // Pasar los datos a la pantalla GameOverActivity
+        // ACTUALIZAR BOTE FINAL SEGÚN SALDO DEL JUGADOR
+        if (currentBalance > 0) {
+            bote += currentBalance;
+            Log.d("Juego", "Jugador se lleva el bote: " + bote);
+            bote = 0;
+            Log.d("Juego", "Bote reiniciado a 0");
+        }
+
+        // ACTUALIZAR EL BOTE EN FIRESTORE
+        FirebaseFirestore.getInstance()
+                .collection("bote")
+                .document("valor")
+                .set(Map.of(
+                        "bote", bote
+                ), SetOptions.merge())
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Bote actualizado"))
+                .addOnFailureListener(e -> Log.e("Firestore", "Error actualizando bote", e));
+
+        // Pasar a pantalla final
         Intent intent = new Intent(this, GameOverActivity.class);
         intent.putExtra("roundCount", roundCount);
         intent.putExtra("currentBalance", currentBalance);
         intent.putExtra("nombreUsuario", nombreUsuario);
         startActivity(intent);
-
-        // Finalizar esta actividad
         finish();
 
-        // Deshabilitar botones para evitar más apuestas o giros
         betButtonPlus1.setEnabled(false);
         betButtonPlus10.setEnabled(false);
         betButtonPlus100.setEnabled(false);
         btnGirar.setEnabled(false);
     }
+
+
 }
