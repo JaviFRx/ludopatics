@@ -55,6 +55,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.SetOptions;
 
+import com.example.ludopatics.FirestoreAuthHelper;
+
+
 
 /** @noinspection SpellCheckingInspection*/
 public class MainActivity extends AppCompatActivity {
@@ -129,6 +132,10 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        FirestoreAuthHelper.obtenerDatosFirestore();
+        FirestoreAuthHelper.enviarPuntuacionFirestore("Javi", 7450, "uidDePrueba");
+
 
         dbHelper = new DatabaseHelper(this);
         ActionBar actionBar = getSupportActionBar();
