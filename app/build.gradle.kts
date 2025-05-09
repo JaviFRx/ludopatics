@@ -75,6 +75,11 @@ dependencies {
     // Glide
     implementation(libs.glide)
 
+    //Moshi y Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.moshi)
+    implementation(libs.converter.moshi)
+
     // Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
@@ -83,5 +88,8 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
+
+
+
 }
 

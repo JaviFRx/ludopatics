@@ -21,7 +21,8 @@ playServicesTasks = "18.2.1"
 core-ktx = "1.12.0"
 firebaseFirestore = "25.1.4"
 firebaseAuth = "23.2.0"
-
+retrofit = "2.9.0"
+moshi = "1.14.0"
 
 [libraries]
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
@@ -54,6 +55,9 @@ core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx
 play-services-tasks = { group = "com.google.android.gms", name = "play-services-tasks", version.ref = "playServicesTasks" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 google-firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
+converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
