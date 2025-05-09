@@ -865,94 +865,112 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void finalizarJuego() {
+        final boolean finPorRondas = roundCount >= 10;
+        final boolean finPorPerdida = currentBalance <= 0;
+        final int saldoInicial = 1000;
+        final int saldoFinal = currentBalance;
+        final int rondaFinal = roundCount;
+        final String nombreFinal = nombreUsuario;
 
-        if (roundCount >= 10) {
+        // Mostrar mensaje de finalización
+        if (finPorRondas) {
             Toast.makeText(this, getString(R.string.game_over_rounds_limit), Toast.LENGTH_SHORT).show();
-            if (currentBalance >= 1000) {
-                Toast.makeText(this, getString(R.string.game_over_win), Toast.LENGTH_SHORT).show();
-
-                if (verificarCalendarioDisponible(this)) {
-                    addEventCalendar.insertarVictoria(this);
-                }
-
-                View rootView = getWindow().getDecorView().getRootView();
-                Bitmap screenshot = ScreenshotUtils.takeScreenshot(rootView);
-                ScreenshotUtils.saveImageToGallery(this, screenshot);
-            }
-        } else if (currentBalance <= 0) {
+        } else if (finPorPerdida) {
             Toast.makeText(this, getString(R.string.game_over_no_money), Toast.LENGTH_SHORT).show();
             currentBalance = 0;
-            bote += 1000;
-            Log.d("Juego", "Se añaden 1000 al bote. Total: " + bote);
         }
 
-        int usuarioId = dbHelper.obtenerIdJugador(nombreUsuario);
+        // Guardar partida en SQLite
+        int usuarioId = dbHelper.obtenerIdJugador(nombreFinal);
         if (usuarioId != -1) {
-            long idPartida = dbHelper.crearPartida(usuarioId, currentBalance);
+            long idPartida = dbHelper.crearPartida(usuarioId, saldoFinal);
             Log.d("Juego", "Partida guardada con ID: " + idPartida);
-
-            // Firestore - puntuaciones
-            FirebaseAuth auth = FirebaseAuth.getInstance();
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-            String uid = "";
-            String nombre = nombreUsuario;
-
-            if (auth.getCurrentUser() != null) {
-                uid = auth.getCurrentUser().getUid();
-                String nombreFirebase = auth.getCurrentUser().getDisplayName();
-                if (nombreFirebase != null && !nombreFirebase.isEmpty()) {
-                    nombre = nombreFirebase;
-                } else if (auth.getCurrentUser().getEmail() != null) {
-                    nombre = auth.getCurrentUser().getEmail();
-                }
-            }
-
-            Map<String, Object> datos = new HashMap<>();
-            datos.put("uid", uid);
-            datos.put("nombre", nombre);
-            datos.put("puntuacion", currentBalance);
-            datos.put("timestamp", FieldValue.serverTimestamp());
-
-            db.collection("puntuaciones")
-                    .add(datos)
-                    .addOnSuccessListener(doc -> Log.d("Firestore", "Puntuación subida"))
-                    .addOnFailureListener(e -> Log.e("Firestore", "Error puntuación", e));
-        } else {
-            Log.e("Juego", "No se encontró ID para " + nombreUsuario);
         }
 
-        // ACTUALIZAR BOTE FINAL SEGÚN SALDO DEL JUGADOR
-        if (currentBalance > 0) {
-            bote += currentBalance;
-            Log.d("Juego", "Jugador se lleva el bote: " + bote);
-            bote = 0;
-            Log.d("Juego", "Bote reiniciado a 0");
-        }
+        // Firebase
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final String uid = auth.getCurrentUser() != null ? auth.getCurrentUser().getUid() : "";
+        final String nombreFirebase = auth.getCurrentUser() != null && auth.getCurrentUser().getDisplayName() != null ?
+                auth.getCurrentUser().getDisplayName() : (auth.getCurrentUser() != null && auth.getCurrentUser().getEmail() != null ?
+                auth.getCurrentUser().getEmail() : nombreFinal);
+        final String nombre = nombreFirebase != null && !nombreFirebase.isEmpty() ? nombreFirebase : nombreFinal;
 
-        // ACTUALIZAR EL BOTE EN FIRESTORE
-        FirebaseFirestore.getInstance()
-                .collection("bote")
+        // Obtener y actualizar bote
+        db.collection("bote")
                 .document("valor")
-                .set(Map.of(
-                        "bote", bote
-                ), SetOptions.merge())
-                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Bote actualizado"))
-                .addOnFailureListener(e -> Log.e("Firestore", "Error actualizando bote", e));
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    long boteActual = documentSnapshot.contains("bote") ? documentSnapshot.getLong("bote") : 0;
 
-        // Pasar a pantalla final
-        Intent intent = new Intent(this, GameOverActivity.class);
-        intent.putExtra("roundCount", roundCount);
-        intent.putExtra("currentBalance", currentBalance);
-        intent.putExtra("nombreUsuario", nombreUsuario);
-        startActivity(intent);
-        finish();
+                    if (finPorRondas && saldoFinal > saldoInicial) {
+                        // GANADOR
+                        int puntuacionFinal = saldoFinal + (int) boteActual;
+                        Log.d("Juego", "Ganador! Puntuación total: " + puntuacionFinal);
 
+                        subirPuntuacion(db, uid, nombre, puntuacionFinal);
+
+                        if (verificarCalendarioDisponible(this)) {
+                            addEventCalendar.insertarVictoria(this);
+                        }
+
+                        View rootView = getWindow().getDecorView().getRootView();
+                        Bitmap screenshot = ScreenshotUtils.takeScreenshot(rootView);
+                        ScreenshotUtils.saveImageToGallery(this, screenshot);
+
+                        // Reiniciar bote
+                        db.collection("bote")
+                                .document("valor")
+                                .set(Map.of("bote", 0), SetOptions.merge())
+                                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Bote reiniciado"))
+                                .addOnFailureListener(e -> Log.e("Firestore", "Error reiniciando bote", e));
+
+                    } else {
+                        // PERDIDA o empate
+                        long perdida = Math.max(0, saldoInicial - saldoFinal);
+                        long nuevoBote = boteActual + perdida;
+                        Log.d("Juego", "Perdida: " + perdida + ", nuevo bote: " + nuevoBote);
+
+                        subirPuntuacion(db, uid, nombre, saldoFinal);
+
+                        db.collection("bote")
+                                .document("valor")
+                                .set(Map.of("bote", nuevoBote), SetOptions.merge())
+                                .addOnSuccessListener(aVoid -> Log.d("Firestore", "Bote actualizado"))
+                                .addOnFailureListener(e -> Log.e("Firestore", "Error actualizando bote", e));
+                    }
+
+                    // Ir a pantalla final
+                    Intent intent = new Intent(this, GameOverActivity.class);
+                    intent.putExtra("roundCount", rondaFinal);
+                    intent.putExtra("currentBalance", saldoFinal);
+                    intent.putExtra("nombreUsuario", nombreFinal);
+                    startActivity(intent);
+                    finish();
+                })
+                .addOnFailureListener(e -> Log.e("Firestore", "Error leyendo bote", e));
+
+        // Deshabilitar botones
         betButtonPlus1.setEnabled(false);
         betButtonPlus10.setEnabled(false);
         betButtonPlus100.setEnabled(false);
         btnGirar.setEnabled(false);
     }
+
+
+    private void subirPuntuacion(FirebaseFirestore db, String uid, String nombre, int puntuacion) {
+        Map<String, Object> datos = new HashMap<>();
+        datos.put("uid", uid);
+        datos.put("nombre", nombre);
+        datos.put("puntuacion", puntuacion);
+        datos.put("timestamp", FieldValue.serverTimestamp());
+
+        db.collection("puntuaciones")
+                .add(datos)
+                .addOnSuccessListener(doc -> Log.d("Firestore", "Puntuación subida"))
+                .addOnFailureListener(e -> Log.e("Firestore", "Error puntuación", e));
+    }
+
 
 
 }
