@@ -48,15 +48,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.SetOptions;
-
-import com.example.ludopatics.FirestoreAuthHelper;
-
 
 
 /** @noinspection SpellCheckingInspection*/
@@ -134,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         FirestoreAuthHelper.obtenerDatosFirestore();
-        FirestoreAuthHelper.enviarPuntuacionFirestore("Javi", 7450, "uidDePrueba");
 
 
         dbHelper = new DatabaseHelper(this);
@@ -878,6 +875,7 @@ public class MainActivity extends AppCompatActivity {
         final int saldoFinal = currentBalance;
         final int rondaFinal = roundCount;
         final String nombreFinal = nombreUsuario;
+        AtomicInteger puntuacionFinal= new AtomicInteger();
 
         // Mostrar mensaje de finalización
         if (finPorRondas) {
@@ -912,10 +910,10 @@ public class MainActivity extends AppCompatActivity {
 
                     if (finPorRondas && saldoFinal > saldoInicial) {
                         // GANADOR
-                        int puntuacionFinal = saldoFinal + (int) boteActual;
+                        puntuacionFinal.set(saldoFinal + (int) boteActual);
                         Log.d("Juego", "Ganador! Puntuación total: " + puntuacionFinal);
 
-                        subirPuntuacion(db, uid, nombre, puntuacionFinal);
+                        FirestoreAuthHelper.enviarPuntuacionFirestore(nombre, puntuacionFinal.get(), uid);
 
                         if (verificarCalendarioDisponible(this)) {
                             addEventCalendar.insertarVictoria(this);
@@ -938,7 +936,7 @@ public class MainActivity extends AppCompatActivity {
                         long nuevoBote = boteActual + perdida;
                         Log.d("Juego", "Perdida: " + perdida + ", nuevo bote: " + nuevoBote);
 
-                        subirPuntuacion(db, uid, nombre, saldoFinal);
+                        FirestoreAuthHelper.enviarPuntuacionFirestore(nombre, puntuacionFinal.get(), uid);
 
                         db.collection("bote")
                                 .document("valor")
@@ -963,21 +961,4 @@ public class MainActivity extends AppCompatActivity {
         betButtonPlus100.setEnabled(false);
         btnGirar.setEnabled(false);
     }
-
-
-    private void subirPuntuacion(FirebaseFirestore db, String uid, String nombre, int puntuacion) {
-        Map<String, Object> datos = new HashMap<>();
-        datos.put("uid", uid);
-        datos.put("nombre", nombre);
-        datos.put("puntuacion", puntuacion);
-        datos.put("timestamp", FieldValue.serverTimestamp());
-
-        db.collection("puntuaciones")
-                .add(datos)
-                .addOnSuccessListener(doc -> Log.d("Firestore", "Puntuación subida"))
-                .addOnFailureListener(e -> Log.e("Firestore", "Error puntuación", e));
-    }
-
-
-
 }

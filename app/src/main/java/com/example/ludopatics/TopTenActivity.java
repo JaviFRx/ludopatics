@@ -67,25 +67,22 @@ public class TopTenActivity extends AppCompatActivity {
                 });
 
         // Luego cargamos el valor del bote
-        db.collection("bote")
-                .document("valor")
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        Long boteValor = documentSnapshot.getLong("bote");
-                        if (boteValor != null) {
-                            tvPremioComun.setText(getString(R.string.premio_comun, boteValor));
-                        } else {
-                            tvPremioComun.setText(getString(R.string.premio_comun, 0));
-                        }
-                    } else {
-                        tvPremioComun.setText(getString(R.string.premio_comun, 0));
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Error al cargar el bote", Toast.LENGTH_SHORT).show();
+        FirestoreAuthHelper.obtenerValorBote(new ValorBoteCallback() {
+            @Override
+            public void onValorObtenido(int valor) {
+                runOnUiThread(() -> tvPremioComun.setText(getString(R.string.premio_comun, valor)));
+            }
+
+            @Override
+            public void onError(Exception e) {
+                runOnUiThread(() -> {
+                    Toast.makeText(TopTenActivity.this, "Error al cargar el bote", Toast.LENGTH_SHORT).show();
                     Log.e("BOTE", "Error:", e);
+                    tvPremioComun.setText(getString(R.string.premio_comun, 0));
                 });
+            }
+        });
+
     }
 
 }

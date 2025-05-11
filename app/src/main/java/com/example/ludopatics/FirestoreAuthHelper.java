@@ -85,6 +85,105 @@ public class FirestoreAuthHelper {
         }
     }
 
+    // 🔹 GET → Leer el valor del bote desde Firestore
+    public static void obtenerValorBote(ValorBoteCallback callback) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            user.getIdToken(true).addOnSuccessListener(getTokenResult -> {
+                String token = getTokenResult.getToken();
+                String authHeader = "Bearer " + token;
+
+                // Realizamos la llamada Retrofit
+                RetrofitClient.getInstance().getValorBote(authHeader)
+                        .enqueue(new Callback<JsonObject>() {
+                            @Override
+                            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                                if (response.isSuccessful()) {
+                                    JsonObject data = response.body();
+                                    if (data != null && data.has("fields")) {
+                                        JsonObject fields = data.getAsJsonObject("fields");
+
+                                        if (fields.has("bote")) {
+                                            JsonObject boteObject = fields.getAsJsonObject("bote");
+                                            if (boteObject.has("integerValue")) {
+                                                int valor = boteObject.get("integerValue").getAsInt();
+                                                callback.onValorObtenido(valor);
+                                            } else {
+                                                Log.e("GET_BOTE", "'bote' no contiene 'integerValue'");
+                                                callback.onValorObtenido(0);
+                                            }
+                                        } else {
+                                            Log.e("GET_BOTE", "'fields' no contiene 'bote'");
+                                            callback.onValorObtenido(0);
+                                        }
+                                    } else {
+                                        Log.e("GET_BOTE", "Respuesta sin campo 'fields'");
+                                        callback.onValorObtenido(0);
+                                    }
+                                } else {
+                                    Log.e("GET_BOTE", "Error HTTP: " + response.code());
+                                    callback.onValorObtenido(0);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<JsonObject> call, Throwable t) {
+                                Log.e("GET_BOTE", "Error en la solicitud: " + t.getMessage());
+                                callback.onError(new Exception("Error al obtener el valor del bote: " + t.getMessage()));
+                            }
+                        });
+            }).addOnFailureListener(e -> {
+                Log.e("GET_BOTE", "Error al obtener el token: " + e.getMessage());
+                callback.onError(new Exception("Error de autenticación: " + e.getMessage()));
+            });
+        } else {
+            Log.e("GET_BOTE", "Usuario no autenticado");
+            callback.onError(new Exception("Usuario no autenticado"));
+        }
+    }
+
+
+
+
+    // 🔹 POST → Enviar valor del bote a Firestore
+    public static void enviarValorBote(int valorBote) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            user.getIdToken(true).addOnSuccessListener(getTokenResult -> {
+                String token = getTokenResult.getToken();
+                String authHeader = "Bearer " + token;
+
+                JsonObject fields = new JsonObject();
+                fields.add("valor", crearCampoEntero(valorBote));
+                fields.add("timestamp", crearCampoTimestamp(Instant.now().toString()));
+
+                JsonObject body = new JsonObject();
+                body.add("fields", fields);
+
+                RetrofitClient.getInstance().postValorBote(authHeader, body)
+                        .enqueue(new Callback<JsonObject>() {
+                            @Override
+                            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                                if (response.isSuccessful()) {
+                                    Log.d("POST_BOTE", "Valor del bote enviado correctamente");
+                                } else {
+                                    Log.e("POST_BOTE", "Error al enviar bote: " + response.code() + " - " + response.message());
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<JsonObject> call, Throwable t) {
+                                Log.e("POST_BOTE", "Fallo al enviar: " + t.getMessage());
+                            }
+                        });
+            });
+        } else {
+            Log.e("POST_BOTE", "Usuario no autenticado");
+        }
+    }
+
     // 🔧 Métodos auxiliares para construir los campos del JSON
     private static JsonObject crearCampoTexto(String valor) {
         JsonObject campo = new JsonObject();
