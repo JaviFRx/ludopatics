@@ -72,6 +72,7 @@ public class HistorialActivity extends AppCompatActivity {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<Partida> historialList = new ArrayList<>();
 
+                    int contador = 1;
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                         String nombre = doc.getString("nombre");
                         Long puntuacion = doc.getLong("puntuacion");
@@ -82,7 +83,8 @@ public class HistorialActivity extends AppCompatActivity {
                                 : "Sin fecha";
 
                         if (nombre != null && puntuacion != null) {
-                            historialList.add(new Partida(0, 0, fechaFormateada, puntuacion.intValue()));
+                            // Usamos el contador como idPartida visual
+                            historialList.add(new Partida(contador++, 0, fechaFormateada, puntuacion.intValue()));
                         }
                     }
 
