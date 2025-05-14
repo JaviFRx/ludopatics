@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.gms.google-services") // Firebase plugin
 }
 
 android {
@@ -14,7 +15,6 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -34,7 +34,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "11"  // Asegúrate de que Kotlin use Java 11
+        jvmTarget = "11"
     }
 
     buildFeatures {
@@ -43,6 +43,21 @@ android {
 }
 
 dependencies {
+    // Firebase BoM (manejamos versiones desde aquí)
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
+    implementation("androidx.recyclerview:recyclerview:1.3.2") //Introducido para recycleview
+
+    // Google Sign-In
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+
+
+    // Otros
     implementation(libs.play.services.location)
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -57,6 +72,15 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.play.services.tasks)
     implementation(libs.core.ktx)
+
+    // RxJava / RxAndroid
+    implementation(libs.rxjava)
+    implementation(libs.rxandroid)
+
+    // Glide
+    implementation(libs.glide)
+
+    // Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -64,14 +88,5 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
-
-    // RxJava
-    implementation(libs.rxjava)
-
-    // RxAndroid (para facilitar la ejecución en el hilo principal)
-    implementation(libs.rxandroid)
-
-    //gif
-    implementation(libs.glide)
-
 }
+

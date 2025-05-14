@@ -16,6 +16,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.IntentSenderRequest;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -25,6 +26,19 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import android.Manifest;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
+import com.google.android.gms.auth.api.identity.BeginSignInRequest;
+import com.google.android.gms.auth.api.identity.Identity;
+import com.google.android.gms.auth.api.identity.SignInClient;
+import com.google.android.gms.auth.api.identity.SignInCredential;
+import com.google.android.gms.common.api.ApiException;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
+
+
 public class Ruleta extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
@@ -33,6 +47,11 @@ public class Ruleta extends AppCompatActivity {
 
     private AudioManager audioManager;
     private AudioFocusRequest focusRequest;
+
+    private SignInClient oneTapClient;
+    private BeginSignInRequest signInRequest;
+    private FirebaseAuth auth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +100,25 @@ public class Ruleta extends AppCompatActivity {
 
         // Configurar EditText para ingresar nombre
         etNombreUsuario = findViewById(R.id.etNombreUsuario);
+        Button btnLoginGoogle = findViewById(R.id.btnLoginGoogle);
+        btnLoginGoogle.setOnClickListener(v -> {
+            oneTapClient.beginSignIn(signInRequest)
+                    .addOnSuccessListener(result -> {
+                        try {
+                            IntentSenderRequest request = new IntentSenderRequest.Builder(result.getPendingIntent().getIntentSender()).build();
+                            launcher.launch(request); // <- Este lanza la pantalla de selección de cuenta
+                        } catch (Exception e) {
+                            Toast.makeText(this, "Error al lanzar el intent de login", Toast.LENGTH_SHORT).show();
+                            Log.e("LOGIN", "IntentSender error: ", e);
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Error al iniciar sesión", Toast.LENGTH_SHORT).show();
+                        Log.e("LOGIN", "Fallo: ", e);
+                    });
+        });
+
+
 
         // Cargar nombre si ya está en la base de datos
         String nombreGuardado = dbHelper.obtenerNombre();
@@ -110,7 +148,42 @@ public class Ruleta extends AppCompatActivity {
             }
         });
 
+        auth = FirebaseAuth.getInstance();
+
+        oneTapClient = Identity.getSignInClient(this);
+        signInRequest = BeginSignInRequest.builder()
+                .setGoogleIdTokenRequestOptions(
+                        BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
+                                .setSupported(true)
+                                .setServerClientId(getString(R.string.default_web_client_id)) // Usa tu ID cliente web de Firebase
+                                .setFilterByAuthorizedAccounts(false)
+                                .build()
+                ).build();
+
     }
+
+    private final ActivityResultLauncher<IntentSenderRequest> launcher = registerForActivityResult(
+            new ActivityResultContracts.StartIntentSenderForResult(),
+            result -> {
+                try {
+                    SignInCredential credential = oneTapClient.getSignInCredentialFromIntent(result.getData());
+                    String idToken = credential.getGoogleIdToken();
+
+                    if (idToken != null) {
+                        auth.signInWithCredential(GoogleAuthProvider.getCredential(idToken, null))
+                                .addOnSuccessListener(authResult -> {
+                                    String nombre = auth.getCurrentUser().getDisplayName();
+                                    etNombreUsuario.setText(nombre); // Autorrellenar
+                                    Toast.makeText(this, "¡Bienvenido " + nombre + "!", Toast.LENGTH_SHORT).show();
+                                });
+                    }
+                } catch (ApiException e) {
+                    e.printStackTrace();
+                }
+            }
+    );
+
+
     private void configurarAudioFocus() {
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 

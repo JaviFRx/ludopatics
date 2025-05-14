@@ -31,7 +31,7 @@
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/england"
+        android:src="@drawable/united_kingdom"
         app:layout_constraintStart_toEndOf="@+id/btnExit"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
@@ -42,7 +42,7 @@
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/france"
+        android:src="@drawable/france_1"
         app:layout_constraintStart_toEndOf="@+id/imgEngland"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
@@ -96,7 +96,7 @@
             android:id="@+id/imgWaterDrop"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/oip"
+            android:src="@drawable/ubicacion"
             android:layout_marginEnd="8dp"
             tools:ignore="ContentDescription" />
 
@@ -164,7 +164,7 @@
             android:background="@drawable/transparent"
             android:backgroundTint="@android:color/darker_gray"
             android:fontFamily="@font/madimione_regular"
-            android:text="@string/multijugador"
+            android:text="@string/ranking"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 

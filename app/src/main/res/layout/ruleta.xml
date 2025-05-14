@@ -67,11 +67,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtAutores" />
 
+
     <Button
         android:id="@+id/btnJugar"
         android:layout_width="225dp"
         android:layout_height="60dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="12dp"
         android:backgroundTint="@color/green_roulette"
         android:fontFamily="@font/madimione_regular"
         android:shadowColor="#D1000000"
@@ -82,16 +83,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etNombreUsuario" />
 
+    <Button
+        android:id="@+id/btnLoginGoogle"
+        android:layout_width="225dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_button_white"
+        android:text="Iniciar sesión con Google"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:fontFamily="@font/madimione_regular"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnJugar" />
+
+
     <VideoView
         android:id="@+id/videoView"
         android:layout_width="0dp"
         android:layout_height="200dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnJugar" />
+        app:layout_constraintTop_toBottomOf="@+id/btnLoginGoogle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

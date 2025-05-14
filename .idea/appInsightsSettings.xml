@@ -22,10 +22,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.ludopatics" />
+                  <option name="mobileSdkAppId" value="1:477719818133:android:23cb1d1b27b055a31dd09c" />
+                  <option name="projectId" value="ludopatics-bcee6" />
+                  <option name="projectNumber" value="477719818133" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

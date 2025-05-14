@@ -9,8 +9,8 @@ import java.util.Locale;
 public class LocaleHelper {
 
     public static Context applyLocale(Context context) {
-        SharedPreferences prefs = context.getSharedPreferences("Settings", Context.MODE_PRIVATE);
-        String languageCode = prefs.getString("App_Lang", "es"); // Por defecto español
+        // Siempre usar el idioma del sistema
+        String languageCode = Locale.getDefault().getLanguage();
 
         Locale locale = new Locale(languageCode);
         Locale.setDefault(locale);
